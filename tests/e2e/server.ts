@@ -6,6 +6,38 @@ import { tmpdir } from 'node:os';
 // Production TypeScript must be built first; use its emitted decorator metadata.
 const { createApp } = require('../../apps/api/dist/bootstrap/create-app.js');
 const { FileStore } = require('../../apps/api/dist/infrastructure/persistence/file.store.js');
+const { CheckoutService } = require('../../apps/api/dist/application/checkout.service.js');
+
+/** Track real async work, including operations that outlive an aborted HTTP socket. */
+function operationDrain() {
+  const active = new Set<Promise<unknown>>();
+  return {
+    track(target: any, methods: string[]) {
+      for (const name of methods) {
+        const original = target[name];
+        if (typeof original !== 'function') throw new Error(`Missing tracked method: ${name}`);
+        target[name] = function (...args: unknown[]) {
+          const result = original.apply(this, args);
+          if (!result || typeof result.then !== 'function') return result;
+          const tracked = Promise.resolve(result).finally(() => active.delete(tracked));
+          active.add(tracked);
+          return tracked;
+        };
+      }
+    },
+    async wait() {
+      let timeout: ReturnType<typeof setTimeout> | undefined;
+      try {
+        await Promise.race([
+          (async () => { while (active.size) await Promise.allSettled([...active]); })(),
+          new Promise<never>((_, reject) => { timeout = setTimeout(() => reject(new Error(`QA shutdown did not drain ${active.size} operations`)), 5000); }),
+        ]);
+      } finally {
+        clearTimeout(timeout);
+      }
+    },
+  };
+}
 
 export const qaOrigin = 'http://127.0.0.1:5174';
 export const apiOrigin = 'http://127.0.0.1:3002';
@@ -52,15 +84,18 @@ type Harness = {
 };
 
 export const test = base.extend<{ harness: Harness }>({
-  harness: async ({}, use) => {
+  harness: async ({ context }, use) => {
     const directory = await mkdtemp(join(tmpdir(), 'lumen-independent-qa-'));
     const path = join(directory, 'store.json');
     const store = new FileStore(path);
+    const operations = operationDrain();
+    operations.track(store, ['get', 'products', 'pending', 'commit']);
     const gateway = new TestGateway();
     const clock = { now: Date.now() };
     const clients: APIRequestContext[] = [];
     const runtime = { now: () => new Date(clock.now), id: randomUUID, token: () => randomBytes(32).toString('base64url'), hash: (value: string) => createHmac('sha256', 'qa-session-hash-only').update(value).digest('hex') };
     const app = await createApp({ store, gateway, runtime, env: { NODE_ENV: 'test', ALLOWED_ORIGINS: qaOrigin } });
+    operations.track(app.get(CheckoutService), ['sessionFromToken', 'bootstrap', 'saveDraft', 'clearDraft', 'products', 'product', 'quote', 'create', 'pay', 'transaction', 'customer', 'delivery']);
     await app.listen(3002, '127.0.0.1');
     try {
       await use({ gateway, store, clock, readState: async () => JSON.parse(await readFile(path, 'utf8')), session: async () => {
@@ -72,11 +107,15 @@ export const test = base.extend<{ harness: Harness }>({
         return { client, csrf: data.csrfToken, data };
       } });
     } finally {
+      // Stop all browser producers first, then HTTP clients/listener. Closing a socket
+      // does not cancel its already-started use case, so drain real async work explicitly.
+      await context.close();
       for (const client of clients) await client.dispose();
       await app.close();
+      await operations.wait();
       // Resolve and validate the exact disposable directory before recursive removal.
       if (dirname(resolve(directory)) !== resolve(tmpdir()) || !basename(directory).startsWith('lumen-independent-qa-')) throw new Error('Unexpected QA cleanup target');
-      await rm(directory, { recursive: true, force: true });
+      await rm(directory, { recursive: true, force: true, maxRetries: 2, retryDelay: 50 });
     }
   },
 });
