@@ -1,0 +1,22 @@
+{
+  "name": "lumen-checkout",
+  "version": "0.1.0",
+  "private": true,
+  "description": "An original mobile-first sandbox checkout with a resilient payment lifecycle",
+  "workspaces": ["apps/*"],
+  "engines": {"node": ">=22.12.0"},
+  "scripts": {
+    "dev": "concurrently -n api,web -c cyan,green \"npm run dev -w apps/api\" \"npm run dev -w apps/web\"",
+    "build": "npm run build --workspaces",
+    "typecheck": "npm run typecheck --workspaces",
+    "test": "npm run test --workspaces",
+    "test:coverage": "npm run test:coverage --workspaces",
+    "test:e2e": "playwright test",
+    "check:secrets": "node scripts/check-secrets.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "@axe-core/playwright": "^4.10.2",
+    "concurrently": "^9.2.0"
+  }
+}
