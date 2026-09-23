@@ -24,6 +24,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check:secrets
+      - run: node --test infra/static-site/index.test.cjs
       - run: npm run typecheck
       - run: npm run test:coverage
       - run: npm run build

@@ -12,6 +12,15 @@ Parameters:
   ApiArtifactKey:
     Type: String
     Description: Immutable API zip object key, normally containing the Git commit
+  WebArtifactKey:
+    Type: String
+    Default: web/index.zip
+    Description: Static delivery Lambda zip for accounts without CloudFront access
+  EnableCloudFront:
+    Type: String
+    Default: 'false'
+    AllowedValues: ['true', 'false']
+    Description: Optional CDN; requires the account to be verified for CloudFront
   PaymentSecretParameter:
     Type: String
     Default: /lumen-checkout/sandbox
@@ -19,7 +28,11 @@ Parameters:
   AllowedOrigins:
     Type: String
     Default: https://pending.invalid
-    Description: Set to the CloudFront HTTPS origin after the first creation before smoke testing
+    Description: Set to the SiteUrl HTTPS origin after the first creation before smoke testing
+
+Conditions:
+  UseCloudFront: !Equals [!Ref EnableCloudFront, 'true']
+  UseDirectWeb: !Not [!Condition UseCloudFront]
 
 Resources:
   StoreTable:
@@ -135,7 +148,7 @@ Resources:
     Type: AWS::ApiGatewayV2::Route
     Properties:
       ApiId: !Ref HttpApi
-      RouteKey: ANY /{proxy+}
+      RouteKey: ANY /api/{proxy+}
       Target: !Sub integrations/${ApiIntegration}
   ApiStage:
     Type: AWS::ApiGatewayV2::Stage
@@ -175,6 +188,7 @@ Resources:
           Value: !Ref ProjectName
   WebOriginAccess:
     Type: AWS::CloudFront::OriginAccessControl
+    Condition: UseCloudFront
     Properties:
       OriginAccessControlConfig:
         Name: !Sub ${ProjectName}-private-s3
@@ -183,6 +197,7 @@ Resources:
         SigningProtocol: sigv4
   WebHeaders:
     Type: AWS::CloudFront::ResponseHeadersPolicy
+    Condition: UseCloudFront
     Properties:
       ResponseHeadersPolicyConfig:
         Name: !Sub ${ProjectName}-security
@@ -209,6 +224,7 @@ Resources:
               Override: true
   Distribution:
     Type: AWS::CloudFront::Distribution
+    Condition: UseCloudFront
     Properties:
       DistributionConfig:
         Enabled: true
@@ -254,15 +270,18 @@ Resources:
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
-          - Sid: CloudFrontOnly
-            Effect: Allow
-            Principal:
-              Service: cloudfront.amazonaws.com
-            Action: s3:GetObject
-            Resource: !Sub ${WebBucket.Arn}/*
-            Condition:
-              StringEquals:
-                AWS:SourceArn: !Sub arn:${AWS::Partition}:cloudfront::${AWS::AccountId}:distribution/${Distribution}
+          - !If
+            - UseCloudFront
+            - Sid: CloudFrontOnly
+              Effect: Allow
+              Principal:
+                Service: cloudfront.amazonaws.com
+              Action: s3:GetObject
+              Resource: !Sub ${WebBucket.Arn}/*
+              Condition:
+                StringEquals:
+                  AWS:SourceArn: !Sub arn:${AWS::Partition}:cloudfront::${AWS::AccountId}:distribution/${Distribution}
+            - !Ref AWS::NoValue
           - Sid: DenyInsecureTransport
             Effect: Deny
             Principal: '*'
@@ -272,14 +291,94 @@ Resources:
               Bool:
                 aws:SecureTransport: false
 
+  StaticLogs:
+    Type: AWS::Logs::LogGroup
+    Condition: UseDirectWeb
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${ProjectName}-web
+      RetentionInDays: 14
+  StaticRole:
+    Type: AWS::IAM::Role
+    Condition: UseDirectWeb
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: static-delivery
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: s3:GetObject
+                Resource: !Sub ${WebBucket.Arn}/*
+              - Effect: Allow
+                Action: [logs:CreateLogStream, logs:PutLogEvents]
+                Resource: !GetAtt StaticLogs.Arn
+  StaticFunction:
+    Type: AWS::Lambda::Function
+    Condition: UseDirectWeb
+    DependsOn: StaticLogs
+    Properties:
+      FunctionName: !Sub ${ProjectName}-web
+      Runtime: nodejs22.x
+      Handler: index.handler
+      Architectures: [arm64]
+      MemorySize: 128
+      Timeout: 10
+      Role: !GetAtt StaticRole.Arn
+      Code:
+        S3Bucket: !Ref ArtifactBucket
+        S3Key: !Ref WebArtifactKey
+      Environment:
+        Variables:
+          WEB_BUCKET: !Ref WebBucket
+  StaticIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Condition: UseDirectWeb
+    Properties:
+      ApiId: !Ref HttpApi
+      IntegrationType: AWS_PROXY
+      IntegrationMethod: POST
+      IntegrationUri: !GetAtt StaticFunction.Arn
+      PayloadFormatVersion: '2.0'
+      TimeoutInMillis: 12000
+  StaticRootRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Condition: UseDirectWeb
+    Properties:
+      ApiId: !Ref HttpApi
+      RouteKey: ANY /
+      Target: !Sub integrations/${StaticIntegration}
+  StaticAssetRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Condition: UseDirectWeb
+    Properties:
+      ApiId: !Ref HttpApi
+      RouteKey: ANY /{proxy+}
+      Target: !Sub integrations/${StaticIntegration}
+  StaticInvokePermission:
+    Type: AWS::Lambda::Permission
+    Condition: UseDirectWeb
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref StaticFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${HttpApi}/*/*
+
 Outputs:
   SiteUrl:
-    Value: !Sub https://${Distribution.DomainName}
+    Value: !If [UseCloudFront, !Sub 'https://${Distribution.DomainName}', !Sub 'https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com']
   ApiDocsUrl:
-    Value: !Sub https://${Distribution.DomainName}/api/docs
+    Value: !If [UseCloudFront, !Sub 'https://${Distribution.DomainName}/api/docs', !Sub 'https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com/api/docs']
   WebBucketName:
     Value: !Ref WebBucket
   DistributionId:
+    Condition: UseCloudFront
     Value: !Ref Distribution
   TableName:
     Value: !Ref StoreTable
