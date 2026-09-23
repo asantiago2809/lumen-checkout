@@ -7,6 +7,7 @@
 - Public repository: https://github.com/asantiago2809/lumen-checkout
 - Implementation pull request: https://github.com/asantiago2809/lumen-checkout/pull/1
 - Hosted Linux run: https://github.com/asantiago2809/lumen-checkout/actions/runs/35932314066 — success on `eda790c`, including clean install, secret scan, type checks, 147 Jest tests, builds and 55 independent E2E executions.
+- Updated code/infrastructure Linux run: https://github.com/asantiago2809/lumen-checkout/actions/runs/35933599708 — success on `f84fc56`, also including the five restricted static-delivery tests. This verifies the final formatting and alternative HTTPS implementation.
 - Subsequent API formatting commit: `ceb1965`, with another successful local typecheck/build and 65 Jest tests. Final coverage is recorded in the README and QA report; formatting changed line-count denominators.
 - Static delivery adapter: five Node tests passed and independently reproduced. They cover allowed paths, traversal rejection, MIME/cache/HEAD behavior, private error handling and response-size limits.
 - Both CloudFormation templates pass cfn-lint. The first cloud template also passed AWS `validate-template` before provisioning.

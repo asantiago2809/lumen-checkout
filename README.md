@@ -11,7 +11,7 @@ An original mobile-first checkout built with React, Redux Toolkit and a NestJS A
 | Local Swagger | [localhost:3001/api/docs](http://localhost:3001/api/docs) |
 | Local OpenAPI JSON | [localhost:3001/api/docs-json](http://localhost:3001/api/docs-json) |
 | Public application / Swagger | Infrastructure created; API blocked on runtime configuration. [Release evidence](docs/quality/release-report.md) records the provisional endpoint and exact limits |
-| Remote CI | [Linux quality gates passed](https://github.com/asantiago2809/lumen-checkout/actions/runs/35932314066) on implementation commit `eda790c` |
+| Remote CI | [Linux quality gates passed](https://github.com/asantiago2809/lumen-checkout/actions/runs/35933599708) on code/infrastructure commit `f84fc56` |
 
 ![Lumen desktop product page](tests/e2e/evidence/product-desktop.png)
 
@@ -189,7 +189,7 @@ npm run test:coverage
 npm run build
 ```
 
-Reports are generated under each application's `coverage/`, including `coverage-summary.json` and `lcov.info`. The [quality workflow](.github/workflows/quality.yml) runs clean installation, secret scanning, type checks, Jest coverage, builds and the complete independent browser suite, uploading coverage and E2E artifacts. The [first hosted Linux run](https://github.com/asantiago2809/lumen-checkout/actions/runs/35932314066) passed all gates on `eda790c`; subsequent formatting and infrastructure revisions have their own run history.
+Reports are generated under each application's `coverage/`, including `coverage-summary.json` and `lcov.info`. The [quality workflow](.github/workflows/quality.yml) runs clean installation, secret scanning, type checks, Jest coverage, static-handler tests, builds and the complete independent browser suite, uploading coverage and E2E artifacts. Both the [initial Linux run](https://github.com/asantiago2809/lumen-checkout/actions/runs/35932314066) and the [updated code/infrastructure run](https://github.com/asantiago2809/lumen-checkout/actions/runs/35933599708) passed all gates; the latter tests `f84fc56` with the final formatted source and alternative HTTPS infrastructure.
 
 Independent Playwright verification passed **55 executions: 11 API scenarios plus 11 browser scenarios across four projects**, with zero failures, skips or flaky outcomes in the recorded run. Projects cover Chromium desktop, Chromium at the iPhone SE CSS viewport of 375×667, Firefox and WebKit. Scenarios include approval/decline, repeated submission, stock, refresh, unknown outcomes, provider unavailability, long content, focus, keyboard use and automated accessibility checks. Additional layouts exercise 320px, portrait/landscape mobile and tablet sizes.
 

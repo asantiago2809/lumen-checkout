@@ -34,3 +34,11 @@ Emite informe con: alcance/limitaciones, resumen ejecutivo de cumplimiento, chec
 - Riesgos tempranos: AWS explícito en entregables frente a cloud genérico en rúbrica; >80% estricto para cada aplicación; cuenta sandbox compartida; flujo de cinco etapas; repositorio público original con evolución real.
 - Estado: requisitos identificados; ninguna implementación, prueba ni publicación certificada en esta primera intervención.
 - Próximo dueño: director para convertir la matriz en contratos, prioridades y encargos; auditor retorna al cierre para verificar cada ID.
+
+## Retorno de auditoría tras implementación
+
+Corte 2026-09-23: los informes QA, seguridad y diseño ya contienen ejecución independiente; el checklist de 82 IDs tiene 69 Cumple en alcance documentado, 10 Bloqueados, 2 Pendientes y una recomendación no cumplida con desviación justificada (PR único integrado con commits genuinos). Revisar el estado vigente de los informes antes de repetir trabajo.
+
+Código/infra de referencia: f84fc56 con CI público Success. Evidencia local: 65 Jest API, 82 Jest web, 55 E2E y 12 retests visuales; cinco pruebas del handler estático. La publicación estática AWS funciona, pero API/Swagger devuelven 500 por SSM faltante. El usuario ya autorizó guardar secretos cifrados; la revisión automática rechazó la operación y queda un paso manual guiado por Release. No intentar eludirlo ni pedir otra vez la misma autorización.
+
+Retomar cuando Release confirme configuración: verificar endpoints públicos, sesión/cookie Secure, CSRF/Origin, Swagger y durabilidad Lambda/Dynamo; después demostrar pago aprobado/rechazado en sandbox real con evidencia sanitizada. El TLS UAT sigue pendiente y nunca debe deshabilitarse. Solo entonces actualizar los controles dependientes y recomendar entrega. El despliegue anterior permanece intacto hasta validar el reemplazo. No enviar la prueba al evaluador sin solicitud independiente.

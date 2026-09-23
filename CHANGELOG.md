@@ -42,7 +42,7 @@ Changes are recorded as implemented and verified. Git contains the incremental d
 ### Open release checks and deliberate limits
 
 - Real payment evidence remains blocked by UAT TLS trust failure; certificate verification has not been disabled.
-- Hosted Linux CI passed on `eda790c`; later revisions have their own runs. AWS static delivery and a live DynamoDB adapter probe passed, while API initialization and Swagger await encrypted runtime configuration. See the release report.
+- Hosted Linux CI passed on `eda790c` and updated code/infrastructure `f84fc56`. AWS static delivery and a live DynamoDB adapter probe passed, while API initialization and Swagger await encrypted runtime configuration. See the release report.
 - Signed webhooks and a scheduled reconciliation worker are not implemented; relevant reads reconcile status and expire unsubmitted reservations.
 - An uncertain submission without an external ID requires operational reconciliation and is not automatically resubmitted.
 - Local file persistence is single-process only, and request-rate counters are per process.
