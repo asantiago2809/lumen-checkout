@@ -1,14 +1,14 @@
 # Lumen — especificación de diseño UX/UI
 
-Estado: especificación propuesta para implementación. No constituye aprobación visual ni prueba de funcionamiento. Los importes, existencias, estados y campos definitivos deben coincidir con el contrato de API y la matriz del auditor. Si hay conflicto, resolverlo con el director antes de alterar un requisito.
+Estado: especificación actualizada al acabado moderno implementado el 23 de septiembre de 2026, a petición del usuario. No constituye aprobación visual ni prueba de funcionamiento; el dictamen corresponde al QA independiente. Los importes, existencias, estados y campos definitivos deben coincidir con el contrato de API y la matriz del auditor.
 
 ## 1. Producto y dirección visual
 
-Lumen es una experiencia de compra demostrativa de una lámpara de escritorio. La identidad debe sentirse como un pequeño estudio de objetos: una composición editorial, una ilustración protagonista y un proceso de pago sobrio y preciso. La interfaz es española; la moneda es COP. El catálogo, producto, tarifas y disponibilidad proceden de la API, nunca de valores inventados en la vista.
+Lumen es una experiencia de compra demostrativa de una lámpara de escritorio. La identidad combina la claridad de un producto digital contemporáneo con la composición cuidada de un estudio de objetos: tipografía sans firme, superficies claras, verde bosque y un acento menta luminoso. La imagen principal es un render original de producto, optimizado a WebP. La interfaz es española; la moneda es COP. El catálogo, producto, tarifas y disponibilidad proceden de la API, nunca de valores inventados en la vista.
 
 - Marca: `lumen` en minúsculas, espaciado discreto y un símbolo original de dos arcos que sugieren una lámpara. Logotipo vectorial o texto, sin fuentes externas necesarias.
-- Producto de referencia: `Lumen 01`; el nombre real renderizado procede del producto persistido. Texto editorial sugerido: `Una luz para tus ideas.` Descripción breve sugerida: `Una lámpara de escritorio con una silueta simple y un lugar propio en tu mesa.` No añadir atributos de materiales, potencia, garantía o duración que el modelo no respalde.
-- Lenguaje visual: marfil cálido, verde bosque, texto tinta y acento cobre empleado en la ilustración. Gran respiración en escritorio; precisión y densidad moderada en móvil.
+- Producto de referencia: `Lumen One`; el nombre y descripción renderizados proceden del producto persistido. Titular: `Una luz para tus ideas.` No añadir atributos de materiales, potencia, garantía o duración que el modelo no respalde.
+- Lenguaje visual: blanco suave, verde bosque, texto tinta y menta como subrayado amplio del titular. Cobre reservado a detalles de la lámpara. Gran respiración en escritorio; precisión y densidad moderada en móvil. CTA principal de extremos redondos con flecha y movimiento de 3px en hover, anulado con reduced motion. La inspiración solicitada es su claridad y modernidad; no se copian la marca, composición exacta o afirmaciones de otra empresa.
 - No usar reseñas, estrellas, escasez artificial, sellos, certificaciones, envíos gratis, logotipos de clientes o garantías inventadas. No presentar el entorno como una tienda operativa.
 - Aviso persistente y discreto: `Compra de prueba · entorno sandbox`. Cerca del pago: `Este flujo usa un proveedor de pagos en modo de pruebas.` Mantener branding público neutral; las referencias nominales al proveedor se reservan a la documentación técnica y a sus consentimientos reales. Evitar afirmar aprobación, seguridad certificada o ausencia absoluta de cobros si no se ha verificado la configuración real.
 
@@ -18,40 +18,41 @@ Todos los componentes usan una única hoja de tokens. Los colores de negocio se 
 
 | Token | Valor | Uso |
 | --- | --- | --- |
-| `--color-canvas` | `#F5F2E9` | Fondo de página |
-| `--color-surface` | `#FFFEFA` | Campos, modal, tarjetas |
-| `--color-surface-soft` | `#ECE7D8` | Escena de producto y bloques secundarios |
-| `--color-ink` | `#192A25` | Títulos, texto y precio |
-| `--color-muted` | `#5D6961` | Descripción, etiquetas secundarias |
-| `--color-primary` | `#245746` | CTA principal y selección |
+| `--color-canvas` | `#FAFCF9` | Fondo de página |
+| `--color-surface` | `#FFFFFF` | Campos, modal, tarjetas |
+| `--color-surface-soft` | `#E8F3EB` | Escena de producto y bloques secundarios |
+| `--color-ink` | `#17251F` | Títulos, texto y precio |
+| `--color-muted` | `#58685F` | Descripción, etiquetas secundarias |
+| `--color-primary` | `#205440` | CTA principal y selección |
 | `--color-on-primary` | `#FFFFFF` | Texto sobre CTA |
-| `--color-line` | `#D6DCD2` | Separadores decorativos |
-| `--color-control-border` | `#727D75` | Contorno visible de campos y controles |
+| `--color-line` | `#D7E2D9` | Separadores decorativos |
+| `--color-control-border` | `#738378` | Contorno visible de campos y controles |
 | `--color-accent` | `#C6762D` | Ilustración y detalles; no texto pequeño |
+| `--color-mint` | `#C8F7C8` | Subrayado del titular; nunca único indicador de estado |
 | `--color-danger` | `#A32C27` | Mensaje e icono de error |
 | `--color-danger-soft` | `#FFF0ED` | Fondo de error |
-| `--color-success` | `#245746` | Estado aprobado |
-| `--color-success-soft` | `#E5F0E7` | Fondo de aprobación |
+| `--color-success` | `#205440` | Estado aprobado |
+| `--color-success-soft` | `#E5F3E7` | Fondo de aprobación |
 | `--color-warning` | `#8A4A0D` | Pendiente o advertencia contextual |
 | `--color-warning-soft` | `#FFF2D5` | Fondo de pendiente |
 | `--color-neutral-soft` | `#E5EAF0` | Estado informativo |
 | `--color-overlay` | `rgba(16, 30, 24, .52)` | Backdrop de modal/resumen |
 
-Contrastes calculados mediante luminancia sRGB relativa: tinta/canvas 13.41:1, muted/canvas 5.13:1, blanco/primary 8.31:1, muted/surface 5.69:1, danger/surface 7.06:1, warning/warning-soft 6.17:1 y success/success-soft 7.10:1. El contorno de control/surface es 4.24:1. Son relaciones de tokens, no una certificación WCAG de la implementación. Verificar también hover, disabled, autofill y cualquier combinación nueva.
+Contrastes calculados mediante luminancia sRGB relativa para los tokens finales: tinta/canvas 15.41:1, muted/canvas 5.72:1, blanco/primary 8.74:1, muted/surface 5.90:1, danger/surface 7.13:1, warning/warning-soft 6.17:1 y success/success-soft 7.62:1. El contorno de control/surface es 4.00:1 y primary/mint 7.32:1. Son relaciones de tokens, no una certificación WCAG de la implementación. Verificar también hover, disabled, autofill y cualquier combinación nueva.
 
 | Categoría | Especificación |
 | --- | --- |
 | Familia UI | `Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`; Inter solo si existe localmente, sin petición de red |
-| Familia editorial | `Georgia, "Times New Roman", serif`, reservada a nombre de producto o titular; todos los formularios usan UI |
+| Familia de titulares | Misma sans local que UI (`--font-editorial: var(--font-ui)`); peso 650, espaciado compacto. Sin solicitudes de fuentes externas |
 | Texto base | 16px, line-height 1.5; controles al menos 16px para evitar zoom automático iOS |
 | Texto pequeño | 14px, line-height 1.45; 12px solo para numeración o metadatos no esenciales |
-| Título producto | `clamp(2.125rem, 4.6vw, 4.5rem)`, line-height 1.08, peso normal |
-| Título modal/estado | 24px móvil, 30px escritorio, line-height 1.2 |
-| Precio principal | 30px móvil, 36px escritorio; números tabulares; peso 600 |
+| Título producto | `clamp(42px, 4.9vw, 70px)`, line-height 1.08, peso 650; 45px móvil y 39px a 320px |
+| Título modal/estado | 29px móvil, 31px escritorio; 27px a 320px; line-height 1.15 |
+| Precio principal | 30px móvil, 32px escritorio; números tabulares; peso 550 |
 | Espaciado | 4, 8, 12, 16, 20, 24, 32, 40, 48, 64px |
-| Radio | 8px campo/botón; 16px bloques; 24px panel principal; 999px solo indicadores pequeños |
+| Radio | 7–8px campos/avisos; 20px modal; 24px escena (18px móvil); 999px CTA principal e indicadores |
 | Sombra | Panel flotante: `0 24px 72px rgba(16,30,24,.20)`; evitar sombra en cada elemento |
-| Ancho contenido | `max-width: 1200px`, margen auto; padding 20px móvil, 32px tablet, 48px escritorio |
+| Ancho contenido | `max-width: 1440px`, margen auto; padding 20px móvil, 32px tablet, 64px escritorio (48px en pantallas mayores de 1440px) |
 | Touch target | 44 × 44px como mínimo; CTA/form-control 48px de alto mínimo |
 | Movimiento | 120–180ms color/opacidad/transform, desplazamiento máximo 8px; con `prefers-reduced-motion: reduce`, eliminar movimiento no esencial |
 
@@ -63,8 +64,8 @@ Orden DOM: cabecera, contexto sandbox, contenido principal, pie. Dentro del cont
 
 ### Escritorio desde 1024px
 
-- Cabecera de 72px con marca a la izquierda y texto `Colección de escritorio` a la derecha. Línea de 1px y ninguna navegación ficticia.
-- Hero de dos columnas, aproximadamente 55% imagen y 45% información, gap 48–64px. La ilustración ocupa una escena de mínimo 440px de alto con fondo surface-soft y radio 24px. Un número editorial `01` puede aparecer como decoración `aria-hidden`.
+- Cabecera de 94px con marca a la izquierda, `Objetos para habitar tus ideas.` a la derecha y etiqueta Sandbox. Línea de 1px y ninguna navegación ficticia.
+- Hero de dos columnas, aproximadamente 54% imagen y 46% información, gap adaptable 36–80px. La imagen ocupa una escena de mínimo 580px de alto con fondo surface-soft y radio 24px. El número `01` aparece como decoración `aria-hidden`.
 - Información con ancho de lectura máximo 420px: categoría `Luz de escritorio`, título, descripción de 2–3 líneas, precio, existencias y botón `Pagar con tarjeta` a ancho completo.
 - Existencias explícitas `Disponible · 12 unidades` solo con el número real. Si queda una unidad: `Disponible · 1 unidad`. Si el servidor devuelve cero: `Agotado` y CTA deshabilitado. No inventar urgencia.
 - Bloque inferior liviano con etiqueta `Detalle del pedido`, explicando que las tarifas se muestran antes de pagar. Evitar listas promocionales sin respaldo.
@@ -72,8 +73,8 @@ Orden DOM: cabecera, contexto sandbox, contenido principal, pie. Dentro del cont
 
 ### Móvil 375 × 667 y desde 320px
 
-- Cabecera 56px, gutters 20px (16px a 320px), marca y `Sandbox` con texto legible. Sin menú hamburguesa sin contenido.
-- Titular y categoría compactos, escena de producto de 200–240px de alto, descripción breve y precio. Mantener la ilustración reconocible a 320px.
+- Cabecera 68px, gutters 20px (16px a 320px), marca y `Sandbox` con texto legible. Sin menú hamburguesa sin contenido.
+- Titular y categoría compactos, escena de producto de 307px de alto (280px a 320px), descripción breve y precio. Mantener la lámpara completa y reconocible a 320px.
 - El CTA puede estar en un bloque sticky al pie de la página, con fondo canvas sólido, línea superior, total de producto y botón. Reservar espacio equivalente en el contenido para que jamás tape texto. No usar posición fixed en formularios con teclado móvil.
 - Si un CTA sticky duplica otro, solo una instancia debe permanecer enfocada y visible en cada breakpoint; preferir una única instancia movida por CSS.
 - No forzar todo el producto dentro de 667px recortando texto. Permitir scroll vertical; el objetivo es que la acción primaria sea fácil de alcanzar y la información conserve legibilidad.
@@ -86,7 +87,11 @@ Orden DOM: cabecera, contexto sandbox, contenido principal, pie. Dentro del cont
 - Agotado: texto visible y acción de compra deshabilitada; permitir reconsultar disponibilidad de forma explícita.
 - Al regresar tras pagar: reconsultar producto y existencias. La cantidad visible debe reflejar la API, sin decremento optimista irreversible. Un pago aprobado debe consumir inventario exactamente una vez según backend; otros estados no lo consumen.
 
-## 4. Ilustración vectorial original
+## 4. Imagen de producto e ilustración vectorial original
+
+El asset protagonista final es un render original generado para Lumen, con procedencia en `docs/design-assets.md`. `apps/web/public/lumen-one-640.webp` y `lumen-one-1200.webp` son variantes 1:1 de 12KB y 31KB aproximadamente. `ProductImage` utiliza `<picture>`, `srcSet`, `sizes`, dimensiones explícitas y prioridad alta solo en hero. El resumen usa el mismo asset como miniatura. La ruta de producto procede de API; el seed histórico conocido `product_lumen_one` con `/lumen-lamp.svg` se mapea únicamente a este render, sin alterar precio, stock o identidad. Un error de imagen activa el SVG local, elimina la fuente WebP y evita reintentos infinitos.
+
+La ilustración siguiente permanece como fallback original, no como una imagen distinta en el resumen normal:
 
 Crear en el repositorio `apps/web/public/lumen-lamp.svg` o componente SVG equivalente. No requiere foto externa ni image generation. `viewBox="0 0 720 640"`, peso objetivo inferior a 20KB. Descripción accesible: `Ilustración de una lámpara de escritorio Lumen, color verde bosque, sobre una mesa clara.` Si la información ya está en texto inmediato, puede ser decorativa con `aria-hidden="true"`.
 

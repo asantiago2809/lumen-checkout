@@ -66,6 +66,9 @@ Control adicional obligatorio de D-02: repetir todas las filas a **667 × 375, o
 | VIS-07 | Iconos alineados y consistentes; SVG liviano, sin recurso externo roto | PENDIENTE | |
 | VIS-08 | Sticky/fixed y safe-area no ocultan texto, errores o acción primaria con teclado | PENDIENTE | |
 | VIS-09 | No navegación ficticia, reseñas, sellos, garantías o datos promocionales inventados | PENDIENTE | |
+| VIS-10 | Acabado moderno final: blanco suave/mint/verde bosque, titulares sans y CTA redondos; tokens coinciden con `apps/web/src/tokens.css` | PENDIENTE | |
+| VIS-11 | Hero y resumen muestran el mismo render WebP original; srcSet 640/1200, dimensiones explícitas, SVG solo fallback y lámpara completa a 320px | PENDIENTE | |
+| VIS-12 | Titulares mantienen espacios entre palabras cuando el breakpoint oculta saltos `<br>`; reduced motion elimina movimiento de flecha del CTA | PENDIENTE | |
 | UX-01 | Los cinco pasos existen y el regreso reconsulta stock | PENDIENTE | |
 | UX-02 | Precio/disponibilidad vienen de API; loading/error/agotado tienen acciones coherentes | PENDIENTE | |
 | UX-03 | Tarjeta y entrega tienen labels persistentes, agrupación y opcionalidad clara | PENDIENTE | |
@@ -82,7 +85,7 @@ Control adicional obligatorio de D-02: repetir todas las filas a **667 × 375, o
 | UX-14 | Salir de vista durante transacción no comunica cancelación inexistente | PENDIENTE | |
 | UX-15 | Recarga recupera referencia/progreso seguro sin reenviar; tarjeta efímera se recaptura si corresponde | PENDIENTE | |
 | UX-16 | Contexto sandbox visible y textos españoles consistentes, sin afirmar resultados no verificados | PENDIENTE | |
-| UX-17 | Retorno tras aprobación refleja stock actualizado una vez; pendientes/rechazados no lo disminuyen | PENDIENTE | |
+| UX-17 | Aprobación consume existencias físicas una vez; un pendiente reserva disponibilidad sin consumir existencias, y el rechazo libera esa reserva | PENDIENTE | |
 | A11Y-01 | `lang`, título de documento, un h1, landmarks y enlace saltar al contenido correctos | PENDIENTE | |
 | A11Y-02 | Un solo diálogo activo, nombre accesible, `aria-modal`, fondo inerte y focus trap correcto | PENDIENTE | |
 | A11Y-03 | Foco inicial/restaurado visible; Tab/Shift+Tab/Enter/Escape coherentes en todas las etapas | PENDIENTE | |
