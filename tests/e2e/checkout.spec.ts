@@ -1,7 +1,7 @@
 import AxeBuilder from '@axe-core/playwright';
 import { randomInt } from 'node:crypto';
 import type { Page } from '@playwright/test';
-import { test, expect, customer, delivery, qaProductId } from './server';
+import { test, expect, customer, delivery, draft, purchase, qaProductId } from './server';
 
 // These structurally valid synthetic values never leave intercepted tokenization.
 // Real sandbox runs must use separately supplied official sandbox data.
@@ -47,6 +47,133 @@ async function axeSerious(page: Page) {
   const result = await new AxeBuilder({ page }).analyze();
   return result.violations.filter(item => ['serious', 'critical'].includes(item.impact ?? '')).map(item => ({ id: item.id, impact: item.impact, targets: item.nodes.map(node => node.target) }));
 }
+
+async function browserApi(page: Page, path: string, method = 'GET', data?: unknown) {
+  return page.evaluate(async ({ path, method, data }) => {
+    const session = (await (await fetch('/api/checkout/session')).json()).data;
+    const response = await fetch(`/api${path}`, {
+      method,
+      headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': session.csrfToken, ...(method === 'POST' && path === '/transactions' ? { 'Idempotency-Key': crypto.randomUUID() } : {}) },
+      ...(data === undefined ? {} : { body: JSON.stringify(data) }),
+    });
+    return { status: response.status, body: await response.json() };
+  }, { path, method, data });
+}
+
+function observePaymentTraffic(page: Page) {
+  const routes: string[] = [];
+  page.context().on('request', request => {
+    const path = new URL(request.url()).pathname;
+    if (path === '/v1/tokens/cards' || /^\/api\/transactions\/[^/]+\/pay$/.test(path)) routes.push(path);
+  });
+  return routes;
+}
+
+async function verifyReservedSnapshot(page: Page, address: string, reload = true) {
+  if (reload) await page.reload();
+  await expect(page.getByRole('heading', { name: 'Tu pedido está reservado.' })).toBeVisible();
+  await page.getByRole('button', { name: 'Completar pago', exact: true }).click();
+  // Delivery is frozen for a reservation; only card and consents can be recaptured.
+  await expect(page.getByLabel('Dirección', { exact: true })).toHaveCount(0);
+  await expect(page.getByLabel('Número de tarjeta', { exact: true })).toHaveValue('');
+  await expect(page.getByLabel('Código de seguridad', { exact: true })).toHaveValue('');
+  await expect.soft(page.getByRole('checkbox', { name: /Acepto los/ })).not.toBeChecked({ timeout: 500 });
+  await expect.soft(page.getByRole('checkbox', { name: /Autorizo el/ })).not.toBeChecked({ timeout: 500 });
+  await page.getByRole('button', { name: 'Continuar al resumen' }).click();
+  await expect(page.getByRole('dialog', { name: 'Completa tus datos.' })).toBeVisible();
+  await expect(page.getByLabel('Número de tarjeta', { exact: true })).toHaveAttribute('aria-invalid', 'true');
+  await fillCard(page, syntheticCard());
+  await review(page);
+  await expect(page.locator('.delivery-summary')).toContainText(address);
+}
+
+test('QA-R07: late autosave from a second tab cannot change a reserved delivery', async ({ page, context, harness }) => {
+  const paymentTraffic = observePaymentTraffic(page);
+  await openCheckout(page);
+  await fillDelivery(page);
+  await expect.poll(async () => (await browserApi(page, '/checkout/session')).body.data.draft?.delivery.addressLine1).toBe(delivery.addressLine1);
+  const second = await context.newPage();
+  try {
+    await second.goto('/');
+    await expect(second.getByLabel('Dirección', { exact: true })).toHaveValue(delivery.addressLine1);
+    const created = await browserApi(page, '/transactions', 'POST', purchase);
+    expect(created.status).toBe(201);
+    expect(created.body.data).toMatchObject({ status: 'PENDING', submissionStatus: 'NOT_STARTED', canPay: true });
+    const differentAddress = 'Calle de prueba B 20';
+    const lateResponse = second.waitForResponse(response => response.url().endsWith('/api/checkout/draft') && response.request().method() === 'PUT' && response.request().postDataJSON()?.delivery?.addressLine1 === differentAddress);
+    await second.getByLabel('Dirección', { exact: true }).fill(differentAddress);
+    const rejected = await lateResponse;
+    expect.soft(rejected.status()).toBe(409);
+    expect.soft((await rejected.json()).error?.code).toBe('PAYMENT_IN_PROGRESS');
+    const restored = (await browserApi(page, '/checkout/session')).body.data;
+    expect.soft(restored.draft.delivery.addressLine1).toBe(delivery.addressLine1);
+    expect(restored.activeTransactionId).toBe(created.body.data.id);
+    await verifyReservedSnapshot(page, delivery.addressLine1);
+    await expect(page.locator('.delivery-summary')).not.toContainText(differentAddress);
+    const state = await harness.readState();
+    expect(Object.keys(state).filter(key => key.startsWith('TX#'))).toEqual([`TX#${created.body.data.id}`]);
+    expect(state[`TX#${created.body.data.id}`].value.address.addressLine1).toBe(delivery.addressLine1);
+    expect(state[`PRODUCT#${qaProductId}`].value).toMatchObject({ stockOnHand: 12, stockReserved: 1, stockAvailable: 11 });
+    expect(harness.gateway.createCount).toBe(0);
+    expect(paymentTraffic).toEqual([]);
+  } finally {
+    await second.close();
+  }
+});
+
+test('QA-R08: creation replaces a different saved draft with its authoritative input', async ({ page, harness }) => {
+  const paymentTraffic = observePaymentTraffic(page);
+  await page.goto('/');
+  await expect(page.getByRole('button', { name: 'Pagar con tarjeta' })).toBeEnabled();
+  const previousAddress = 'Carrera de prueba anterior 99';
+  const saved = await browserApi(page, '/checkout/draft', 'PUT', { ...draft, customer: { ...customer, fullName: 'Persona de borrador anterior' }, delivery: { ...delivery, addressLine1: previousAddress } });
+  expect(saved.status).toBe(200);
+  const created = await browserApi(page, '/transactions', 'POST', purchase);
+  expect(created.status).toBe(201);
+  const restored = (await browserApi(page, '/checkout/session')).body.data;
+  expect.soft(restored.draft).toMatchObject({ ...draft, step: 'SUMMARY' });
+  expect(restored.activeTransactionId).toBe(created.body.data.id);
+  await verifyReservedSnapshot(page, delivery.addressLine1);
+  await expect(page.locator('.delivery-summary')).toContainText(customer.fullName);
+  await expect(page.locator('.delivery-summary')).not.toContainText(previousAddress);
+  expect(harness.gateway.createCount).toBe(0);
+  expect(paymentTraffic).toEqual([]);
+});
+
+test('QA-R09: a stale open summary recovers the reserved snapshot without reloading', async ({ page, context, harness }) => {
+  const paymentTraffic = observePaymentTraffic(page);
+  const staleAddress = 'Calle de resumen anterior 77';
+  await openCheckout(page);
+  await fillDelivery(page);
+  await page.getByLabel('Dirección', { exact: true }).fill(staleAddress);
+  await page.getByLabel('Nombre de quien recibe', { exact: true }).fill('Persona de resumen anterior');
+  await fillCard(page, syntheticCard());
+  await review(page);
+  await expect(page.locator('.delivery-summary')).toContainText(staleAddress);
+  const second = await context.newPage();
+  try {
+    await second.goto('/');
+    await expect(second.getByLabel('Dirección', { exact: true })).toHaveValue(staleAddress);
+    const created = await browserApi(second, '/transactions', 'POST', purchase);
+    expect(created.status).toBe(201);
+    const conflictResponse = page.waitForResponse(response => response.url().endsWith('/api/transactions') && response.request().method() === 'POST');
+    await page.getByRole('button', { name: /^Pagar \$/ }).click();
+    const conflict = await conflictResponse;
+    expect(conflict.status()).toBe(409);
+    expect((await conflict.json()).error.code).toBe('PAYMENT_IN_PROGRESS');
+    await verifyReservedSnapshot(page, delivery.addressLine1, false);
+    await expect(page.locator('.delivery-summary')).toContainText(customer.fullName);
+    await expect(page.locator('.delivery-summary')).not.toContainText(staleAddress);
+    const state = await harness.readState();
+    expect(Object.keys(state).filter(key => key.startsWith('TX#'))).toEqual([`TX#${created.body.data.id}`]);
+    expect(Object.keys(state).filter(key => key.startsWith('DELIVERY#'))).toEqual([]);
+    expect(state[`TX#${created.body.data.id}`].value).toMatchObject({ address: delivery, status: 'PENDING', submissionStatus: 'NOT_STARTED' });
+    expect(harness.gateway.createCount).toBe(0);
+    expect(paymentTraffic).toEqual([]);
+  } finally {
+    await second.close();
+  }
+});
 
 test.beforeEach(async ({ page, harness }) => {
   // Our API is always real HTTP. Only the external card-tokenization boundary is intercepted.

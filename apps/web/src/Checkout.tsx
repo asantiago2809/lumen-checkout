@@ -284,8 +284,15 @@ export function Checkout() {
             const recovered = await api.transaction(
               session.activeTransactionId,
             );
-            dispatch(actions.receivedTransaction(recovered));
+            dispatch(
+              actions.recoveredCheckout({
+                transaction: recovered,
+                draft: session.draft,
+              }),
+            );
             setCard(emptyCard());
+            setTerms(false);
+            setPersonal(false);
           }
         } catch {
           /* The retained idempotency key makes an explicit retry safe. */

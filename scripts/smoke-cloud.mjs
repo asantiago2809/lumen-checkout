@@ -59,17 +59,40 @@ try {
 
   const customer = { fullName: 'Persona de Prueba Cloud', email: 'cloud-probe@example.test', phone: '3000000000' };
   const delivery = { addressLine1: 'Calle de prueba 10', city: 'Bogotá', region: 'Bogotá D.C.', country: 'CO' };
+  const staleDraft = {
+    productId: product.id, quantity: 1, step: 'SUMMARY',
+    customer: { ...customer, fullName: 'Otra pestaña de prueba', email: 'other-tab@example.test' },
+    delivery: { ...delivery, addressLine1: 'Calle de otra pestaña 20' },
+  };
   needsCleanup = true;
-  const draft = await request('/checkout/draft', { method: 'PUT', body: { productId: product.id, quantity: 1, step: 'SUMMARY', customer, delivery } });
+  const draft = await request('/checkout/draft', { method: 'PUT', body: staleDraft });
   check(draft.response.status === 200, `Cloud draft persisted (HTTP ${draft.response.status}, ${draft.errorCode ?? 'no error code'})`);
   const restored = await request('/checkout/session');
-  check(restored.data?.draft?.customer?.email === customer.email, 'Draft restored through another HTTP request');
+  check(restored.data?.draft?.customer?.email === staleDraft.customer.email, 'Draft restored through another HTTP request');
   const quote = await request('/checkout/quote', { method: 'POST', body: { productId: product.id, quantity: 1 } });
   check(quote.response.status === 200 && Number.isSafeInteger(quote.data?.amounts?.totalInCents), 'Server quote uses integer money');
   const key = randomUUID();
   const purchase = { productId: product.id, quantity: 1, expectedTotalInCents: quote.data.amounts.totalInCents, customer, delivery };
   const created = await request('/transactions', { method: 'POST', body: purchase, headers: { 'Idempotency-Key': key } });
   check(created.response.status === 201 && created.data?.status === 'PENDING', 'Durable PENDING created before any payment');
+  const matchesConfirmedOrder = session => {
+    const current = session?.draft;
+    return session?.activeTransactionId === created.data.id && current?.step === 'SUMMARY'
+      && current?.productId === product.id && current?.quantity === 1
+      && Object.entries(customer).every(([key, value]) => current.customer?.[key] === value)
+      && Object.entries(delivery).every(([key, value]) => current.delivery?.[key] === value);
+  };
+  const canonical = await request('/checkout/session');
+  check(canonical.response.status === 200 && matchesConfirmedOrder(canonical.data), 'Reservation atomically replaces an earlier divergent draft');
+  const lateSave = await request('/checkout/draft', { method: 'PUT', body: staleDraft });
+  check(lateSave.response.status === 409 && lateSave.errorCode === 'PAYMENT_IN_PROGRESS', 'Late autosave from a second tab is rejected');
+  const otherCreate = await request('/transactions', {
+    method: 'POST', body: { ...purchase, customer: staleDraft.customer, delivery: staleDraft.delivery },
+    headers: { 'Idempotency-Key': randomUUID() },
+  });
+  check(otherCreate.response.status === 409 && otherCreate.errorCode === 'PAYMENT_IN_PROGRESS', 'Second-tab creation cannot replace a pending purchase');
+  const afterConflict = await request('/checkout/session');
+  check(afterConflict.response.status === 200 && matchesConfirmedOrder(afterConflict.data), 'Recovery after second-tab conflicts returns the confirmed customer and address');
   const repeated = await request('/transactions', { method: 'POST', body: purchase, headers: { 'Idempotency-Key': key } });
   check(repeated.response.status === 200 && repeated.data?.id === created.data.id, 'Idempotent cloud retry returns the same attempt');
   const reserved = await request(`/products/${product.id}`);
@@ -82,7 +105,7 @@ try {
   const released = await request(`/products/${product.id}`);
   check(released.data?.stock === product.stock, 'Reservation released and publicly available stock restored');
   const config = await request('/checkout/config');
-  results.push({ check: 'External sandbox configuration', status: config.response.status, result: config.response.ok ? 'AVAILABLE; real payment still untested' : 'UNAVAILABLE; external integration gate remains open' });
+  results.push({ check: 'External sandbox configuration', status: config.response.status, result: config.response.ok ? 'AVAILABLE; no payment performed by this probe' : 'UNAVAILABLE; external integration gate remains open' });
   console.log(JSON.stringify({ observedAt: new Date().toISOString(), origin, scope: 'Live AWS pre-payment only; no card or payment submitted', results }, null, 2));
 } catch (error) {
   console.log(JSON.stringify({ origin, scope: 'Incomplete live AWS pre-payment probe', results }, null, 2));
