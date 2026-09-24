@@ -1,5 +1,11 @@
 "use strict";
 
+const { gzip } = require("node:zlib");
+const { promisify } = require("node:util");
+const compress = promisify(gzip);
+const MIN_GZIP_BYTES = 1024;
+const MAX_CACHE_BYTES = 8 * 1024 * 1024;
+const MAX_CACHE_ENTRIES = 16;
 // Node.js 22 Lambda includes @aws-sdk/client-s3 (SDK v3). The runtime minor
 // version varies by region; this handler uses only its stable GetObject API.
 // https://docs.aws.amazon.com/lambda/latest/dg/lambda-nodejs.html
@@ -72,7 +78,47 @@ function headersFor(key, length) {
     "content-type": mime,
     "cache-control": cacheControl,
     "content-length": String(length),
+    ...(/\.(html|js|css|svg)$/.test(key) ? { vary: "Accept-Encoding" } : {}),
   };
+}
+
+// Explicit refusals override wildcard acceptance. Unknown/invalid q values are
+// not permission to send a coding; an absent header gets the identity form.
+function acceptedEncodings(headers) {
+  const header = Object.entries(headers ?? {}).find(
+    ([name]) => name.toLowerCase() === "accept-encoding",
+  )?.[1];
+  const weights = new Map();
+  if (typeof header === "string") {
+    for (const entry of header.split(",")) {
+      const [name, ...parameters] = entry.trim().toLowerCase().split(";");
+      const coding = name.trim() === "x-gzip" ? "gzip" : name.trim();
+      let weight = 1;
+      for (const parameter of parameters) {
+        const [key, value] = parameter.trim().split("=");
+        if (key === "q") {
+          weight = /^(?:0(?:\.\d{0,3})?|1(?:\.0{0,3})?)$/.test(value ?? "")
+            ? Number(value)
+            : 0;
+        }
+      }
+      weights.set(coding, Math.min(weights.get(coding) ?? 1, weight));
+    }
+  }
+  return {
+    gzip: weights.get("gzip") ?? weights.get("*") ?? 0,
+    identity: weights.get("identity") ?? (weights.get("*") === 0 ? 0 : 1),
+    identityExplicit: weights.has("identity"),
+  };
+}
+
+function notAcceptable(method) {
+  const response = notFound(method);
+  response.statusCode = 406;
+  response.headers.vary = "Accept-Encoding";
+  response.body =
+    method === "HEAD" ? "" : Buffer.from("Not acceptable.").toString("base64");
+  return response;
 }
 
 function notFound(method) {
@@ -120,6 +166,50 @@ function createHandler({ bucket, getObject }) {
   if (typeof getObject !== "function") {
     throw new TypeError("getObject is required");
   }
+  // Only content-hashed assets are immutable. Never cache index.html, images
+  // under mutable names, errors or API data in a warm execution environment.
+  const cache = new Map();
+  let cacheBytes = 0;
+  async function load(key) {
+    const hit = cache.get(key);
+    if (hit) {
+      cache.delete(key);
+      cache.set(key, hit);
+      return hit;
+    }
+    const object = await getObject({ Bucket: bucket, Key: key });
+    if (object.ContentLength > MAX_SOURCE_BYTES) {
+      release(object.Body);
+      throw new Error("Asset too large");
+    }
+    const bytes = await readBounded(object.Body);
+    const compressed = /\.(html|js|css|svg)$/.test(key)
+      ? await compress(bytes)
+      : null;
+    const entry = { bytes, compressed };
+    const size = bytes.length + (compressed?.length ?? 0);
+    if (HASHED_ASSET.test(key) && size <= MAX_CACHE_BYTES) {
+      // Another concurrent request may have populated this key while S3 ran.
+      const previous = cache.get(key);
+      if (previous) {
+        cacheBytes -=
+          previous.bytes.length + (previous.compressed?.length ?? 0);
+        cache.delete(key);
+      }
+      while (
+        cache.size &&
+        (cacheBytes + size > MAX_CACHE_BYTES || cache.size >= MAX_CACHE_ENTRIES)
+      ) {
+        const oldest = cache.keys().next().value;
+        const removed = cache.get(oldest);
+        cacheBytes -= removed.bytes.length + (removed.compressed?.length ?? 0);
+        cache.delete(oldest);
+      }
+      cache.set(key, entry);
+      cacheBytes += size;
+    }
+    return entry;
+  }
   return async (event) => {
     const method = event?.requestContext?.http?.method;
     const key = allowedKey(event?.rawPath);
@@ -127,17 +217,26 @@ function createHandler({ bucket, getObject }) {
       return notFound(method);
     }
     try {
-      const object = await getObject({ Bucket: bucket, Key: key });
-      if (object.ContentLength > MAX_SOURCE_BYTES) {
-        release(object.Body);
-        return notFound(method);
-      }
-      const bytes = await readBounded(object.Body);
+      const { bytes, compressed } = await load(key);
+      const accepted = acceptedEncodings(event.headers);
+      const useGzip =
+        compressed &&
+        accepted.gzip > 0 &&
+        (accepted.identity === 0 ||
+          (bytes.length >= MIN_GZIP_BYTES &&
+            compressed.length < bytes.length &&
+            (!accepted.identityExplicit ||
+              accepted.gzip >= accepted.identity)));
+      if (!useGzip && accepted.identity === 0) return notAcceptable(method);
+      const body = useGzip ? compressed : bytes;
       return {
         statusCode: 200,
-        headers: headersFor(key, bytes.length),
+        headers: {
+          ...headersFor(key, body.length),
+          ...(useGzip ? { "content-encoding": "gzip" } : {}),
+        },
         isBase64Encoded: true,
-        body: method === "HEAD" ? "" : bytes.toString("base64"),
+        body: method === "HEAD" ? "" : body.toString("base64"),
       };
     } catch {
       // Do not expose bucket names, keys, SDK errors, stack traces or secrets.
