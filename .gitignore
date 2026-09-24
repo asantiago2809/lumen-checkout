@@ -1,4 +1,5 @@
 node_modules/
+performance-results/
 dist/
 coverage/
 .env

@@ -24,7 +24,8 @@ const report = {
   assets: [],
   passed: false,
 };
-const output = `test-results/cloud-performance-${label}`;
+// Playwright clears test-results at startup; keep independent cloud probes apart.
+const output = `performance-results/cloud-performance-${label}`;
 await mkdir(output, { recursive: true });
 
 function raw(path, encoding = "identity", method = "GET") {
