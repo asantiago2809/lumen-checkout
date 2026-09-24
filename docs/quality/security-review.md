@@ -1,70 +1,84 @@
 # Revisión independiente de seguridad del checkout
 
-Fecha: 2026-09-23, America/Bogota. **Controles locales ejecutados; integración real y publicación aún sin aprobar.** No es certificación PCI ni cobertura total de OWASP. Auditoría de solo lectura sobre implementación y AWS IaC; pruebas limitadas al proyecto y datos ficticios autorizados.
+Fecha: 2026-09-23, America/Bogota. **Controles locales y núcleo AWS verificados; integración de pago sandbox real verificada.** No es certificación PCI ni cobertura total de OWASP. Auditoría de lectura sobre implementación/IaC y pruebas limitadas al proyecto con datos ficticios autorizados.
 
 ## Alcance y evidencia
 
-Código revisado: frontend API/store/validación/checkout/polling; dominio, casos de uso, HTTP/DTO/guards, FileStore, DynamoStore, gateway sandbox, carga SSM y ciclo Lambda; `infra/template.yaml` y `infra/static-site/index.cjs`. La lectura comenzó sobre `ceb1965` y cambios de infraestructura en working tree; estos quedaron integrados en `f84fc565a382059ceb009669c151baaac33afaf3`, con CI Success confirmado. Solo los informes permanecen posteriores a ese commit.
+Se revisaron frontend API/store/validación/checkout/polling; dominio, casos de uso, HTTP/DTO/guards, FileStore, DynamoStore, gateway sandbox, carga SSM y ciclo Lambda; `infra/template.yaml` y `infra/static-site/index.cjs`. QA/CSS corresponde a 3edc404; el fix de snapshot de dominio para Dynamo corresponde a 0c74bf7.
 
-QA reprodujo 65 tests Jest backend, 82 frontend, 55 escenarios Playwright integrados y 12 retests visuales. La UI/API son reales; el gateway y la tokenización externos son dobles de test. FileStore se usa en E2E; tests del adapter Dynamo emplean un cliente controlado. Evidencia y límites: [informe QA](qa-report.md), [reporte íntegro de 55 ejecuciones](../../tests/e2e/evidence/2026-09-23-full-55.json).
+Evidencia vigente: 79 Playwright independientes PASS (11 HTTP y 17 UI por cuatro proyectos), 82 Jest frontend y 68 Jest backend. Backend ejecutó la suite completa de 68; QA reprodujo los 3 casos nuevos HTTP/SDK Dynamo reales con transporte controlado y leyó la cobertura resultante. Los 65 backend anteriores fueron reproducidos durante la fase anterior. También pasaron 5 pruebas del handler estático. [Informe QA](qa-report.md) y [reporte íntegro 79](../../tests/e2e/evidence/2026-09-23-full-79.json).
 
-El servidor trata importes, estados, IDs y formularios del navegador como no confiables. La revisión de autorización, secuencia y datos de transacción sigue los controles pertinentes de [OWASP Transaction Authorization](https://cheatsheetseries.owasp.org/cheatsheets/Transaction_Authorization_Cheat_Sheet.html), consultado el 2026-09-23. Esto no implica una auditoría de todos los riesgos de producción.
+UI/API son reales en E2E; gateway y tokenización externos son dobles. El FileStore temporal no demuestra comportamiento AWS. La nueva regresión usa el marshaller real del SDK sin red AWS. Los resultados remotos se distinguen debajo.
+
+La autorización, secuencia y datos de transacción se contrastaron con [OWASP Transaction Authorization](https://cheatsheetseries.owasp.org/cheatsheets/Transaction_Authorization_Cheat_Sheet.html), consultado el 2026-09-23. Esto no implica una auditoría exhaustiva de producción.
 
 ## Controles comprobados
 
-| Área | Evidencia ejecutada / lectura | Resultado y límite |
+| Área | Evidencia | Resultado y límite |
 |---|---|---|
-| Dinero | QA-M01/M03; DTO rechaza campos financieros ajenos; cambio de total exige nueva revisión; cálculo entero en servidor. | PASS local; valor del cliente no determina el cobro. |
-| Stock | Última unidad entre dos sesiones, reserva y finalización; caída/error/rechazo; expiración y carrera claim/expiry. | PASS local; onHand/reserved/available separados. Dynamo real pendiente. |
-| Idempotencia | Create concurrente misma clave/cuerpo, conflicto de cuerpo; pay repetido simultáneo y delivery única. | PASS local; claim durable antes de red evita segundo envío. |
-| Timeout | Gateway devuelve resultado incierto; refresh conserva PENDING/UNKNOWN sin crear ni cobrar otra vez. | PASS local; sin ID remoto requiere conciliación operativa, no reintento ciego. |
-| Sesión / IDOR | Cookie HttpOnly, SameSite, hash en DB; sesión B no lee/paga tx/customer/delivery de A. | PASS HTTP; Secure en producción definido, validación remota pendiente. |
-| CSRF / Origin | Token ausente/incorrecto y origen no permitido rechazados sin efecto. | PASS HTTP; ALLOWED_ORIGINS final debe ser el origen desplegado exacto. |
-| Validación / errores | DTO estricto anidado, JSON malformado400, límite 413 y mensajes saneados. | PASS Jest/HTTP. |
-| Refresh | Datos de entrega y transacción activa se restauran; tarjeta y consentimientos vacíos; respuesta create perdida recuperable. | PASS en cuatro proyectos de navegador. |
-| Datos de tarjeta | Inspección requests propios, storage y DB; tokenización solo host externo permitido; datos efímeros. | PAN ausente en superficies inspeccionadas; no traces/videos automáticos ni datos reales. |
-| Consentimientos | Dos casillas explícitas inicialmente vacías y enlaces; tokens efímeros. | PASS UI/unit; merchant real todavía pendiente. |
-| Configuración | Allowlist de hosts/familias sandbox y secretos SSM; JSON inválido sanitizado; no override de variables de infraestructura. | PASS Jest; SSM y permisos reales pendientes. |
-| Cold start | Inicialización concurrente compartida; error permite retry; módulos incluidos en cobertura. | PASS Jest; runtime-secrets y lambda-runtime100% en cuatro métricas. |
-| Secretos | Escáner repositorio PASS; PDF/credenciales fuera de Git; errores controlados; DevTools Redux deshabilitado. | No se detectaron secretos en alcance revisado; no equivale a certificación de logs externos. |
-| Caché | HTTP personalizado no-store; CloudFront API caching deshabilitado; HTML no-cache. | HTTP local y lectura IaC PASS; respuestas públicas pendientes. |
-| Cabeceras | Helmet en API; CSP/HSTS/nosniff/frame/referrer/permissions en handler estático. | HTTP local + tests estáticos PASS; TLS y headers remotos pendientes. |
+| Dinero | QA-M01/M03; DTO rechaza campos financieros ajenos; total cambia solo con nueva revisión; cálculo entero servidor. | PASS local y quote AWS; valor del cliente no determina el cobro. |
+| Stock | Última unidad entre sesiones, reserva/finalización, expiración y carrera claim/expiry. | PASS local; smoke AWS reserva 12→11 y cancelación restaura 12. E14 confirma aprobación 12→11 y rechazo 11→11; lectura física final 11/0/11. |
+| Idempotencia | Create concurrente misma clave/cuerpo, conflicto, pay simultáneo y delivery única. | PASS local; AWS create/replay mantiene ID. E14 confirma una sola solicitud de pago por caso y ninguna tras refresh. |
+| Timeout | Resultado incierto conserva PENDING/UNKNOWN tras refresh sin nuevo cobro. | PASS local; sin ID remoto requiere conciliación operativa. |
+| Sesión/IDOR | Cookie HttpOnly/SameSite, hash en DB; sesión B no lee/paga recursos de A. | PASS HTTP; Release confirmó cookie Secure/HttpOnly/SameSite en AWS. |
+| CSRF/Origin | Token ausente/incorrecto y origen no permitido rechazados sin efecto. | PASS local y AWS 403; AllowedOrigins coincide con origen público. |
+| Validación/errores | DTO estricto anidado, JSON malformado 400, límite 413 y mensajes saneados. | PASS Jest/HTTP; snapshot plano conserva validación y marshaller estricto. |
+| Refresh | Entrega/tx se restauran; tarjeta y consentimientos vacíos; create perdido recuperable. | PASS en cuatro proyectos; draft PUT/restore en AWS confirmado por Release. |
+| Tarjeta | Requests propios, storage y DB inspeccionados; tokenización solo al host permitido; campos efímeros. | PAN ausente en superficies inspeccionadas; ningún PAN enviado al smoke AWS. |
+| Consentimientos | Dos casillas explícitas vacías; links y tokens efímeros. | PASS UI/unit; merchant real desde Lambda 200 y pagos reales E14 aprobados/rechazados. |
+| Configuración | Allowlist sandbox/SSM; JSON inválido saneado; no override de variables de infraestructura. | PASS Jest; SecureString v1 configurado por usuario y leído por Lambda. |
+| Cold start | Inicialización concurrente compartida; error permite retry; lógica incluida en cobertura. | PASS Jest; módulos de secretos/runtime cubiertos al 100% en sus cuatro métricas. |
+| Secretos | Escáner, revisión de superficies, PDF/credenciales fuera de Git; DevTools Redux apagado. | Sin detecciones en alcance revisado; no certifica todos los logs remotos. |
+| Caché | Datos personalizados no-store; HTML no-cache; assets con hash immutable. | PASS local y cabeceras públicas verificadas. |
+| Cabeceras/TLS | CSP/HSTS/nosniff/frame/referrer/permissions en respuestas pertinentes. | PASS público con TLS habilitado; mismo origen para UI/API. |
 
-[Tokens de aceptación](https://docs.wompi.co/docs/colombia/tokens-de-aceptacion/) documenta los dos consentimientos. El adapter admite metadata de tarjeta directa y anidada, variantes presentes en [transacciones](https://docs.wompi.co/docs/colombia/transacciones/) y [métodos de pago](https://docs.wompi.co/docs/colombia/metodos-de-pago/). Consultados el 2026-09-23. El contraste documental no demuestra el comportamiento de la cuenta UAT.
+Los [tokens de aceptación](https://docs.wompi.co/docs/colombia/tokens-de-aceptacion/) documentan los dos consentimientos. El adapter admite metadata directa/anidada conforme a [transacciones](https://docs.wompi.co/docs/colombia/transacciones/) y [métodos de pago](https://docs.wompi.co/docs/colombia/metodos-de-pago/), consultados el 2026-09-23. El contraste documental no prueba un cargo real.
 
-**No existe endpoint webhook ni worker programado.** Las consultas autenticadas concilian por ID remoto y validan referencia, moneda e importe. QA-S07 (firma webhook) no se marca PASS: no aplica a la superficie actual. Si se añade, debe verificarse el checksum de [eventos oficiales](https://docs.wompi.co/docs/colombia/eventos/) antes de cualquier efecto. No se configura un webhook compartido como parte de esta revisión.
+**No existe endpoint webhook ni worker programado.** Consultas autenticadas concilian por ID remoto y validan referencia, moneda e importe. QA-S07 (firma webhook) no se marca PASS: no aplica a la superficie actual. Si se añade, se debe verificar el checksum de [eventos oficiales](https://docs.wompi.co/docs/colombia/eventos/) antes de efectos.
 
-## Revisión AWS y entrega estática alternativa
+## AWS y entrega estática
 
-La cuenta no pudo habilitar CloudFront según el coordinador; la alternativa usa API Gateway HTTP API HTTPS como origen único, Lambda de estáticos y S3 privado, manteniendo Nest Lambda + DynamoDB. `EnableCloudFront=false` es el valor predeterminado. QA verificó [origen público](https://j67vc6cdn4.execute-api.us-east-1.amazonaws.com): raíz/WebP 200, /.env 404, CSP/HSTS/caché correctos; /api/health y /api/docs 500 sin cabeceras propias, por SSM faltante según logs del coordinador. Esto es publicación parcial, no checkout cloud aprobado.
+CloudFront no se pudo habilitar por la verificación de la cuenta. La alternativa usa API Gateway HTTP API HTTPS como origen único, Lambda de estáticos y S3 privado, más Nest Lambda/DynamoDB. `EnableCloudFront=false` por defecto.
 
-- S3 bloquea acceso público, cifra/versiona contenido y deniega transporte inseguro. El handler estático solo admite archivos públicos enumerados y assets JS/CSS con hash; no permite archivos ocultos, traversal, sourcemaps, directorios ni rutas API.
-- El rol estático obtiene objetos únicamente del bucket del proyecto. El rol API limita operaciones a tabla/índice propios y GetParameter al parámetro exacto; Scan fue retirado. Las acciones Dynamo usadas corresponden a las operaciones que componen la transacción; [AWS documenta ese modelo IAM](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/transaction-apis-iam.html).
-- Handler estático fija MIME/cache y cabeceras, devuelve binario base64, trata HEAD sin body, limita el tamaño antes/después de leer y sanea errores. QA ejecutó `node --test infra/static-site/index.test.cjs`: **5/5 PASS**, incluidos traversal, dobles escapes y límite 5 MiB de body codificado.
-- Ruta API específica /api/{proxy+} y rutas estáticas / y /{proxy+} están separadas. Pendiente comprobar en AWS la prioridad/routing, assets, documentación, cookies y respuesta de métodos no admitidos.
-- Tabla con cifrado, PITR y Retain; logs 14d; los secretos se recuperan desde SSM al inicio y no se escriben en plantilla. El usuario autorizó su almacenamiento cifrado; la revisión automática volvió a rechazar la operación. Release proporciona un script para que el usuario complete la configuración manualmente; no se ha ejecutado desde QA ni intentado eludir ese bloqueo.
-- No se reserva concurrencia 10: se retiró por cuota de la cuenta. El throttle del API es 15/s con burst 30. Lambda para cada asset añade latencia/costo frente a CDN; se debe medir el sitio real. No es defecto funcional demostrado.
-- Si se activa CloudFront, el API no se cachea y la política AllViewerExceptHost permite usar el host del origen API, según [AWS](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/using-managed-origin-request-policies.html). También necesita smoke propio.
+QA verificó GET en el [origen público](https://j67vc6cdn4.execute-api.us-east-1.amazonaws.com): sitio/WebP 200, /.env 404, health/products/docs/docs-json/config 200; cabeceras/caché válidas y config indica sandbox. No publicó keys ni tokens. El fallo inicial ParameterNotFound se resolvió después de la configuración manual del usuario.
 
-La lectura no encontró un defecto bloqueante en template/handler. cfn-lint, validate-template, creación de stack y actualización de AllowedOrigins fueron reportados PASS por el coordinador. También reportó create/read/update/rechazo CAS obsoleto contra Dynamo real y limpieza de un registro aislado, sin alterar catálogo/pagos. Esto no prueba todavía checkout en Lambda/Dynamo ni carga SSM. Esta auditoría solo hizo GET públicos, sin modificar recursos AWS.
+- S3 bloquea acceso público, cifra/versiona y deniega transporte inseguro. El handler solo admite archivos públicos enumerados y JS/CSS con hash; rechaza ocultos, traversal, sourcemaps, directorios y API.
+- El rol estático lee únicamente el bucket propio. El API limita tabla/índice y GetParameter al parámetro exacto; Scan fue retirado. Las acciones Dynamo corresponden a operaciones internas de la transacción, como [documenta AWS](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/transaction-apis-iam.html).
+- Handler: MIME/cache, binarios base64, HEAD vacío, límite antes/después de lectura y errores saneados. `node --test infra/static-site/index.test.cjs`: 5/5 PASS, incluidos traversal, doble escape y límite 5 MiB codificado.
+- Rutas API/estáticas separadas; Swagger remoto carga assets y expone 14 operaciones según revisión de Backend. QA obtuvo documentación/JSON 200.
+- Tabla cifrada, PITR y Retain; logs 14 días; SSM en runtime, no en plantilla. La revisión automática bloqueó cargar secretos; el usuario completó el paso manual autorizado. No se usó un bypass.
+- Concurrencia reservada retirada por cuota de cuenta. API Gateway throttle 15/s, burst 30. Lambda por asset añade costo/latencia frente a CDN; no se atribuye una medición de rendimiento inexistente.
+- Si se activa CloudFront, API sin caché y política AllViewerExceptHost según [AWS](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/using-managed-origin-request-policies.html); requiere su propio smoke.
 
-## Hallazgos y estado
+Release reportó cfn-lint/validate-template y despliegues PASS. El smoke inicial Dynamo comprobó create/read/update/CAS y limpió un registro aislado.
 
-| ID | Severidad / riesgo | Corrección o evidencia | Estado |
+**Retest posterior 2026-09-24T00:01:04Z (todavía 23 de septiembre en Bogotá):** Release ejecutó `scripts/smoke-cloud.mjs`, 20 checks PASS y exit 0 sobre API 0c74bf7 redeployada, stack UPDATE_COMPLETE. Incluye health/Swagger/OpenAPI/catalogue, cookie Secure/HttpOnly/SameSite, no-store, Origin/CSRF 403, draft PUT/restore 200, quote entero, create PENDING 201, replay 200 mismo ID, reserva 12→11, DELETE 204 y estado ERROR/NOT_STARTED/canPay=false/delivery=null, stock restaurado a 12. Ningún PAN ni llamada /pay en ese smoke. Cierra la regresión del draft y valida operaciones reales de Lambda/SDK/IAM/Dynamo; no demuestra pago sandbox.
+
+## Hallazgos
+
+| ID | Riesgo | Evidencia/acción | Estado |
 |---|---|---|---|
-| SEC-ENV-01 | Bloqueante para integración real | UAT falla confianza TLS según coordinador; ninguna transacción remota probada. Resolver cadena/entorno autorizado sin deshabilitar TLS. | ABIERTO, Backend/Release |
-| SEC-ENV-02 | Bloqueante para entrega cloud | Estáticos HTTPS200; API/docs 500 por ParameterNotFound. SSM autorizado por usuario, operación automática bloqueada: configuración manual pendiente; luego smoke completo y versión. | ABIERTO, Release/QA |
-| SEC-DOC-01 | Media, aceptación ambigua | UX-17 separa stock físico y disponibilidad reservada; tests aplican invariantes coherentes. | RESUELTO |
-| SEC-REV-01 | Media, reservas obsoletas | Product/quote/replay ahora expiran reserva; API independiente prueba replay/pay vencido sin cargo. | RESUELTO local |
-| SEC-REV-02 | Riesgo de repetición tras refresh | NOT_STARTED recupera tarjeta vacía y misma tx; UNKNOWN bloquea envío; fallos de tokenización/create probados. | RESUELTO local |
-| SEC-REV-03 | Revisión pendiente de guards/env/IaC | Guardas y allowlist ejecutados; template/handler revisados y tests5/5. Parte remota queda en SEC-ENV-02. | RESUELTO local |
-| SEC-REV-04 | Media, metadata tarjeta | Adapter soporta ambas formas documentadas con tests. Confirmación UAT pertenece a SEC-ENV-01. | RESUELTO local |
-| QA-COV-01 | Calidad de evidencia | Lógica SSM/Lambda extraída del wrapper y cubierta 100%; no oculta en exclusiones. | RESUELTO |
-| SEC-LIMIT-01 | Limitación operativa documentada | UNKNOWN sin ID remoto retiene inventario y requiere conciliación; no hay búsqueda por referencia asumida. | ACEPTADA como límite de implementación; no es venta aprobada |
-| SEC-LIMIT-02 | Limitación de escalado | FileStore solo desarrollo de un proceso; rate counters API por proceso. Producción usa Dynamo + throttle API Gateway. | DOCUMENTADA; persistencia AWS pendiente |
+| SEC-ENV-01 | Gate de pago real | Lambda obtiene merchant con TLS válido; TLS local falla confianza. E14 confirma tokenización y pagos aprobado/rechazado reales sin bypass ni intercept. | RESUELTO |
+| SEC-ENV-02 | API inicialmente sin configuración | Usuario configuró SecureString v1; health/catalog/config/docs 200. | RESUELTO |
+| SEC-CLOUD-DRAFT | DTO de Nest rechazado por marshaller Dynamo | Snapshot plano explícito sin relajar DTO/SDK; 3 regresiones independientes PASS y smoke AWS 20/20. | RESUELTO |
+| SEC-DOC-01 | Stock físico confundido con disponibilidad | UX-17 y tests separan onHand/reserved/available. | RESUELTO |
+| SEC-REV-01 | Reservas obsoletas | Product/quote/replay expiran reserva; QA-M12 sin cargo tardío. | RESUELTO local |
+| SEC-REV-02 | Repetición tras refresh | NOT_STARTED recupera tarjeta vacía/misma tx; UNKNOWN bloquea envío; QA-X04 no cancela ni duplica. | RESUELTO local |
+| SEC-REV-03 | Guards/env/IaC pendientes de revisión | Revisión y HTTP negativo; lectura IaC y 5 tests; smoke AWS pertinente. | RESUELTO |
+| SEC-REV-04 | Metadata tarjeta directa/anidada | Adapter/tests soportan ambos formatos. | RESUELTO; E14 confirmó metadata pertinente al mostrar marca/últimos cuatro dígitos |
+| QA-COV-01 | Lógica runtime fuera de cobertura | Extraída y cubierta; no exclusión oportunista. | RESUELTO |
+| QA-HARNESS-01 | Trabajo activo al borrar FileStore | Cierre contexto/clientes, API y drenaje de operaciones reales; filesystem retries solo respaldo. 79 local/CI PASS, sin test retries. | RESUELTO |
+| SEC-LIMIT-01 | UNKNOWN sin ID remoto retiene reserva | Requiere conciliación operativa; jamás se declara venta aprobada. | LÍMITE DOCUMENTADO |
+| SEC-LIMIT-02 | FileStore/rate counters por proceso | FileStore solo desarrollo; AWS usa Dynamo y throttle Gateway. | LÍMITE DOCUMENTADO |
 
-## Condiciones de cierre
+## Confirmación de pago y límites
 
-Release debe aportar URL/commit y probar HTTPS válido, S3 privado, HTML/assets/API/docs, cookies Secure, Origin/CSRF, recuperación durable en Dynamo y ausencia de datos/secretos en logs. Backend/QA deben demostrar al menos pago aprobado y rechazado con sandbox real, estado/stock/entrega coherentes e identificadores sanitizados. Un gateway simulado o CI verde no cierra estos requisitos.
+El [workflow 35936568755](https://github.com/asantiago2809/lumen-checkout/actions/runs/35936568755) terminó Success público verificado por QA. QA leyó script/reporte y revisó ocho capturas saneadas: Chromium real sin intercept ni bypass TLS contra sitio AWS y endpoint UAT sandbox. [Evidencia original](../../tests/e2e/evidence/live-sandbox-35936568755/report.json): cada caso realiza una creación PENDING, una tokenización 201 y un pay 202; después confirma estado autoritativo y dos recargas sin repost. APPROVED crea delivery y disponibilidad 12→11; DECLINED no crea delivery y mantiene 11. Release confirmó onHand 11/reserved 0/available 11 en Dynamo.
 
-Dictamen: **sin bloqueantes locales conocidos en escenarios ejecutados; gates sandbox y cloud abiertos**. No se atribuye puntuación ni ausencia universal de vulnerabilidades.
+Se conserva QA-OBS-01: un NETWORK_FAILURE de draft por caso, sin causa exacta en el artefacto; guardados previos 200 y restauración/pago completos. No se afirma cero errores de red ni se infiere un abort como hecho. No hay evidencia de pérdida de datos o doble cobro en esos casos.
+
+CI final fca0339 terminó Success (35936553836), verificado mediante API pública de GitHub. La mejora posterior de clasificación de requests fallidos se leyó y pasó node --check; no altera retrospectivamente el artefacto real. Hardware/lector/autofill/zoom reales no ejecutados; no son sustituidos por axe/emulación. No se certifica la ausencia de secretos en todo log remoto posible; sí las superficies y artefactos inspeccionados.
+
+La instancia del despliegue previo, identificada por Release como recurso propio del stack trama-live, fue detenida reversiblemente y se confirmó stopped; almacenamiento/recursos de recuperación conservados.
+
+Dictamen: **sin bloqueantes conocidos en escenarios ejecutados; gates de SSM, núcleo cloud y sandbox cerrados**. No se atribuye nota, certificación ni ausencia universal de vulnerabilidades.

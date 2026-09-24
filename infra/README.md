@@ -4,7 +4,7 @@
 
 `EnableCloudFront=true` optionally places CloudFront in front of S3 and the API, using Origin Access Control. The target account rejected its first CDN creation because AWS requires account verification, so the default HTTPS API Gateway delivery avoids that dependency. Both templates passed cfn-lint and the initial template passed AWS validation. Deployment verification is recorded separately in the release report; infrastructure creation alone is not acceptance.
 
-The earlier assessment was identified through its CloudFormation resources. Its configuration was backed up privately. It remains intact until the replacement is verified. Never delete resources by name guesses or bulk account cleanup.
+The earlier assessment was identified through its CloudFormation resources and its configuration was backed up privately. After the replacement passed genuine sandbox approval and decline, its identified EC2 instance was stopped and the stopped state verified. Data, address and stack remain available for recovery; storage/address charges may continue. Never delete resources by name guesses or bulk account cleanup.
 
 ## Deployment sequence
 
@@ -15,6 +15,8 @@ The earlier assessment was identified through its CloudFormation resources. Its 
 5. Read `SiteUrl` from stack outputs and update `AllowedOrigins` to that exact HTTPS origin, preserving other parameters. Upload the SPA build to `WebBucketName`; use long immutable cache control only for hashed assets, no-cache for `index.html`. Publish new hashed assets before replacing the index and retain old hashed assets during updates.
 6. When using the optional CDN, invalidate CloudFront as needed. Verify health, Swagger, secure cookies, security headers, real sandbox tokenization/payment, recovery, stock and responsive UX over HTTPS.
 7. Record the exact commit, stack and verified URLs in the release report and README. An HTTP 200 homepage alone is not acceptance.
+
+`node scripts/smoke-cloud.mjs SITE_URL` exercises the public pre-payment API using fictional data and cancels its own unsubmitted reservation. `scripts/smoke-sandbox.mjs` requires the approved deployment URL and `--run-sandbox`; it makes two actual sandbox attempts with official fictional cards. The separate GitHub workflow runs only through manual dispatch or the explicit `verify-live-sandbox` PR label. Its safe JSON/screenshots exclude credentials and card fields, and a successful approval intentionally consumes one fictional inventory unit. Never rerun an uncertain financial submission blindly.
 
 ## Costs and rollback
 

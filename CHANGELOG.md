@@ -31,18 +31,23 @@ Changes are recorded as implemented and verified. Git contains the incremental d
 - Returned sanitized HTTP 400/413 for malformed or oversized JSON.
 - Moved SSM parsing/allowlisting and Lambda cache/retry logic into covered modules outside thin entrypoints.
 - Added recovery, long-summary and narrow/landscape responsive regressions.
+- Removed CTA movement when reduced motion is requested; enlarged summary edit and consent targets to at least 44px.
+- Closed browser producers and drained real asynchronous fixture work before deleting temporary stores, resolving the CI teardown race.
+- Persisted plain draft snapshots at the domain boundary after live DynamoDB exposed unsupported transport DTO instances; regression exercises real HTTP transformation and AWS SDK serialization.
+- Pinned current Node 24 GitHub Actions by full commit and disabled persisted checkout credentials.
 
 ### Verified locally
 
-- API: **65** passing Jest tests; statements **98.21%**, branches **95.02%**, functions **96.90%**, lines **98.21%**.
+- API: **68** passing Jest tests; statements **98.48%**, branches **95.28%**, functions **100%**, lines **98.48%**.
 - Web: **82** passing Jest tests; statements **96.10%**, branches **95.27%**, functions **95.23%**, lines **97.20%**.
-- Independent Playwright: **55** passing executions, comprising 11 API scenarios and 11 browser scenarios across four projects; zero failures, skips or flaky outcomes in the recorded run.
+- Independent Playwright: **79** passing executions, comprising 11 API scenarios and 17 browser scenarios across four projects; zero failures, skips or flaky outcomes in the recorded local run. WebKit's native link-tabbing limitation is documented explicitly.
 - Type checks and builds passed locally. The [README](README.md) and [QA report](docs/quality/qa-report.md) explain the commands, reports and test boundaries.
 
-### Open release checks and deliberate limits
+### Live deployment and deliberate limits
 
-- Real payment evidence remains blocked by UAT TLS trust failure; certificate verification has not been disabled.
-- Hosted Linux CI passed on `eda790c` and updated code/infrastructure `f84fc56`. AWS static delivery and a live DynamoDB adapter probe passed, while API initialization and Swagger await encrypted runtime configuration. See the release report.
+- Real sandbox approval and decline passed in Linux Chromium against public AWS and UAT, with one submission per purchase, refresh recovery, stock 12→11 on approval only and a delivery only for approval. TLS verification remained enabled. Live run: `35936568755`.
+- Hosted Linux CI passed on `fca0339`: 68 API + 82 web Jest, 79 E2E and five static-handler tests, plus secret scan/typecheck/build. Live AWS checks pass for encrypted SSM configuration, API initialization, catalogue, Swagger, secure sessions, drafts, Origin/CSRF, idempotency and reservation release. See the release report for separate provider evidence.
+- Stopped the identified previous assessment EC2 instance after the replacement passed real sandbox checks; retained its data and configuration for recovery.
 - Signed webhooks and a scheduled reconciliation worker are not implemented; relevant reads reconcile status and expire unsubmitted reservations.
 - An uncertain submission without an external ID requires operational reconciliation and is not automatically resubmitted.
 - Local file persistence is single-process only, and request-rate counters are per process.

@@ -98,6 +98,21 @@ Todos los casos empiezan **NO EJECUTADO**. La columna nivel indica el menor nive
 
 ## Orden de ejecución y criterios de salida
 
+### Ampliación independiente de diseño e interacción
+
+Estos casos se añadieron después del primer pase de 55 ejecuciones para cerrar controles comprobables sin hardware ni credenciales. El reporte original se conserva; los resultados nuevos se registran por separado. No simular zoom mediante CSS y presentarlo como zoom real del navegador.
+
+| Caso | Controles | Nivel | Acción verificable | Resultado esperado |
+|---|---|---|---|---|
+| QA-X01 | VIS-12,A11Y-07 | B | Cambiar prefers-reduced-motion durante carga y hover del CTA. | Skeleton sin animación, scroll auto y flecha sin transformación/transición; preferencia normal recupera transición. |
+| QA-X02 | A11Y-01/02/03 | B | Tab al enlace saltar, Enter, abrir por teclado, Shift+Tab repetido y foco programático en fondo. | Destino main y CTA accesibles; fondo inert no recibe foco; trap inverso, validación por Enter y Escape/restauración correctos. |
+| QA-X03 | UX-07 | B | Resumen → Editar → cambiar entrega → resumen → volver a datos → resumen. | Entrega conservada/editada; PAN ausente en resumen/storage/DB; cero pagos. |
+| QA-X04 | UX-14,S-13 | B | Pago PENDING, Escape, salir a about:blank, reabrir y consultar estado. | Misma transacción/reserva, sin cancelación, entrega ni segundo envío. |
+| QA-X05 | VIS-05,D-01/03 | B | Medir inputs/selects/buttons/labels de consentimiento a375px; producto/form/resumen390x844 y1024x768. | Inputs>=48px/font>=16px; targets medidos>=44px; sin overflow, cierre/CTA alcanzables; capturas sin tarjeta. |
+| QA-X06 | UX-02,D-08 | B + fallo de transporte explícito | Retener/rechazar GET catálogo y después responder con API real; cambiar solo stock del fixture aislado a0 y1. | Loading anunciado, error recuperable, agotado impide pago y recuperar disponibilidad vuelve a habilitarlo. |
+
+Hardware, teclado móvil real, autofill real, lector de pantalla y zoom real permanecen limitaciones si no se ejecutan; la emulación de viewport y fill no los sustituyen.
+
 Primero U/typecheck/build y contrato HTTP con datos aislados; después B/BF y diseño. Repetir flujo principal en S/C cuando se resuelvan credenciales/TLS/despliegue. Paralelizar navegadores solo si sus datos están aislados. Tests de última unidad y expiración requieren fixture controlado y no deben competir con otras pruebas.
 
 Bloquean entrega: fuga sensible, cobro/stock/total incorrectos, falta de autenticidad del resultado, segundo cobro tras incertidumbre, acceso entre sesiones, interacción primaria inaccesible, cobertura insuficiente, falta de sandbox real o despliegue público sin comprobar. El mínimo de puntos no reemplaza obligaciones sin evidencia. Un fallo de entorno bloquea su gate concreto y permite continuar los casos independientes.

@@ -731,9 +731,11 @@ legend + * {
   display: flex;
   gap: 11px;
   align-items: flex-start;
+  min-height: 44px;
+  padding: 10px 0;
   font-size: 14px;
   color: var(--color-muted);
-  margin: 12px 0;
+  margin: 2px 0;
   line-height: 1.6;
   cursor: pointer;
 }
@@ -819,6 +821,8 @@ legend + * {
 }
 .delivery-summary .text-button {
   align-self: flex-start;
+  min-width: 44px;
+  flex-shrink: 0;
 }
 .payment-summary {
   display: flex;
@@ -1288,6 +1292,9 @@ legend + * {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  .button.primary:hover:not(:disabled) svg {
+    transform: none;
   }
   *,
   *::before,

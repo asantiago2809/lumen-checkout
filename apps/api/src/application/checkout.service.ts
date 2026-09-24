@@ -131,6 +131,15 @@ export class CheckoutService {
     owner: string,
     draft: Draft,
   ): Promise<Result<{ draft: Draft }>> {
+    // HTTP validation creates class instances. Persist a plain domain snapshot
+    // so adapters do not depend on transport DTO prototypes or class coercion.
+    const snapshot: Draft = {
+      productId: draft.productId,
+      quantity: draft.quantity,
+      step: draft.step,
+      customer: { ...draft.customer },
+      delivery: { ...draft.delivery },
+    };
     return this.retry(async () => {
       const session = await this.store.get<Session>(keys.session(owner));
       if (!session) return fail("SESSION_EXPIRED", "Tu sesión venció.", 401);
@@ -140,10 +149,10 @@ export class CheckoutService {
         {
           key: keys.session(owner),
           expectedVersion: session.version,
-          value: { ...session.value, draft },
+          value: { ...session.value, draft: snapshot },
         },
       ]);
-      return ok({ draft });
+      return ok({ draft: snapshot });
     });
   }
   async clearDraft(owner: string): Promise<Result<null>> {

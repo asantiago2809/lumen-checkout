@@ -1,0 +1,424 @@
+{
+  "config": {
+    "argv": [
+      "C:\\nvm4w\\nodejs\\node.exe",
+      "D:\\AGENTES PT\\lumen-checkout\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "--project=chromium-desktop",
+      "--grep",
+      "QA-X"
+    ],
+    "configFile": "D:\\AGENTES PT\\lumen-checkout\\playwright.config.ts",
+    "rootDir": "D:/AGENTES PT/lumen-checkout/tests/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "D:/AGENTES PT/lumen-checkout/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "api-independent",
+        "name": "api-independent",
+        "testDir": "D:/AGENTES PT/lumen-checkout/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/api-security\\.spec\\.ts/"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "D:/AGENTES PT/lumen-checkout/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium-desktop",
+        "name": "chromium-desktop",
+        "testDir": "D:/AGENTES PT/lumen-checkout/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/checkout\\.spec\\.ts/"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "D:/AGENTES PT/lumen-checkout/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium-se",
+        "name": "chromium-se",
+        "testDir": "D:/AGENTES PT/lumen-checkout/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/checkout\\.spec\\.ts/"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "D:/AGENTES PT/lumen-checkout/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "firefox-desktop",
+        "name": "firefox-desktop",
+        "testDir": "D:/AGENTES PT/lumen-checkout/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/checkout\\.spec\\.ts/"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "D:/AGENTES PT/lumen-checkout/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "webkit-desktop",
+        "name": "webkit-desktop",
+        "testDir": "D:/AGENTES PT/lumen-checkout/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/checkout\\.spec\\.ts/"
+        ],
+        "timeout": 45000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/e2e-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": {
+      "command": "npm run dev --workspace apps/web -- --host 127.0.0.1 --port 5174 --strictPort",
+      "url": "http://127.0.0.1:5174",
+      "env": {
+        "API_PROXY_TARGET": "http://127.0.0.1:3002"
+      },
+      "reuseExistingServer": false,
+      "timeout": 30000
+    }
+  },
+  "suites": [
+    {
+      "title": "checkout.spec.ts",
+      "file": "checkout.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "QA-X01: reduced motion dynamically removes skeleton and CTA motion",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 337,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"none\"\u001b[39m\nReceived: \u001b[31m\"matrix(1, 0, 0, 1, 3, 0)\"\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"none\"\u001b[39m\nReceived: \u001b[31m\"matrix(1, 0, 0, 1, 3, 0)\"\u001b[39m\n    at D:\\AGENTES PT\\lumen-checkout\\tests\\e2e\\checkout.spec.ts:308:80",
+                    "location": {
+                      "file": "D:\\AGENTES PT\\lumen-checkout\\tests\\e2e\\checkout.spec.ts",
+                      "column": 80,
+                      "line": 308
+                    },
+                    "snippet": "  306 |   const arrow = cta.locator('svg');\n  307 |   expect(await arrow.evaluate(element => getComputedStyle(element).transitionDuration)).toBe('0s');\n> 308 |   expect(await arrow.evaluate(element => getComputedStyle(element).transform)).toBe('none');\n      |                                                                                ^\n  309 |   await page.emulateMedia({ reducedMotion: 'no-preference' });\n  310 |   expect(await arrow.evaluate(element => getComputedStyle(element).transitionDuration)).not.toBe('0s');\n  311 |   expect(harness.gateway.createCount).toBe(0);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\AGENTES PT\\lumen-checkout\\tests\\e2e\\checkout.spec.ts",
+                        "column": 80,
+                        "line": 308
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"none\"\u001b[39m\nReceived: \u001b[31m\"matrix(1, 0, 0, 1, 3, 0)\"\u001b[39m\n\n  306 |   const arrow = cta.locator('svg');\n  307 |   expect(await arrow.evaluate(element => getComputedStyle(element).transitionDuration)).toBe('0s');\n> 308 |   expect(await arrow.evaluate(element => getComputedStyle(element).transform)).toBe('none');\n      |                                                                                ^\n  309 |   await page.emulateMedia({ reducedMotion: 'no-preference' });\n  310 |   expect(await arrow.evaluate(element => getComputedStyle(element).transitionDuration)).not.toBe('0s');\n  311 |   expect(harness.gateway.createCount).toBe(0);\n    at D:\\AGENTES PT\\lumen-checkout\\tests\\e2e\\checkout.spec.ts:308:80"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:36:54.732Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\AGENTES PT\\lumen-checkout\\test-results\\checkout-QA-X01-reduced-mo-43ce8-ves-skeleton-and-CTA-motion-chromium-desktop\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\AGENTES PT\\lumen-checkout\\tests\\e2e\\checkout.spec.ts",
+                    "column": 80,
+                    "line": 308
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-9eba3bb54db3da5d74ba",
+          "file": "checkout.spec.ts",
+          "line": 291,
+          "column": 5
+        },
+        {
+          "title": "QA-X02: skip link, reverse focus loop, inert background and keyboard actions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 458,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:36:55.870Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-c9059cdf68b40db951f7",
+          "file": "checkout.spec.ts",
+          "line": 314,
+          "column": 5
+        },
+        {
+          "title": "QA-X03: editing a summary preserves delivery and never reveals full card outside fields",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 760,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:36:56.399Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-b24c240a426e9982d960",
+          "file": "checkout.spec.ts",
+          "line": 347,
+          "column": 5
+        },
+        {
+          "title": "QA-X04: leaving a pending result and reopening retains the same payment and reservation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 695,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:36:57.165Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-8d453931e94942598284",
+          "file": "checkout.spec.ts",
+          "line": 373,
+          "column": 5
+        },
+        {
+          "title": "QA-X05: mobile target sizes and extra product form summary viewports",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 1184,
+                  "error": {
+                    "message": "Error: Editar touch width\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m44\u001b[39m\nReceived:    \u001b[31m36.890625\u001b[39m",
+                    "stack": "Error: Editar touch width\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m44\u001b[39m\nReceived:    \u001b[31m36.890625\u001b[39m\n    at checkButtons (D:\\AGENTES PT\\lumen-checkout\\tests\\e2e\\checkout.spec.ts:411:59)\n    at D:\\AGENTES PT\\lumen-checkout\\tests\\e2e\\checkout.spec.ts:419:3",
+                    "location": {
+                      "file": "D:\\AGENTES PT\\lumen-checkout\\tests\\e2e\\checkout.spec.ts",
+                      "column": 59,
+                      "line": 411
+                    },
+                    "snippet": "  409 |     }).filter(item => item.width > 0 && item.height > 0));\n  410 |     for (const item of metrics) {\n> 411 |       expect.soft(item.width, `${item.name} touch width`).toBeGreaterThanOrEqual(44);\n      |                                                           ^\n  412 |       expect.soft(item.height, `${item.name} touch height`).toBeGreaterThanOrEqual(44);\n  413 |     }\n  414 |   };"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\AGENTES PT\\lumen-checkout\\tests\\e2e\\checkout.spec.ts",
+                        "column": 59,
+                        "line": 411
+                      },
+                      "message": "Error: Editar touch width\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m44\u001b[39m\nReceived:    \u001b[31m36.890625\u001b[39m\n\n  409 |     }).filter(item => item.width > 0 && item.height > 0));\n  410 |     for (const item of metrics) {\n> 411 |       expect.soft(item.width, `${item.name} touch width`).toBeGreaterThanOrEqual(44);\n      |                                                           ^\n  412 |       expect.soft(item.height, `${item.name} touch height`).toBeGreaterThanOrEqual(44);\n  413 |     }\n  414 |   };\n    at checkButtons (D:\\AGENTES PT\\lumen-checkout\\tests\\e2e\\checkout.spec.ts:411:59)\n    at D:\\AGENTES PT\\lumen-checkout\\tests\\e2e\\checkout.spec.ts:419:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:36:57.865Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\AGENTES PT\\lumen-checkout\\test-results\\checkout-QA-X05-mobile-tar-84730-duct-form-summary-viewports-chromium-desktop\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\AGENTES PT\\lumen-checkout\\tests\\e2e\\checkout.spec.ts",
+                    "column": 59,
+                    "line": 411
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-41c45b0045d118239d69",
+          "file": "checkout.spec.ts",
+          "line": 397,
+          "column": 5
+        },
+        {
+          "title": "QA-X06: catalogue loading error and sold-out states remain clear and recoverable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1068,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:36:59.793Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-c4d11f665f6c8f69f214",
+          "file": "checkout.spec.ts",
+          "line": 447,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-23T23:36:52.596Z",
+    "duration": 8569.528,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 2,
+    "flaky": 0
+  }
+}
