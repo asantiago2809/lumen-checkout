@@ -5,10 +5,10 @@ import {
   DELIVERY_FEE,
   PayInput,
   ProviderTransaction,
-  Status,
   Transaction,
 } from "../../domain/models";
 import { fail, ok, Result } from "../../domain/result";
+import { acceptanceFrom, isRecord, transactionFrom } from "./sandbox-response";
 
 export interface PaymentEnvironment {
   apiUrl?: string;
@@ -20,8 +20,6 @@ const SANDBOX_URLS = [
   "https://api-sandbox.co.uat.wompi.dev/v1",
   "https://sandbox.wompi.co/v1",
 ];
-const STATES: Status[] = ["PENDING", "APPROVED", "DECLINED", "ERROR", "VOIDED"];
-type Json = Record<string, any>;
 
 /** No request/response payload logging: these payloads contain ephemeral tokens. */
 export class SandboxGateway implements PaymentGateway {
@@ -49,12 +47,11 @@ export class SandboxGateway implements PaymentGateway {
   private async request(
     path: string,
     init: RequestInit,
-  ): Promise<Result<Json>> {
+  ): Promise<Result<Record<string, unknown>>> {
     if (!this.configured())
       return fail(
         "PAYMENT_UNAVAILABLE",
         "El servicio de pagos de prueba no está disponible.",
-        503,
       );
     try {
       const response = await this.http(`${this.base}${path}`, {
@@ -66,22 +63,16 @@ export class SandboxGateway implements PaymentGateway {
         return fail(
           definitive ? "PAYMENT_REJECTED" : "PAYMENT_UNCERTAIN",
           "No fue posible confirmar la respuesta del servicio de pagos.",
-          definitive ? 422 : 503,
         );
       }
-      const body = await response.json();
-      if (!body || typeof body !== "object" || !body.data)
-        return fail(
-          "PAYMENT_UNCERTAIN",
-          "No fue posible confirmar el pago.",
-          503,
-        );
-      return ok(body as Json);
+      const body: unknown = await response.json();
+      if (!isRecord(body) || !isRecord(body.data))
+        return fail("PAYMENT_UNCERTAIN", "No fue posible confirmar el pago.");
+      return ok(body.data);
     } catch {
       return fail(
         "PAYMENT_UNCERTAIN",
         "No fue posible confirmar la conexión con el servicio de pagos.",
-        503,
       );
     }
   }
@@ -93,20 +84,12 @@ export class SandboxGateway implements PaymentGateway {
       return fail(
         "PAYMENT_UNAVAILABLE",
         "El servicio de pagos de prueba no está disponible.",
-        503,
       );
-    const terms = response.value.data.presigned_acceptance;
-    const personal = response.value.data.presigned_personal_data_auth;
-    const valid = (value: Json | undefined) =>
-      value &&
-      typeof value.acceptance_token === "string" &&
-      typeof value.permalink === "string" &&
-      value.permalink.startsWith("https://");
-    if (!valid(terms) || !valid(personal))
+    const acceptance = acceptanceFrom(response.value);
+    if (!acceptance)
       return fail(
         "PAYMENT_UNAVAILABLE",
         "No podemos cargar las condiciones del pago.",
-        503,
       );
     return ok({
       environment: "sandbox",
@@ -115,42 +98,17 @@ export class SandboxGateway implements PaymentGateway {
       currency: "COP",
       baseFeeInCents: BASE_FEE,
       deliveryFeeInCents: DELIVERY_FEE,
-      acceptance: {
-        terms: { token: terms.acceptance_token, url: terms.permalink },
-        personalData: {
-          token: personal.acceptance_token,
-          url: personal.permalink,
-        },
-      },
+      acceptance,
     });
   }
-  private map(response: Result<Json>): Result<ProviderTransaction> {
+  private map(
+    response: Result<Record<string, unknown>>,
+  ): Result<ProviderTransaction> {
     if (!response.ok) return response;
-    const tx = response.value.data;
-    if (
-      typeof tx.id !== "string" ||
-      !STATES.includes(tx.status) ||
-      typeof tx.reference !== "string" ||
-      !Number.isSafeInteger(tx.amount_in_cents) ||
-      typeof tx.currency !== "string"
-    )
-      return fail(
-        "PAYMENT_UNCERTAIN",
-        "No fue posible confirmar el pago.",
-        503,
-      );
-    const card = tx.payment_method?.extra ?? tx.payment_method;
-    return ok({
-      id: tx.id,
-      status: tx.status,
-      reference: tx.reference,
-      amountInCents: tx.amount_in_cents,
-      currency: tx.currency,
-      card:
-        typeof card?.brand === "string" && /^\d{4}$/.test(card?.last_four)
-          ? { brand: card.brand, lastFour: card.last_four }
-          : null,
-    });
+    const transaction = transactionFrom(response.value);
+    if (!transaction)
+      return fail("PAYMENT_UNCERTAIN", "No fue posible confirmar el pago.");
+    return ok(transaction);
   }
   async create(tx: Transaction, email: string, input: PayInput) {
     const signature = createHash("sha256")

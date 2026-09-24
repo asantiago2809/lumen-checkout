@@ -84,7 +84,7 @@ describe("reservation and draft consistency across tabs", () => {
       const before = await store.get<Session>(keys.session(owner));
       expect(await service.saveDraft(owner, staleDraft)).toMatchObject({
         ok: false,
-        error: { code: "PAYMENT_IN_PROGRESS", httpStatus: 409 },
+        error: { code: "PAYMENT_IN_PROGRESS" },
       });
       expect(await store.get<Session>(keys.session(owner))).toEqual(before);
       expect((await service.bootstrap(token)).session.draft!.delivery).toEqual(

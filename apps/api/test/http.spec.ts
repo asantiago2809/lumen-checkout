@@ -7,6 +7,7 @@ import { input, payment, setup, value } from "./helpers";
 import { requestProtection } from "../src/infrastructure/http/security";
 import { CheckoutService } from "../src/application/checkout.service";
 import { keys, Transaction } from "../src/domain/models";
+import { DomainErrorCode, fail } from "../src/domain/result";
 
 const ORIGIN = "http://localhost:5173";
 describe("HTTP contract and security boundary", () => {
@@ -250,6 +251,45 @@ describe("HTTP contract and security boundary", () => {
     expect(failed.body.error.code).toBe("INTERNAL_ERROR");
     expect(JSON.stringify(failed.body)).not.toContain("secret");
     await api.get("/api/missing-route").expect(404);
+  });
+  it("preserves the public status and sanitized envelope for every business failure", async () => {
+    const cases: [DomainErrorCode, number][] = [
+      ["NOT_FOUND", 404],
+      ["INVALID_QUANTITY", 422],
+      ["OUT_OF_STOCK", 409],
+      ["INVALID_PRICE", 503],
+      ["CONCURRENT_UPDATE", 409],
+      ["SESSION_EXPIRED", 401],
+      ["PAYMENT_IN_PROGRESS", 409],
+      ["IDEMPOTENCY_CONFLICT", 409],
+      ["PRICE_CHANGED", 409],
+      ["DATA_UNAVAILABLE", 503],
+      ["INVENTORY_UNAVAILABLE", 503],
+      ["PAYMENT_UNAVAILABLE", 503],
+      ["PAYMENT_REJECTED", 422],
+      ["PAYMENT_UNCERTAIN", 503],
+    ];
+    const products = jest.spyOn(app.get(CheckoutService), "products");
+    try {
+      for (const [code, status] of cases) {
+        const result = fail(code, "Mensaje seguro de negocio.");
+        expect(result).toEqual({
+          ok: false,
+          error: { code, message: "Mensaje seguro de negocio." },
+        });
+        products.mockResolvedValueOnce(result);
+        const response = await api.get("/api/products").expect(status);
+        expect(response.body).toEqual({
+          error: {
+            code,
+            message: "Mensaje seguro de negocio.",
+            requestId: response.headers["x-request-id"],
+          },
+        });
+      }
+    } finally {
+      products.mockRestore();
+    }
   });
 });
 

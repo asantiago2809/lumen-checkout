@@ -23,7 +23,7 @@ describe("checkout business invariants", () => {
       quote({ ...p, priceInCents: Number.MAX_SAFE_INTEGER }, 1),
     ).toMatchObject({ ok: false });
     const next = jest.fn();
-    expect(andThen(fail("X", "x"), next)).toMatchObject({ ok: false });
+    expect(andThen(fail("NOT_FOUND", "x"), next)).toMatchObject({ ok: false });
     expect(next).not.toHaveBeenCalled();
     expect(andThen(ok(2), (n) => ok(n * 2))).toEqual(ok(4));
     expect(statusMessage("VOIDED")).toContain("anulado");
@@ -192,7 +192,7 @@ describe("checkout business invariants", () => {
   );
   it("holds uncertain submissions without releasing stock or charging again", async () => {
     const { service, owner, gateway, store, advance } = await setup();
-    gateway.create.mockResolvedValue(fail("PAYMENT_UNCERTAIN", "timeout", 503));
+    gateway.create.mockResolvedValue(fail("PAYMENT_UNCERTAIN", "timeout"));
     const tx = value(
       await service.create(owner, randomUUID(), input),
     ).transaction;
@@ -226,9 +226,7 @@ describe("checkout business invariants", () => {
     expect(value(await service.pay(owner, tx.id, payment)).status).toBe(
       "PENDING",
     );
-    gateway.get.mockResolvedValueOnce(
-      fail("PAYMENT_UNCERTAIN", "offline", 503),
-    );
+    gateway.get.mockResolvedValueOnce(fail("PAYMENT_UNCERTAIN", "offline"));
     expect(value(await service.transaction(owner, tx.id)).status).toBe(
       "PENDING",
     );
@@ -257,9 +255,7 @@ describe("checkout business invariants", () => {
     });
     expect(gateway.create).not.toHaveBeenCalled();
     gateway.enabled = true;
-    gateway.create.mockResolvedValue(
-      fail("PAYMENT_REJECTED", "bad token", 422),
-    );
+    gateway.create.mockResolvedValue(fail("PAYMENT_REJECTED", "bad token"));
     expect(value(await service.pay(owner, tx.id, payment)).status).toBe(
       "ERROR",
     );

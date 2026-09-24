@@ -1,8 +1,9 @@
 import { createHash } from "node:crypto";
 import { SandboxGateway } from "../src/infrastructure/payment/sandbox.gateway";
 import { input, payment, setup, value } from "./helpers";
-import { keys, Transaction } from "../src/domain/models";
+import { keys, Product, Transaction } from "../src/domain/models";
 import { randomUUID } from "node:crypto";
+import { CheckoutService } from "../src/application/checkout.service";
 
 const env = {
   apiUrl: "https://sandbox.wompi.co/v1",
@@ -12,6 +13,17 @@ const env = {
 };
 const json = (data: unknown, status = 200) =>
   new Response(JSON.stringify({ data }), { status });
+const validTransaction = {
+  id: "external",
+  status: "PENDING",
+  reference: "LUM-reference",
+  amount_in_cents: 20350000,
+  currency: "COP",
+};
+const validPolicy = {
+  acceptance_token: "placeholder-token",
+  permalink: "https://example.com/policy",
+};
 describe("genuine sandbox HTTP adapter contract", () => {
   it.each([
     {},
@@ -184,5 +196,224 @@ describe("genuine sandbox HTTP adapter contract", () => {
     expect(await gateway.get("id")).toMatchObject({ ok: false });
     expect(await gateway.get("id")).toMatchObject({ ok: false });
     expect(http.mock.calls[0][1].signal).toBeInstanceOf(AbortSignal);
+  });
+  it("treats null, primitive and array envelopes or data as uncertain without throwing", async () => {
+    const bodies: unknown[] = [null, [], "unexpected", 7, true, {}];
+    for (const data of [null, [], "unexpected", 7, true]) bodies.push({ data });
+    for (const body of bodies) {
+      const gateway = new SandboxGateway(
+        env,
+        jest.fn().mockResolvedValue(new Response(JSON.stringify(body))),
+      );
+      expect(await gateway.get("external")).toMatchObject({
+        ok: false,
+        error: { code: "PAYMENT_UNCERTAIN" },
+      });
+      expect(await gateway.config()).toMatchObject({
+        ok: false,
+        error: { code: "PAYMENT_UNAVAILABLE" },
+      });
+    }
+  });
+  it("rejects invalid identity, state, reference, currency and minor-unit amounts", async () => {
+    const invalid: Record<string, unknown>[] = [
+      { id: null },
+      { id: [] },
+      { id: 1 },
+      { id: "" },
+      { id: " " },
+      { id: "x".repeat(257) },
+      { id: "external\n" },
+      { status: null },
+      { status: ["APPROVED"] },
+      { status: 1 },
+      { status: "approved" },
+      { status: "SETTLED" },
+      { reference: null },
+      { reference: [] },
+      { reference: 1 },
+      { reference: "" },
+      { reference: "\tref" },
+      { reference: "r".repeat(257) },
+      { amount_in_cents: null },
+      { amount_in_cents: "20350000" },
+      { amount_in_cents: [] },
+      { amount_in_cents: -1 },
+      { amount_in_cents: 0 },
+      { amount_in_cents: 1.5 },
+      { amount_in_cents: Number.MAX_SAFE_INTEGER + 1 },
+      { currency: null },
+      { currency: 1 },
+      { currency: [] },
+      { currency: "cop" },
+      { currency: "" },
+      { currency: "COP\n" },
+    ];
+    for (const fields of invalid) {
+      const gateway = new SandboxGateway(
+        env,
+        jest.fn().mockResolvedValue(json({ ...validTransaction, ...fields })),
+      );
+      expect(await gateway.get("external")).toEqual({
+        ok: false,
+        error: {
+          code: "PAYMENT_UNCERTAIN",
+          message: "No fue posible confirmar el pago.",
+        },
+      });
+    }
+  });
+  it("requires complete typed consent metadata and usable HTTPS URLs", async () => {
+    const invalid: unknown[] = [
+      null,
+      [],
+      "policy",
+      1,
+      {},
+      { ...validPolicy, acceptance_token: [] },
+      { ...validPolicy, acceptance_token: "" },
+      { ...validPolicy, acceptance_token: "token\n" },
+      { ...validPolicy, acceptance_token: "x".repeat(16385) },
+      { ...validPolicy, permalink: 1 },
+      { ...validPolicy, permalink: [] },
+      { ...validPolicy, permalink: "" },
+      { ...validPolicy, permalink: "https://" },
+      { ...validPolicy, permalink: "https://invalid host" },
+      { ...validPolicy, permalink: "http://example.com/policy" },
+      { ...validPolicy, permalink: "https://user:password@example.com/policy" },
+      { ...validPolicy, permalink: "https://user@example.com/policy" },
+      { ...validPolicy, permalink: "https://example.com/" + "x".repeat(4096) },
+    ];
+    for (const policy of invalid) {
+      for (const key of [
+        "presigned_acceptance",
+        "presigned_personal_data_auth",
+      ]) {
+        const gateway = new SandboxGateway(
+          env,
+          jest.fn().mockResolvedValue(
+            json({
+              presigned_acceptance: validPolicy,
+              presigned_personal_data_auth: validPolicy,
+              [key]: policy,
+            }),
+          ),
+        );
+        expect(await gateway.config()).toMatchObject({
+          ok: false,
+          error: { code: "PAYMENT_UNAVAILABLE" },
+        });
+      }
+    }
+  });
+  it("retains only typed display metadata and never coerces malformed card data", async () => {
+    const invalid: unknown[] = [
+      undefined,
+      null,
+      [],
+      "card",
+      42,
+      {},
+      { extra: [] },
+      { extra: "card" },
+      { extra: 1 },
+      { brand: ["VISA"], last_four: "4242" },
+      { brand: 1, last_four: "4242" },
+      { brand: "UNRECOGNIZED", last_four: "4242" },
+      { brand: "VISA", last_four: 4242 },
+      { brand: "VISA", last_four: ["4242"] },
+      { brand: "VISA", last_four: "4242\n" },
+      { brand: "VISA", last_four: "invalid" },
+    ];
+    for (const payment_method of invalid) {
+      const gateway = new SandboxGateway(
+        env,
+        jest
+          .fn()
+          .mockResolvedValue(json({ ...validTransaction, payment_method })),
+      );
+      expect(value(await gateway.get("external"))).toMatchObject({
+        status: "PENDING",
+        card: null,
+      });
+    }
+    for (const status of [
+      "PENDING",
+      "APPROVED",
+      "DECLINED",
+      "ERROR",
+      "VOIDED",
+    ]) {
+      const gateway = new SandboxGateway(
+        env,
+        jest.fn().mockResolvedValue(
+          json({
+            ...validTransaction,
+            status,
+            payment_method: {
+              extra: {
+                brand: "AMEX",
+                last_four: "0005",
+                token: "must-not-persist",
+              },
+            },
+          }),
+        ),
+      );
+      expect(value(await gateway.get("external"))).toEqual({
+        id: validTransaction.id,
+        status,
+        reference: validTransaction.reference,
+        amountInCents: validTransaction.amount_in_cents,
+        currency: "COP",
+        card: { brand: "AMEX", lastFour: "0005" },
+      });
+    }
+  });
+  it("keeps malformed or mismatched approved responses uncertain with the reservation held", async () => {
+    const changes: Record<string, unknown>[] = [
+      { amount_in_cents: "20350000" },
+      { reference: "another-order" },
+      { amount_in_cents: 20350001 },
+      { currency: "USD" },
+    ];
+    for (const fields of changes) {
+      const { store, owner, runtime } = await setup();
+      const http = jest.fn();
+      const gateway = new SandboxGateway(env, http);
+      const service = new CheckoutService(store, gateway, runtime);
+      const created = value(await service.create(owner, randomUUID(), input));
+      http.mockResolvedValue(
+        json({
+          ...validTransaction,
+          reference: created.transaction.reference,
+          status: "APPROVED",
+          ...fields,
+        }),
+      );
+      const first = value(
+        await service.pay(owner, created.transaction.id, payment),
+      );
+      expect(first).toMatchObject({
+        status: "PENDING",
+        submissionStatus: "UNKNOWN",
+        canPay: false,
+        delivery: null,
+      });
+      expect(
+        value(await service.pay(owner, created.transaction.id, payment)),
+      ).toEqual(first);
+      expect(http).toHaveBeenCalledTimes(1);
+      expect(
+        (await store.get<Product>(keys.product(input.productId)))!.value,
+      ).toMatchObject({
+        stockOnHand: 12,
+        stockAvailable: 11,
+        stockReserved: 1,
+      });
+      expect(
+        [...store.records.keys()].some((key) => key.startsWith("DELIVERY#")),
+      ).toBe(false);
+    }
   });
 });
