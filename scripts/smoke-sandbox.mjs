@@ -244,6 +244,7 @@ async function runScenario(scenario, paymentApiUrl) {
     steps: [],
     http: [],
     networkFailures: [],
+    cancelledRequests: [],
     screenshots: [],
     createRequestCount: 0,
     tokenizationRequestCount: 0,
@@ -294,9 +295,25 @@ async function runScenario(scenario, paymentApiUrl) {
   page.on("requestfailed", (request) => {
     const route = classifyRoute(new URL(request.url()), paymentApiUrl);
     if (!route) return;
-    const tls = /CERT|SSL|TLS/i.test(request.failure()?.errorText ?? "");
+    const errorText = request.failure()?.errorText ?? "";
+    const observation = {
+      route,
+      method: request.method(),
+      at: new Date().toISOString(),
+      phase,
+    };
+    // This identifies Chromium's explicit cancellation signal, not its cause.
+    // Keep raw browser errors out of evidence; they can contain sensitive data.
+    if (errorText === "net::ERR_ABORTED") {
+      result.cancelledRequests.push({ ...observation, reason: "ERR_ABORTED" });
+      if (route === "/v1/tokens/cards") {
+        tokenizationFailure = "SANDBOX_TOKENIZATION_CANCELLED";
+      }
+      return;
+    }
+    const tls = /CERT|SSL|TLS/i.test(errorText);
     const reason = tls ? "TLS_VALIDATION_FAILED" : "NETWORK_FAILURE";
-    result.networkFailures.push({ route, reason });
+    result.networkFailures.push({ ...observation, reason });
     if (route === "/v1/tokens/cards") {
       tokenizationFailure = tls
         ? "SANDBOX_TLS_VALIDATION_FAILED"

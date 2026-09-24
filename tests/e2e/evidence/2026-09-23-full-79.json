@@ -1,0 +1,2909 @@
+{
+  "config": {
+    "argv": [
+      "C:\\nvm4w\\nodejs\\node.exe",
+      "D:\\AGENTES PT\\lumen-checkout\\node_modules\\@playwright\\test\\cli.js",
+      "test"
+    ],
+    "configFile": "D:\\AGENTES PT\\lumen-checkout\\playwright.config.ts",
+    "rootDir": "D:/AGENTES PT/lumen-checkout/tests/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "D:/AGENTES PT/lumen-checkout/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "api-independent",
+        "name": "api-independent",
+        "testDir": "D:/AGENTES PT/lumen-checkout/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/api-security\\.spec\\.ts/"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "D:/AGENTES PT/lumen-checkout/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium-desktop",
+        "name": "chromium-desktop",
+        "testDir": "D:/AGENTES PT/lumen-checkout/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/checkout\\.spec\\.ts/"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "D:/AGENTES PT/lumen-checkout/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium-se",
+        "name": "chromium-se",
+        "testDir": "D:/AGENTES PT/lumen-checkout/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/checkout\\.spec\\.ts/"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "D:/AGENTES PT/lumen-checkout/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "firefox-desktop",
+        "name": "firefox-desktop",
+        "testDir": "D:/AGENTES PT/lumen-checkout/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/checkout\\.spec\\.ts/"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "D:/AGENTES PT/lumen-checkout/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "webkit-desktop",
+        "name": "webkit-desktop",
+        "testDir": "D:/AGENTES PT/lumen-checkout/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/checkout\\.spec\\.ts/"
+        ],
+        "timeout": 45000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/e2e-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": {
+      "command": "npm run dev --workspace apps/web -- --host 127.0.0.1 --port 5174 --strictPort",
+      "url": "http://127.0.0.1:5174",
+      "env": {
+        "API_PROXY_TARGET": "http://127.0.0.1:3002"
+      },
+      "reuseExistingServer": false,
+      "timeout": 30000
+    }
+  },
+  "suites": [
+    {
+      "title": "api-security.spec.ts",
+      "file": "api-security.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "QA-S03/S04: origin and CSRF enforced; session cookie and no-store present",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "api-independent",
+              "projectName": "api-independent",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 100,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:49:41.220Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "268b55824a70a8c6b15d-022dba6121bae69431fb",
+          "file": "api-security.spec.ts",
+          "line": 4,
+          "column": 5
+        },
+        {
+          "title": "QA-M01/M02: server rejects unknown financial fields and changed price before reservation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "api-independent",
+              "projectName": "api-independent",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 34,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:49:41.388Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "268b55824a70a8c6b15d-5946abcaab4111d80cbc",
+          "file": "api-security.spec.ts",
+          "line": 25,
+          "column": 5
+        },
+        {
+          "title": "QA-M04/M05: concurrent create is durable idempotent; changed body conflicts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "api-independent",
+              "projectName": "api-independent",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 32,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:49:41.427Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "268b55824a70a8c6b15d-5c2e17b58cd4f5488c7b",
+          "file": "api-security.spec.ts",
+          "line": 38,
+          "column": 5
+        },
+        {
+          "title": "QA-M07: two sessions cannot reserve the same last unit",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "api-independent",
+              "projectName": "api-independent",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 41,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:49:41.464Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "268b55824a70a8c6b15d-6f49846a01caad493e14",
+          "file": "api-security.spec.ts",
+          "line": 53,
+          "column": 5
+        },
+        {
+          "title": "QA-S03: other sessions cannot read or pay transaction, customer or delivery",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "api-independent",
+              "projectName": "api-independent",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 103,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:49:41.510Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "268b55824a70a8c6b15d-da79ddb7425b27d4cf93",
+          "file": "api-security.spec.ts",
+          "line": 64,
+          "column": 5
+        },
+        {
+          "title": "QA-F08/M08/M09: repeated pay finalizes one delivery and consumes stock once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "api-independent",
+              "projectName": "api-independent",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 50,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:49:41.618Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "268b55824a70a8c6b15d-c9d3491755a76f36ae95",
+          "file": "api-security.spec.ts",
+          "line": 79,
+          "column": 5
+        },
+        {
+          "title": "QA-F09: decline releases reservation and never creates delivery",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "api-independent",
+              "projectName": "api-independent",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 36,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:49:41.674Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "268b55824a70a8c6b15d-f12c539e15f71dcea85a",
+          "file": "api-security.spec.ts",
+          "line": 94,
+          "column": 5
+        },
+        {
+          "title": "QA-M11/R05: ambiguous timeout stays UNKNOWN and blocks repeated charge/cancel",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "api-independent",
+              "projectName": "api-independent",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 45,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:49:41.715Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "268b55824a70a8c6b15d-2e691d2da6680e4bc706",
+          "file": "api-security.spec.ts",
+          "line": 105,
+          "column": 5
+        },
+        {
+          "title": "QA-M12: expired unsubmitted reservation cannot be paid and replay is terminal",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "api-independent",
+              "projectName": "api-independent",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 45,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:49:41.764Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "268b55824a70a8c6b15d-5142a6839e15588d16e7",
+          "file": "api-security.spec.ts",
+          "line": 124,
+          "column": 5
+        },
+        {
+          "title": "QA-R01/R03: saved draft and active transaction survive new client context with same cookie",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "api-independent",
+              "projectName": "api-independent",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 38,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:49:41.814Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "268b55824a70a8c6b15d-bc37e08b1c44e1d428e2",
+          "file": "api-security.spec.ts",
+          "line": 137,
+          "column": 5
+        },
+        {
+          "title": "QA-L04: OpenAPI documents meaningful request body schemas",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "api-independent",
+              "projectName": "api-independent",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 12,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:49:41.857Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "268b55824a70a8c6b15d-59c537feca2e0e4a9676",
+          "file": "api-security.spec.ts",
+          "line": 149,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "checkout.spec.ts",
+      "file": "checkout.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "QA-F01/V01/V03: real catalogue, responsive boundaries and accessible product",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 931,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:49:42.631Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-02fdafff57c1b62b9c9a",
+          "file": "checkout.spec.ts",
+          "line": 61,
+          "column": 5
+        },
+        {
+          "title": "QA-F02/F03/V02/V03: modal validation, keyboard containment and focus restoration",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1028,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:49:43.632Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-7ee57a5ecc6ee4132c29",
+          "file": "checkout.spec.ts",
+          "line": 83,
+          "column": 5
+        },
+        {
+          "title": "QA-F08/F12/R06/S01: approved checkout, double click, refresh and stock exactly once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1201,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:49:44.666Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-829efe403279c88dfbc8",
+          "file": "checkout.spec.ts",
+          "line": 110,
+          "column": 5
+        },
+        {
+          "title": "QA-R01/R02: refresh restores delivery but clears card and both consents",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 573,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:49:45.873Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-824175b07b17848c7732",
+          "file": "checkout.spec.ts",
+          "line": 142,
+          "column": 5
+        },
+        {
+          "title": "QA-M11/R05: ambiguous payment remains pending after refresh with no new charge",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1029,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:49:46.452Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-77a2b1f48425231fbba4",
+          "file": "checkout.spec.ts",
+          "line": 158,
+          "column": 5
+        },
+        {
+          "title": "QA-F09: rejected payment returns unchanged physical stock and no delivery",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 990,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:49:47.487Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-784c3651bc21796dc68e",
+          "file": "checkout.spec.ts",
+          "line": 179,
+          "column": 5
+        },
+        {
+          "title": "QA-F11: unavailable payment service has honest recovery and disabled submit",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 373,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:49:48.481Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-e14512b097affbcb63fe",
+          "file": "checkout.spec.ts",
+          "line": 194,
+          "column": 5
+        },
+        {
+          "title": "QA-M02: changed total requires a fresh review before payment",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 573,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:49:48.859Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-b3e70374677cf438b430",
+          "file": "checkout.spec.ts",
+          "line": 207,
+          "column": 5
+        },
+        {
+          "title": "QA-R04: tokenization failure and reload resume the existing unpaid order",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 995,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:49:49.437Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-a0c62dcbc6a5502aa05d",
+          "file": "checkout.spec.ts",
+          "line": 221,
+          "column": 5
+        },
+        {
+          "title": "QA-R03: a lost creation response recovers the persisted order from session",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 629,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:49:50.437Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-9feb63101c3b3ac6d2d4",
+          "file": "checkout.spec.ts",
+          "line": 246,
+          "column": 5
+        },
+        {
+          "title": "QA-V01/V04: long summary remains readable at narrow and landscape sizes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 883,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:49:51.071Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-b77a67e22320ca0eb15e",
+          "file": "checkout.spec.ts",
+          "line": 270,
+          "column": 5
+        },
+        {
+          "title": "QA-X01: reduced motion dynamically removes skeleton and CTA motion",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 222,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:49:51.959Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-9eba3bb54db3da5d74ba",
+          "file": "checkout.spec.ts",
+          "line": 291,
+          "column": 5
+        },
+        {
+          "title": "QA-X02: skip link, reverse focus loop, inert background and keyboard actions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 367,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:49:52.186Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "first-tab-focus",
+                      "contentType": "application/json",
+                      "body": "eyJmb2N1c2VkIjp0cnVlLCJ0YWciOiJBIiwidGV4dCI6IlNhbHRhciBhbCBjb250ZW5pZG8ifQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-c9059cdf68b40db951f7",
+          "file": "checkout.spec.ts",
+          "line": 314,
+          "column": 5
+        },
+        {
+          "title": "QA-X03: editing a summary preserves delivery and never reveals full card outside fields",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 761,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:49:52.558Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-b24c240a426e9982d960",
+          "file": "checkout.spec.ts",
+          "line": 366,
+          "column": 5
+        },
+        {
+          "title": "QA-X04: leaving a pending result and reopening retains the same payment and reservation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 683,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:49:53.324Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-8d453931e94942598284",
+          "file": "checkout.spec.ts",
+          "line": 392,
+          "column": 5
+        },
+        {
+          "title": "QA-X05: mobile target sizes and extra product form summary viewports",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1617,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:49:54.012Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "mobile-field-target-metrics",
+                      "contentType": "application/json",
+                      "body": "eyJpbnB1dE1ldHJpY3MiOlt7ImZpZWxkIjoibnVtYmVyIiwiaGVpZ2h0Ijo0OCwiZm9udFNpemUiOjE2fSx7ImZpZWxkIjoiaG9sZGVyIiwiaGVpZ2h0Ijo0OCwiZm9udFNpemUiOjE2fSx7ImZpZWxkIjoiZXhwaXJ5IiwiaGVpZ2h0Ijo0OCwiZm9udFNpemUiOjE2fSx7ImZpZWxkIjoiY3ZjIiwiaGVpZ2h0Ijo0OCwiZm9udFNpemUiOjE2fSx7ImZpZWxkIjoiaW5zdGFsbG1lbnRzIiwiaGVpZ2h0Ijo0OCwiZm9udFNpemUiOjE2fSx7ImZpZWxkIjoiZnVsbE5hbWUiLCJoZWlnaHQiOjQ4LCJmb250U2l6ZSI6MTZ9LHsiZmllbGQiOiJlbWFpbCIsImhlaWdodCI6NDgsImZvbnRTaXplIjoxNn0seyJmaWVsZCI6InBob25lIiwiaGVpZ2h0Ijo0OCwiZm9udFNpemUiOjE2fSx7ImZpZWxkIjoiYWRkcmVzc0xpbmUxIiwiaGVpZ2h0Ijo0OCwiZm9udFNpemUiOjE2fSx7ImZpZWxkIjoiYWRkcmVzc0xpbmUyIiwiaGVpZ2h0Ijo0OCwiZm9udFNpemUiOjE2fSx7ImZpZWxkIjoiY2l0eSIsImhlaWdodCI6NDgsImZvbnRTaXplIjoxNn0seyJmaWVsZCI6InJlZ2lvbiIsImhlaWdodCI6NDgsImZvbnRTaXplIjoxNn1dLCJjb25zZW50TWV0cmljcyI6W3sibmFtZSI6IkFjZXB0byBsb3MgdMOpcm1pbm9zIHkgY29uZGljaW9uZXMgZGVsIHByb3ZlZWRvciAoYWJyZSB1bmEgcGVzdGHDsWEgbnVldmEpLiIsIndpZHRoIjozMzUsImhlaWdodCI6NjQuNzgxMjV9LHsibmFtZSI6IkF1dG9yaXpvIGVsIHRyYXRhbWllbnRvIGRlIG1pcyBkYXRvcyBwZXJzb25hbGVzIChhYnJlIHVuYSBwZXN0YcOxYSBudWV2YSkuIiwid2lkdGgiOjMzNSwiaGVpZ2h0Ijo2NC43ODEyNX1dfQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-41c45b0045d118239d69",
+          "file": "checkout.spec.ts",
+          "line": 416,
+          "column": 5
+        },
+        {
+          "title": "QA-X06: catalogue loading error and sold-out states remain clear and recoverable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 955,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:49:55.634Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-c4d11f665f6c8f69f214",
+          "file": "checkout.spec.ts",
+          "line": 491,
+          "column": 5
+        },
+        {
+          "title": "QA-F01/V01/V03: real catalogue, responsive boundaries and accessible product",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-se",
+              "projectName": "chromium-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 868,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:49:57.343Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-95898d9f0bdf13f2276f",
+          "file": "checkout.spec.ts",
+          "line": 61,
+          "column": 5
+        },
+        {
+          "title": "QA-F02/F03/V02/V03: modal validation, keyboard containment and focus restoration",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-se",
+              "projectName": "chromium-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 951,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:49:58.281Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-cac395c7b021b8503e64",
+          "file": "checkout.spec.ts",
+          "line": 83,
+          "column": 5
+        },
+        {
+          "title": "QA-F08/F12/R06/S01: approved checkout, double click, refresh and stock exactly once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-se",
+              "projectName": "chromium-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1058,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:49:59.237Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-2cb089e81baabfb78b45",
+          "file": "checkout.spec.ts",
+          "line": 110,
+          "column": 5
+        },
+        {
+          "title": "QA-R01/R02: refresh restores delivery but clears card and both consents",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-se",
+              "projectName": "chromium-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 501,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:00.301Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-730d91cad07fc44e35fe",
+          "file": "checkout.spec.ts",
+          "line": 142,
+          "column": 5
+        },
+        {
+          "title": "QA-M11/R05: ambiguous payment remains pending after refresh with no new charge",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-se",
+              "projectName": "chromium-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 898,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:00.808Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-8ecacdaf23566ffa4d2c",
+          "file": "checkout.spec.ts",
+          "line": 158,
+          "column": 5
+        },
+        {
+          "title": "QA-F09: rejected payment returns unchanged physical stock and no delivery",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-se",
+              "projectName": "chromium-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 901,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:01.712Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-60340b25bb72b381be87",
+          "file": "checkout.spec.ts",
+          "line": 179,
+          "column": 5
+        },
+        {
+          "title": "QA-F11: unavailable payment service has honest recovery and disabled submit",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-se",
+              "projectName": "chromium-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 306,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:02.617Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-97a422d22810464168f2",
+          "file": "checkout.spec.ts",
+          "line": 194,
+          "column": 5
+        },
+        {
+          "title": "QA-M02: changed total requires a fresh review before payment",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-se",
+              "projectName": "chromium-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 531,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:02.929Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-b3d803f43a089f035951",
+          "file": "checkout.spec.ts",
+          "line": 207,
+          "column": 5
+        },
+        {
+          "title": "QA-R04: tokenization failure and reload resume the existing unpaid order",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-se",
+              "projectName": "chromium-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 818,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:03.465Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-43fb9633a348c1c3c80d",
+          "file": "checkout.spec.ts",
+          "line": 221,
+          "column": 5
+        },
+        {
+          "title": "QA-R03: a lost creation response recovers the persisted order from session",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-se",
+              "projectName": "chromium-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 571,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:04.288Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-f2fdb8b9041491889e77",
+          "file": "checkout.spec.ts",
+          "line": 246,
+          "column": 5
+        },
+        {
+          "title": "QA-V01/V04: long summary remains readable at narrow and landscape sizes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-se",
+              "projectName": "chromium-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 888,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:04.863Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-e785924860f38c05b43c",
+          "file": "checkout.spec.ts",
+          "line": 270,
+          "column": 5
+        },
+        {
+          "title": "QA-X01: reduced motion dynamically removes skeleton and CTA motion",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-se",
+              "projectName": "chromium-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 242,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:05.756Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-f3e5666c661d149169ec",
+          "file": "checkout.spec.ts",
+          "line": 291,
+          "column": 5
+        },
+        {
+          "title": "QA-X02: skip link, reverse focus loop, inert background and keyboard actions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-se",
+              "projectName": "chromium-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 376,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:06.003Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "first-tab-focus",
+                      "contentType": "application/json",
+                      "body": "eyJmb2N1c2VkIjp0cnVlLCJ0YWciOiJBIiwidGV4dCI6IlNhbHRhciBhbCBjb250ZW5pZG8ifQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-7d73f202063f34fbec3e",
+          "file": "checkout.spec.ts",
+          "line": 314,
+          "column": 5
+        },
+        {
+          "title": "QA-X03: editing a summary preserves delivery and never reveals full card outside fields",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-se",
+              "projectName": "chromium-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 668,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:06.384Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-6c5653cb9cd4d2e26048",
+          "file": "checkout.spec.ts",
+          "line": 366,
+          "column": 5
+        },
+        {
+          "title": "QA-X04: leaving a pending result and reopening retains the same payment and reservation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-se",
+              "projectName": "chromium-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 617,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:07.057Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-6df5321e62dd73103a25",
+          "file": "checkout.spec.ts",
+          "line": 392,
+          "column": 5
+        },
+        {
+          "title": "QA-X05: mobile target sizes and extra product form summary viewports",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-se",
+              "projectName": "chromium-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1625,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:07.679Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "mobile-field-target-metrics",
+                      "contentType": "application/json",
+                      "body": "eyJpbnB1dE1ldHJpY3MiOlt7ImZpZWxkIjoibnVtYmVyIiwiaGVpZ2h0Ijo0OCwiZm9udFNpemUiOjE2fSx7ImZpZWxkIjoiaG9sZGVyIiwiaGVpZ2h0Ijo0OCwiZm9udFNpemUiOjE2fSx7ImZpZWxkIjoiZXhwaXJ5IiwiaGVpZ2h0Ijo0OCwiZm9udFNpemUiOjE2fSx7ImZpZWxkIjoiY3ZjIiwiaGVpZ2h0Ijo0OCwiZm9udFNpemUiOjE2fSx7ImZpZWxkIjoiaW5zdGFsbG1lbnRzIiwiaGVpZ2h0Ijo0OCwiZm9udFNpemUiOjE2fSx7ImZpZWxkIjoiZnVsbE5hbWUiLCJoZWlnaHQiOjQ4LCJmb250U2l6ZSI6MTZ9LHsiZmllbGQiOiJlbWFpbCIsImhlaWdodCI6NDgsImZvbnRTaXplIjoxNn0seyJmaWVsZCI6InBob25lIiwiaGVpZ2h0Ijo0OCwiZm9udFNpemUiOjE2fSx7ImZpZWxkIjoiYWRkcmVzc0xpbmUxIiwiaGVpZ2h0Ijo0OCwiZm9udFNpemUiOjE2fSx7ImZpZWxkIjoiYWRkcmVzc0xpbmUyIiwiaGVpZ2h0Ijo0OCwiZm9udFNpemUiOjE2fSx7ImZpZWxkIjoiY2l0eSIsImhlaWdodCI6NDgsImZvbnRTaXplIjoxNn0seyJmaWVsZCI6InJlZ2lvbiIsImhlaWdodCI6NDgsImZvbnRTaXplIjoxNn1dLCJjb25zZW50TWV0cmljcyI6W3sibmFtZSI6IkFjZXB0byBsb3MgdMOpcm1pbm9zIHkgY29uZGljaW9uZXMgZGVsIHByb3ZlZWRvciAoYWJyZSB1bmEgcGVzdGHDsWEgbnVldmEpLiIsIndpZHRoIjozMzUsImhlaWdodCI6NjQuNzgxMjV9LHsibmFtZSI6IkF1dG9yaXpvIGVsIHRyYXRhbWllbnRvIGRlIG1pcyBkYXRvcyBwZXJzb25hbGVzIChhYnJlIHVuYSBwZXN0YcOxYSBudWV2YSkuIiwid2lkdGgiOjMzNSwiaGVpZ2h0Ijo2NC43ODEyNX1dfQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-a38736695cddd31ebd27",
+          "file": "checkout.spec.ts",
+          "line": 416,
+          "column": 5
+        },
+        {
+          "title": "QA-X06: catalogue loading error and sold-out states remain clear and recoverable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-se",
+              "projectName": "chromium-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 988,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:09.309Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-de43f7bada5250688a0e",
+          "file": "checkout.spec.ts",
+          "line": 491,
+          "column": 5
+        },
+        {
+          "title": "QA-F01/V01/V03: real catalogue, responsive boundaries and accessible product",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox-desktop",
+              "projectName": "firefox-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2084,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:11.053Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-3413918feb7dab507afc",
+          "file": "checkout.spec.ts",
+          "line": 61,
+          "column": 5
+        },
+        {
+          "title": "QA-F02/F03/V02/V03: modal validation, keyboard containment and focus restoration",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox-desktop",
+              "projectName": "firefox-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1397,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:13.474Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-fcb6eda70d5d17232cab",
+          "file": "checkout.spec.ts",
+          "line": 83,
+          "column": 5
+        },
+        {
+          "title": "QA-F08/F12/R06/S01: approved checkout, double click, refresh and stock exactly once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox-desktop",
+              "projectName": "firefox-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1624,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:14.877Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-9a63c24ff6423ad22d1f",
+          "file": "checkout.spec.ts",
+          "line": 110,
+          "column": 5
+        },
+        {
+          "title": "QA-R01/R02: refresh restores delivery but clears card and both consents",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox-desktop",
+              "projectName": "firefox-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1030,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:16.507Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-ea80853c4ac776b0138c",
+          "file": "checkout.spec.ts",
+          "line": 142,
+          "column": 5
+        },
+        {
+          "title": "QA-M11/R05: ambiguous payment remains pending after refresh with no new charge",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox-desktop",
+              "projectName": "firefox-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1573,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:17.543Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-892aa0df367ab4f103fc",
+          "file": "checkout.spec.ts",
+          "line": 158,
+          "column": 5
+        },
+        {
+          "title": "QA-F09: rejected payment returns unchanged physical stock and no delivery",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox-desktop",
+              "projectName": "firefox-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1448,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:19.122Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-b7212e272ee97892df4f",
+          "file": "checkout.spec.ts",
+          "line": 179,
+          "column": 5
+        },
+        {
+          "title": "QA-F11: unavailable payment service has honest recovery and disabled submit",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox-desktop",
+              "projectName": "firefox-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 497,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:20.575Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-6e6c64351d072c391d05",
+          "file": "checkout.spec.ts",
+          "line": 194,
+          "column": 5
+        },
+        {
+          "title": "QA-M02: changed total requires a fresh review before payment",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox-desktop",
+              "projectName": "firefox-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1061,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:21.078Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-33aaa85fe9776f74c50b",
+          "file": "checkout.spec.ts",
+          "line": 207,
+          "column": 5
+        },
+        {
+          "title": "QA-R04: tokenization failure and reload resume the existing unpaid order",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox-desktop",
+              "projectName": "firefox-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1613,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:22.144Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-14c9f36b5c396d5b003b",
+          "file": "checkout.spec.ts",
+          "line": 221,
+          "column": 5
+        },
+        {
+          "title": "QA-R03: a lost creation response recovers the persisted order from session",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox-desktop",
+              "projectName": "firefox-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1550,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:23.762Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-48faaab1e861eaf5da24",
+          "file": "checkout.spec.ts",
+          "line": 246,
+          "column": 5
+        },
+        {
+          "title": "QA-V01/V04: long summary remains readable at narrow and landscape sizes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox-desktop",
+              "projectName": "firefox-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1163,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:25.318Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-71a3db60ad2cfa5a1d69",
+          "file": "checkout.spec.ts",
+          "line": 270,
+          "column": 5
+        },
+        {
+          "title": "QA-X01: reduced motion dynamically removes skeleton and CTA motion",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox-desktop",
+              "projectName": "firefox-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 348,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:26.486Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-ce279a6c332b2b7c0ede",
+          "file": "checkout.spec.ts",
+          "line": 291,
+          "column": 5
+        },
+        {
+          "title": "QA-X02: skip link, reverse focus loop, inert background and keyboard actions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox-desktop",
+              "projectName": "firefox-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 609,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:26.839Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "first-tab-focus",
+                      "contentType": "application/json",
+                      "body": "eyJmb2N1c2VkIjp0cnVlLCJ0YWciOiJBIiwidGV4dCI6IlNhbHRhciBhbCBjb250ZW5pZG8ifQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-c9df03a286d0eed44c3c",
+          "file": "checkout.spec.ts",
+          "line": 314,
+          "column": 5
+        },
+        {
+          "title": "QA-X03: editing a summary preserves delivery and never reveals full card outside fields",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox-desktop",
+              "projectName": "firefox-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1210,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:27.454Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-35a00f216c2efc9ecf03",
+          "file": "checkout.spec.ts",
+          "line": 366,
+          "column": 5
+        },
+        {
+          "title": "QA-X04: leaving a pending result and reopening retains the same payment and reservation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox-desktop",
+              "projectName": "firefox-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1127,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:28.670Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-3d4a2fcfe292a9047974",
+          "file": "checkout.spec.ts",
+          "line": 392,
+          "column": 5
+        },
+        {
+          "title": "QA-X05: mobile target sizes and extra product form summary viewports",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox-desktop",
+              "projectName": "firefox-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1905,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:29.803Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "mobile-field-target-metrics",
+                      "contentType": "application/json",
+                      "body": "eyJpbnB1dE1ldHJpY3MiOlt7ImZpZWxkIjoibnVtYmVyIiwiaGVpZ2h0Ijo0OCwiZm9udFNpemUiOjE2fSx7ImZpZWxkIjoiaG9sZGVyIiwiaGVpZ2h0Ijo0OCwiZm9udFNpemUiOjE2fSx7ImZpZWxkIjoiZXhwaXJ5IiwiaGVpZ2h0Ijo0OCwiZm9udFNpemUiOjE2fSx7ImZpZWxkIjoiY3ZjIiwiaGVpZ2h0Ijo0OCwiZm9udFNpemUiOjE2fSx7ImZpZWxkIjoiaW5zdGFsbG1lbnRzIiwiaGVpZ2h0Ijo0OCwiZm9udFNpemUiOjE2fSx7ImZpZWxkIjoiZnVsbE5hbWUiLCJoZWlnaHQiOjQ4LCJmb250U2l6ZSI6MTZ9LHsiZmllbGQiOiJlbWFpbCIsImhlaWdodCI6NDgsImZvbnRTaXplIjoxNn0seyJmaWVsZCI6InBob25lIiwiaGVpZ2h0Ijo0OCwiZm9udFNpemUiOjE2fSx7ImZpZWxkIjoiYWRkcmVzc0xpbmUxIiwiaGVpZ2h0Ijo0OCwiZm9udFNpemUiOjE2fSx7ImZpZWxkIjoiYWRkcmVzc0xpbmUyIiwiaGVpZ2h0Ijo0OCwiZm9udFNpemUiOjE2fSx7ImZpZWxkIjoiY2l0eSIsImhlaWdodCI6NDgsImZvbnRTaXplIjoxNn0seyJmaWVsZCI6InJlZ2lvbiIsImhlaWdodCI6NDgsImZvbnRTaXplIjoxNn1dLCJjb25zZW50TWV0cmljcyI6W3sibmFtZSI6IkFjZXB0byBsb3MgdMOpcm1pbm9zIHkgY29uZGljaW9uZXMgZGVsIHByb3ZlZWRvciAoYWJyZSB1bmEgcGVzdGHDsWEgbnVldmEpLiIsIndpZHRoIjozMzUsImhlaWdodCI6NjQuODAwMDAzMDUxNzU3ODF9LHsibmFtZSI6IkF1dG9yaXpvIGVsIHRyYXRhbWllbnRvIGRlIG1pcyBkYXRvcyBwZXJzb25hbGVzIChhYnJlIHVuYSBwZXN0YcOxYSBudWV2YSkuIiwid2lkdGgiOjMzNSwiaGVpZ2h0Ijo2NC44MDAwMDMwNTE3NTc4MX1dfQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-76e17feb4c80e32791f5",
+          "file": "checkout.spec.ts",
+          "line": 416,
+          "column": 5
+        },
+        {
+          "title": "QA-X06: catalogue loading error and sold-out states remain clear and recoverable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox-desktop",
+              "projectName": "firefox-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1160,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:31.714Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-0eb613d4ef7f1fcd790f",
+          "file": "checkout.spec.ts",
+          "line": 491,
+          "column": 5
+        },
+        {
+          "title": "QA-F01/V01/V03: real catalogue, responsive boundaries and accessible product",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit-desktop",
+              "projectName": "webkit-desktop",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1592,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:33.801Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-d9d63e8ad650d3ee23a0",
+          "file": "checkout.spec.ts",
+          "line": 61,
+          "column": 5
+        },
+        {
+          "title": "QA-F02/F03/V02/V03: modal validation, keyboard containment and focus restoration",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit-desktop",
+              "projectName": "webkit-desktop",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2261,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:35.452Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-17d96bd43f0e0fdc1ab6",
+          "file": "checkout.spec.ts",
+          "line": 83,
+          "column": 5
+        },
+        {
+          "title": "QA-F08/F12/R06/S01: approved checkout, double click, refresh and stock exactly once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit-desktop",
+              "projectName": "webkit-desktop",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2740,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:37.720Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-d6fd2f7534eaf0868336",
+          "file": "checkout.spec.ts",
+          "line": 110,
+          "column": 5
+        },
+        {
+          "title": "QA-R01/R02: refresh restores delivery but clears card and both consents",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit-desktop",
+              "projectName": "webkit-desktop",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1639,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:40.466Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-6253309bf6ab4405cea2",
+          "file": "checkout.spec.ts",
+          "line": 142,
+          "column": 5
+        },
+        {
+          "title": "QA-M11/R05: ambiguous payment remains pending after refresh with no new charge",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit-desktop",
+              "projectName": "webkit-desktop",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2511,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:42.110Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-c80c0323c8f17cb31af2",
+          "file": "checkout.spec.ts",
+          "line": 158,
+          "column": 5
+        },
+        {
+          "title": "QA-F09: rejected payment returns unchanged physical stock and no delivery",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit-desktop",
+              "projectName": "webkit-desktop",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2259,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:44.629Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-2e7d1b03f97efca230e7",
+          "file": "checkout.spec.ts",
+          "line": 179,
+          "column": 5
+        },
+        {
+          "title": "QA-F11: unavailable payment service has honest recovery and disabled submit",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit-desktop",
+              "projectName": "webkit-desktop",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 994,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:46.893Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-d0a721e07974d8f69f94",
+          "file": "checkout.spec.ts",
+          "line": 194,
+          "column": 5
+        },
+        {
+          "title": "QA-M02: changed total requires a fresh review before payment",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit-desktop",
+              "projectName": "webkit-desktop",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1606,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:47.895Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-59e13cff81633cfce204",
+          "file": "checkout.spec.ts",
+          "line": 207,
+          "column": 5
+        },
+        {
+          "title": "QA-R04: tokenization failure and reload resume the existing unpaid order",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit-desktop",
+              "projectName": "webkit-desktop",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2651,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:49.508Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-a00c3ac0795bf56d4e99",
+          "file": "checkout.spec.ts",
+          "line": 221,
+          "column": 5
+        },
+        {
+          "title": "QA-R03: a lost creation response recovers the persisted order from session",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit-desktop",
+              "projectName": "webkit-desktop",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1898,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:52.164Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-5a387c7abd2f56ad1062",
+          "file": "checkout.spec.ts",
+          "line": 246,
+          "column": 5
+        },
+        {
+          "title": "QA-V01/V04: long summary remains readable at narrow and landscape sizes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit-desktop",
+              "projectName": "webkit-desktop",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2277,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:54.070Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-e239fd62d4a372fb5007",
+          "file": "checkout.spec.ts",
+          "line": 270,
+          "column": 5
+        },
+        {
+          "title": "QA-X01: reduced motion dynamically removes skeleton and CTA motion",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit-desktop",
+              "projectName": "webkit-desktop",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 528,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:56.354Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-2581b6eae6539163e8a9",
+          "file": "checkout.spec.ts",
+          "line": 291,
+          "column": 5
+        },
+        {
+          "title": "QA-X02: skip link, reverse focus loop, inert background and keyboard actions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [
+                {
+                  "type": "limitation",
+                  "description": "WebKit native Tab skips links; skip-link Enter activation is verified after explicit focus."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "webkit-desktop",
+              "projectName": "webkit-desktop",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 780,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:56.888Z",
+                  "annotations": [
+                    {
+                      "type": "limitation",
+                      "description": "WebKit native Tab skips links; skip-link Enter activation is verified after explicit focus."
+                    }
+                  ],
+                  "attachments": [
+                    {
+                      "name": "first-tab-focus",
+                      "contentType": "application/json",
+                      "body": "eyJmb2N1c2VkIjp0cnVlLCJ0YWciOiJCVVRUT04iLCJ0ZXh0IjoiUGFnYXIgY29uIHRhcmpldGEifQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-16fc5b197a6d1eb244fc",
+          "file": "checkout.spec.ts",
+          "line": 314,
+          "column": 5
+        },
+        {
+          "title": "QA-X03: editing a summary preserves delivery and never reveals full card outside fields",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit-desktop",
+              "projectName": "webkit-desktop",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2147,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:57.674Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-8b162c4ef4e65cda72be",
+          "file": "checkout.spec.ts",
+          "line": 366,
+          "column": 5
+        },
+        {
+          "title": "QA-X04: leaving a pending result and reopening retains the same payment and reservation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit-desktop",
+              "projectName": "webkit-desktop",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2092,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:50:59.827Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-931a470f317af0c7774f",
+          "file": "checkout.spec.ts",
+          "line": 392,
+          "column": 5
+        },
+        {
+          "title": "QA-X05: mobile target sizes and extra product form summary viewports",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit-desktop",
+              "projectName": "webkit-desktop",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3871,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:51:01.925Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "mobile-field-target-metrics",
+                      "contentType": "application/json",
+                      "body": "eyJpbnB1dE1ldHJpY3MiOlt7ImZpZWxkIjoibnVtYmVyIiwiaGVpZ2h0Ijo0OCwiZm9udFNpemUiOjE2fSx7ImZpZWxkIjoiaG9sZGVyIiwiaGVpZ2h0Ijo0OCwiZm9udFNpemUiOjE2fSx7ImZpZWxkIjoiZXhwaXJ5IiwiaGVpZ2h0Ijo0OCwiZm9udFNpemUiOjE2fSx7ImZpZWxkIjoiY3ZjIiwiaGVpZ2h0Ijo0OCwiZm9udFNpemUiOjE2fSx7ImZpZWxkIjoiaW5zdGFsbG1lbnRzIiwiaGVpZ2h0Ijo1NSwiZm9udFNpemUiOjE2fSx7ImZpZWxkIjoiZnVsbE5hbWUiLCJoZWlnaHQiOjQ4LCJmb250U2l6ZSI6MTZ9LHsiZmllbGQiOiJlbWFpbCIsImhlaWdodCI6NDgsImZvbnRTaXplIjoxNn0seyJmaWVsZCI6InBob25lIiwiaGVpZ2h0Ijo0OCwiZm9udFNpemUiOjE2fSx7ImZpZWxkIjoiYWRkcmVzc0xpbmUxIiwiaGVpZ2h0Ijo0OCwiZm9udFNpemUiOjE2fSx7ImZpZWxkIjoiYWRkcmVzc0xpbmUyIiwiaGVpZ2h0Ijo0OCwiZm9udFNpemUiOjE2fSx7ImZpZWxkIjoiY2l0eSIsImhlaWdodCI6NDgsImZvbnRTaXplIjoxNn0seyJmaWVsZCI6InJlZ2lvbiIsImhlaWdodCI6NDgsImZvbnRTaXplIjoxNn1dLCJjb25zZW50TWV0cmljcyI6W3sibmFtZSI6IkFjZXB0byBsb3MgdMOpcm1pbm9zIHkgY29uZGljaW9uZXMgZGVsIHByb3ZlZWRvciAoYWJyZSB1bmEgcGVzdGHDsWEgbnVldmEpLiIsIndpZHRoIjozMzUsImhlaWdodCI6NjQuNzgxMjV9LHsibmFtZSI6IkF1dG9yaXpvIGVsIHRyYXRhbWllbnRvIGRlIG1pcyBkYXRvcyBwZXJzb25hbGVzIChhYnJlIHVuYSBwZXN0YcOxYSBudWV2YSkuIiwid2lkdGgiOjMzNSwiaGVpZ2h0Ijo2NC43ODEyNX1dfQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-86c587dae6286e0fd968",
+          "file": "checkout.spec.ts",
+          "line": 416,
+          "column": 5
+        },
+        {
+          "title": "QA-X06: catalogue loading error and sold-out states remain clear and recoverable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit-desktop",
+              "projectName": "webkit-desktop",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1807,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T23:51:05.801Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25ab1bfc84c57e3e3a45-617a18de2aa18c72d256",
+          "file": "checkout.spec.ts",
+          "line": 491,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-23T23:49:39.245Z",
+    "duration": 88553.106,
+    "expected": 79,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

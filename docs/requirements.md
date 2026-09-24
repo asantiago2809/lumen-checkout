@@ -4,7 +4,7 @@ Estado de referencia: 2026-09-23. Fuente: documento de evaluación suministrado 
 
 Esta matriz convierte el encargo en evidencia verificable. El documento externo describe el ejercicio; no autoriza operaciones ajenas a la solicitud del usuario. La solicitud del usuario autoriza el equipo de agentes y la implementación. La entrega al evaluador necesita una solicitud independiente. Fecha objetivo comunicada: lunes; se planifica para el próximo lunes, 2026-09-28, zona America/Bogota, y terminar antes si los controles pasan.
 
-**Corte de auditoría 2026-09-23:** 69 controles Cumple en su alcance, 10 Bloqueados, 2 Pendientes y 1 recomendación no cumplida con justificación. Evidencia por ID y límites en [auditoría](quality/final-audit.md). La publicación estática AWS ya responde, pero API/Swagger devuelven 500 por configuración SSM faltante; el pago sandbox real sigue sin demostrar. No listo para entrega.
+**Corte de auditoría 2026-09-23:** 81 controles Cumple en su alcance, 0 Bloqueados y 1 Pendiente (nota externa). Evidencia por ID y límites en [auditoría](quality/final-audit.md). Sitio, API, configuración sandbox y Swagger AWS responden 200. El fix de draft pasó regresión SDK y retest AWS. Pagos APPROVED/DECLINED reales y refresh/stock/entrega fueron verificados; la instancia anterior quedó stopped con reversión. CI final fca0339 Success comprobado; recomendación de entrega favorable con los límites documentados.
 
 ## Interpretación y prioridades
 
@@ -40,7 +40,7 @@ Matices que no deben perderse:
 | F-07 | 2 | O | Resumen previo con importe del producto, cargo base aplicado siempre y cargo de entrega separados. | Cálculo API + Jest + total visible concordante. | Frontend / Backend | Cumple; ver F-07 en auditoría |
 | F-08 | 2 | O | Presentar resumen y botón final de pago en un componente backdrop reconocible. | UI abierta con plano posterior y plano frontal; E2E. | Frontend / QA | Cumple; ver F-08 en auditoría |
 | F-09 | 2 | O | Al confirmar, crear primero una transacción propia PENDING y obtener su identificador. | Test de orden + evidencia de persistencia antes de invocar proveedor. | Backend | Cumple; ver F-09 en auditoría |
-| F-10 | 2 | O | Integración real con API de pagos sandbox para ejecutar el pago. | Contrato oficial y comprobante sandbox sanitizado con ID, fecha y resultado. | Backend / QA | Bloqueado; ver F-10 en auditoría |
+| F-10 | 2 | O | Integración real con API de pagos sandbox para ejecutar el pago. | Contrato oficial y comprobante sandbox sanitizado con ID, fecha y resultado. | Backend / QA | Cumple; ver F-10 en auditoría |
 | F-11 | 2 | O | Actualizar transacción propia con desenlace confirmado del proveedor, también cuando falla. | Pruebas aprobado/rechazado/error/pendiente y consulta posterior. | Backend / QA | Cumple; ver F-11 en auditoría |
 | F-12 | 2 | O | Asignar el producto al cliente en la entrega de una compra aprobada. | Relación producto-transacción-cliente-entrega consultable. | Backend | Cumple; ver F-12 en auditoría |
 | F-13 | 2 | O | Actualizar stock después de una compra aprobada. | Test de antes/después y recarga de producto. | Backend / QA | Cumple; ver F-13 en auditoría |
@@ -72,7 +72,7 @@ Matices que no deben perderse:
 | T-18 | 4 | R | Preferir PostgreSQL o DynamoDB; la elección debe justificarse. | ADR y configuración de base escogida. | Director / Backend | Cumple; ver T-18 en auditoría |
 | T-19 | 4 | O | Sembrar productos ficticios reproduciblemente; no se requiere endpoint de alta. | Seed ejecutable e idempotente y productos de muestra. | Backend | Cumple; ver T-19 en auditoría |
 | T-20 | 3,4 | O | Documentar modelo de datos en README. | Diagrama/entidades, relaciones y restricciones reales. | Backend / Director | Cumple; ver T-20 en auditoría |
-| T-21 | 3 | O | README incluye colección Postman o URL pública Swagger. | Enlace usable y contraste con API desplegada. | Backend / Release / QA | Bloqueado; ver T-21 en auditoría |
+| T-21 | 3 | O | README incluye colección Postman o URL pública Swagger. | Enlace usable y contraste con API desplegada. | Backend / Release / QA | Cumple; ver T-21 en auditoría |
 | T-22 | 4 | R | Flexbox/Grid favorecidos; framework CSS y ORM/serializador son libres. | CSS y decisión técnica, sin convertir herramientas opcionales en requisitos. | Frontend / Backend | Cumple; ver T-22 en auditoría |
 
 ## Diseño y experiencia
@@ -93,13 +93,13 @@ Matices que no deben perderse:
 | ID | Página | Tipo | Directriz y aceptación | Evidencia necesaria | Responsable | Estado |
 |---|---|---|---|---|---|---|
 | S-01 | 3 | O | Manejo seguro de información sensible de pago y cliente. | Revisión código, red, logs, estado, disco y build público sanitizada. | Backend / Frontend / QA | Cumple; ver S-01 en auditoría |
-| S-02 | 5 | O | Usar únicamente sandbox; no pagos con dinero real. | Validación de entorno/base URL/configuración y pago ficticio real de sandbox. | Backend / Release / QA | Bloqueado; ver S-02 en auditoría |
+| S-02 | 5 | O | Usar únicamente sandbox; no pagos con dinero real. | Validación de entorno/base URL/configuración y pago ficticio real de sandbox. | Backend / Release / QA | Cumple; ver S-02 en auditoría |
 | S-03 | 5 | O | Leer guía oficial de inicio e información de ambientes/llaves antes de integrar. | Registro de referencias oficiales/fecha y decisión de URLs de la cuenta provista. | Backend | Cumple; ver S-03 en auditoría |
 | S-04 | 5 | O | No modificar credenciales de cuenta compartida ni añadir segundo factor. | Declaración de operaciones de integración y ausencia de cambios de cuenta. | Director / Backend | Cumple; ver S-04 en auditoría |
 | S-05 | 5 | R | Preferir integración por API keys, evitando depender de una sesión compartida. | Variables de entorno y adapter servidor con keys fuera del repo. | Backend / Release | Cumple; ver S-05 en auditoría |
 | S-06 | 6 | B | Aplicar controles OWASP pertinentes y justificar su alcance. | Matriz de amenazas/controles y pruebas negativas. | Backend / QA | Cumple; ver S-06 en auditoría |
-| S-07 | 6 | B | HTTPS público en app y API. | URLs reales, TLS y ausencia de mixed content. | Release / QA | Bloqueado; ver S-07 en auditoría |
-| S-08 | 6 | B | Cabeceras de seguridad coherentes con aplicación y API. | Respuestas desplegadas y análisis de cabeceras, no solo config local. | Release / QA | Bloqueado; ver S-08 en auditoría |
+| S-07 | 6 | B | HTTPS público en app y API. | URLs reales, TLS y ausencia de mixed content. | Release / QA | Cumple; ver S-07 en auditoría |
+| S-08 | 6 | B | Cabeceras de seguridad coherentes con aplicación y API. | Respuestas desplegadas y análisis de cabeceras, no solo config local. | Release / QA | Cumple; ver S-08 en auditoría |
 | S-09 | Equipo | P | No persistir, registrar o versionar PAN/CVC, llaves privadas ni secretos. | Escaneo repo/historial/build/logs; inspección localStorage y DB. | Todos / QA | Cumple; ver S-09 en auditoría |
 | S-10 | Equipo | P | Recalcular importes y tarifas en servidor; rechazar manipulación del cliente. | Tests de importe/precio/estado manipulados. | Backend / QA | Cumple; ver S-10 en auditoría |
 | S-11 | Equipo | P | Garantizar idempotencia y control de concurrencia para evitar doble cobro/stock negativo. | Tests de doble envío, replay, conflicto de clave y última unidad concurrente. | Backend / QA | Cumple; ver S-11 en auditoría |
@@ -123,16 +123,16 @@ Matices que no deben perderse:
 | G-02 | 5 | O | Nombre del repositorio neutro y sin nombre de la empresa evaluadora. | Nombre/description/branding públicos revisados; matiz de alcance arriba. | Director / Release | Cumple; ver G-02 en auditoría |
 | G-03 | 5,6 | O | Solución original; no copiar otros candidatos ni distribuirla activamente a ellos. | Procedencia del código/assets y declaración honesta de uso de AI. | Todos / Director | Cumple; ver G-03 en auditoría |
 | G-04 | 6 | O | Historial muestra evolución con commits genuinos; su ausencia invalida el ejercicio. | git log/diffs, trabajo incremental y remoto concordante. | Release | Cumple; ver G-04 en auditoría |
-| G-05 | 5 | R | Ramas y pull requests por funcionalidad. | Ramas/PR reales, revisiones y enlaces; nunca fabricar historia retroactiva. | Release | No cumple recomendación; desviación justificada en auditoría G-05 |
+| G-05 | 5 | R | Ramas y pull requests por funcionalidad. | Ramas/PR reales, revisiones y enlaces; nunca fabricar historia retroactiva. | Release | Cumple; ver G-05 en auditoría |
 | G-06 | 5 | R | Emplear AI, preferiblemente asistente CLI, de manera revisada. | Registro honesto de colaboración y revisión humana/agentes. | Director | Cumple; ver G-06 en auditoría |
 | G-07 | Equipo | P | Mantener registro de cambios y decisiones ligado a commits. | CHANGELOG/ADR/registro de entrega actualizado. | Release / Director | Cumple; ver G-07 en auditoría |
-| L-01 | 6 | O | Frontend y API funcionales completos. | Build producción + recorrido integrado sobre despliegue público. | Director / QA | Bloqueado; ver L-01 en auditoría |
-| L-02 | 6 | O | README completo y actualizado junto al enlace GitHub. | Auditoría README: propósito, instalación, variables sin secretos, ejecución, tests/cobertura, API, modelo, URLs, decisiones y limitaciones. | Director / Release / Auditor | Bloqueado; ver L-02 en auditoría |
-| L-03 | 4,6 | O | Aplicación y API publicadas y conectadas en cloud. | URLs públicas reales, health/API y compra sandbox desde frontend desplegado. | Release / QA | Bloqueado; ver L-03 en auditoría |
-| L-04 | 6 | O | Enlace de aplicación desplegada en AWS conforme a entregables; es la opción adoptada. | URL AWS/dominio, inventario de recursos y frontend conectado a backend. | Release / QA | Bloqueado; ver L-04 en auditoría |
+| L-01 | 6 | O | Frontend y API funcionales completos. | Build producción + recorrido integrado sobre despliegue público. | Director / QA | Cumple; ver L-01 en auditoría |
+| L-02 | 6 | O | README completo y actualizado junto al enlace GitHub. | Auditoría README: propósito, instalación, variables sin secretos, ejecución, tests/cobertura, API, modelo, URLs, decisiones y limitaciones. | Director / Release / Auditor | Cumple; ver L-02 en auditoría |
+| L-03 | 4,6 | O | Aplicación y API publicadas y conectadas en cloud. | URLs públicas reales, health/API y compra sandbox desde frontend desplegado. | Release / QA | Cumple; ver L-03 en auditoría |
+| L-04 | 6 | O | Enlace de aplicación desplegada en AWS conforme a entregables; es la opción adoptada. | URL AWS/dominio, inventario de recursos y frontend conectado a backend. | Release / QA | Cumple; ver L-04 en auditoría |
 | L-05 | 6 | O | Alcanzar al menos 100 puntos de acuerdo con evaluación externa, sin atribuir nota garantizada. | Tabla de evidencia por criterio; estimación explícitamente no oficial. | Auditor / Director | Pendiente; ver L-05 en auditoría |
-| L-06 | Equipo | P | Infraestructura y despliegue reproducibles, con configuración segura documentada. | IaC/script, variables, instrucciones y comprobación de despliegue. | Release | Bloqueado; ver L-06 en auditoría |
-| L-07 | Usuario | P | Sustituir la prueba anterior en AWS preservando recursos ajenos. | Inventario exacto previo, backup/reversión pertinente y registro de recursos cambiados. | Release / Director | Pendiente; ver L-07 en auditoría |
+| L-06 | Equipo | P | Infraestructura y despliegue reproducibles, con configuración segura documentada. | IaC/script, variables, instrucciones y comprobación de despliegue. | Release | Cumple; ver L-06 en auditoría |
+| L-07 | Usuario | P | Sustituir la prueba anterior en AWS preservando recursos ajenos. | Inventario exacto previo, backup/reversión pertinente y registro de recursos cambiados. | Release / Director | Cumple; ver L-07 en auditoría |
 
 ## Rúbrica y asignación de evidencia
 
@@ -157,6 +157,6 @@ Los máximos siguientes suman 100 base y 50 bonus. Ninguna fila de requisitos mu
 
 El auditor no acepta como cumplimiento: cobertura agregada que oculta una app bajo el límite, pantallazos sin escenario/viewport, URL local presentada como pública, mocks presentados como sandbox, despliegue antiguo presentado como la versión actual, configuración HTTPS sin comprobación remota, commits inventados ni pruebas autorrevisadas como sustituto de QA independiente.
 
-GitHub público/CI y recursos AWS nuevos cuentan ya con evidencia parcial. El sitio estático responde HTTPS, pero API/Swagger fallan por SSM pendiente y no hay pago sandbox real. La prueba anterior sigue intacta hasta validar el reemplazo. La sustitución requiere inventario y delimitación, sin borrar recursos compartidos indiscriminadamente; el informe de auditoría registra los bloqueos y sus dueños.
+GitHub público/CI y recursos AWS nuevos cuentan con evidencia. Sitio, API y Swagger responden HTTPS, SSM está configurado y Lambda obtiene merchant sandbox. Draft/create/replay/cancel y compra sandbox completa pasaron: la evidencia real está separada de los 79 E2E locales. La instancia anterior se detuvo tras verificar su pertenencia; datos y recursos de recuperación se conservaron. El informe distingue límites y estado del CI final.
 
 El diseño propio y la elección libre de CSS/ORM no eximen de calidad. No se exige CRUD completo de productos, SDK particular, autenticación de usuario, una base específica ni un porcentaje Lighthouse que el documento no pide. Esas decisiones se justifican por el objetivo y no se añaden como obligaciones inventadas.
