@@ -1,0 +1,66 @@
+{
+  "observedAt": "2026-09-24T00:28:52.661Z",
+  "scope": "Two fresh local Chromium contexts against public AWS; no throttling, no statistical or Core Web Vitals certification, no payment",
+  "origin": "https://j67vc6cdn4.execute-api.us-east-1.amazonaws.com",
+  "browser": "153.0.8010.12",
+  "samples": [
+    {
+      "status": 200,
+      "viewport": {
+        "width": 375,
+        "height": 667
+      },
+      "horizontalOverflow": false,
+      "title": "Lumen · Luz de escritorio",
+      "productImage": [
+        {
+          "naturalWidth": 335,
+          "naturalHeight": 335,
+          "path": "/lumen-one-640.webp",
+          "displayedWidth": 335
+        }
+      ],
+      "images": [
+        {
+          "path": "/lumen-one-640.webp",
+          "bytes": 12192,
+          "transferBytes": 12492,
+          "durationMs": 133.1
+        }
+      ],
+      "lcpMs": 9464,
+      "cls": 0,
+      "navigationMs": 5995.5,
+      "failed": []
+    },
+    {
+      "status": 200,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "horizontalOverflow": false,
+      "title": "Lumen · Luz de escritorio",
+      "productImage": [
+        {
+          "naturalWidth": 720,
+          "naturalHeight": 720,
+          "path": "/lumen-one-1200.webp",
+          "displayedWidth": 668.5625
+        }
+      ],
+      "images": [
+        {
+          "path": "/lumen-one-1200.webp",
+          "bytes": 31056,
+          "transferBytes": 31356,
+          "durationMs": 212.3
+        }
+      ],
+      "lcpMs": 5416,
+      "cls": 0.01570471536351166,
+      "navigationMs": 5060.4,
+      "failed": []
+    }
+  ]
+}

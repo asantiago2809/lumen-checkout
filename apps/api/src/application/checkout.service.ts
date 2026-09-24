@@ -143,6 +143,19 @@ export class CheckoutService {
     return this.retry(async () => {
       const session = await this.store.get<Session>(keys.session(owner));
       if (!session) return fail("SESSION_EXPIRED", "Tu sesión venció.", 401);
+      // Recheck on every CAS retry: another tab may reserve the order after
+      // this autosave started. Its confirmed customer/address must stay fixed.
+      if (session.value.activeTransactionId) {
+        const active = await this.store.get<Transaction>(
+          keys.transaction(session.value.activeTransactionId),
+        );
+        if (active?.value.status === "PENDING")
+          return fail(
+            "PAYMENT_IN_PROGRESS",
+            "Ya tienes una compra pendiente. Consulta su estado antes de cambiar los datos.",
+            409,
+          );
+      }
       if (!(await this.store.get(keys.product(draft.productId))))
         return fail("NOT_FOUND", "El producto no existe.", 404);
       await this.store.commit([
@@ -235,6 +248,13 @@ export class CheckoutService {
           .filter(([, v]) => v !== undefined && v !== "")
           .map(([k, v]) => [k, v.trim()]),
       ) as unknown as Address,
+    };
+    const reservationDraft: Draft = {
+      productId: input.productId,
+      quantity: input.quantity,
+      step: "SUMMARY",
+      customer: input.customer,
+      delivery: input.delivery,
     };
     const canonical = JSON.stringify({
       productId: input.productId,
@@ -359,7 +379,11 @@ export class CheckoutService {
         {
           key: keys.session(owner),
           expectedVersion: session.version,
-          value: { ...session.value, activeTransactionId: txId },
+          value: {
+            ...session.value,
+            activeTransactionId: txId,
+            draft: reservationDraft,
+          },
         },
       ]);
       return ok({ transaction: view(tx), created: true });

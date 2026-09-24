@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "revision": "ad641f4b2e2327aebbf5ebbe7e726f324535e373",
+  "recordedAt": "2026-09-24T00:43:52.525506+00:00",
+  "execution": "independent-rubric-evaluator",
+  "command": "npm run test:coverage",
+  "exitCode": 0,
+  "applications": [
+    {
+      "application": "api",
+      "passingTests": 75,
+      "passingSuites": 7,
+      "coverage": {
+        "statements": 98.5,
+        "branches": 95.34,
+        "functions": 100,
+        "lines": 98.5
+      }
+    },
+    {
+      "application": "web",
+      "passingTests": 82,
+      "passingSuites": 7,
+      "coverage": {
+        "statements": 96.16,
+        "branches": 95.27,
+        "functions": 95.27,
+        "lines": 97.25
+      }
+    }
+  ]
+}

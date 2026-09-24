@@ -119,7 +119,9 @@ Las tarifas anteriores son la decisión inicial del producto: cargo base COP 2.5
 
 `GET /checkout/session`: `200` o `401`. `draft` es `CheckoutDraft | null`; jamás contiene tarjeta, token de tarjeta ni consentimiento marcado. Las respuestas de sesión, borrador, clientes y transacciones usan `Cache-Control: no-store`.
 
-`PUT /checkout/draft`: body `CheckoutDraft`, `200 { "data": { "draft": ... } }`. Guardado al salir de un campo o con debounce de 500ms; el botón de continuar espera la confirmación. El servidor aplica TTL de 24h y mantiene el borrador vinculado a la sesión. Cuando hay transacción en curso, editar el borrador no modifica su snapshot. El TTL es una retención del borrador, nunca el mecanismo para liberar reservas de pagos enviados.
+`PUT /checkout/draft`: body `CheckoutDraft`, `200 { "data": { "draft": ... } }`. Guardado con debounce de 500ms; el botón de continuar espera la confirmación. El servidor aplica TTL de 24h y mantiene el borrador vinculado a la sesión. Con una transacción activa `PENDING`, rechaza escrituras con `409 PAYMENT_IN_PROGRESS`, incluso después de un conflicto de versión; otra pestaña no puede cambiar el resumen de una compra reservada. Crear la transacción guarda atómicamente el borrador `SUMMARY` con los mismos datos normalizados de cliente y dirección que su snapshot. Al recuperar una transacción tras una respuesta perdida o un conflicto, la interfaz adopta también este borrador autoritativo y solicita de nuevo la tarjeta. El TTL es una retención del borrador, nunca el mecanismo para liberar reservas de pagos enviados.
+
+La recarga durante los 500ms anteriores al autoguardado puede perder la última edición todavía no confirmada. El resumen confirmado sí espera persistencia. La tarjeta y los consentimientos nunca se recuperan desde el borrador.
 
 `DELETE /checkout/draft`: `204`, limpia borrador y puntero activo solo cuando no haya un pago en curso. Si está `PENDING` con envío iniciado, `409 PAYMENT_IN_PROGRESS`. La transacción financiera no se elimina. Se usa al regresar al producto después de un resultado terminal o para reiniciar un borrador sin pago.
 

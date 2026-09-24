@@ -334,20 +334,37 @@ test("failed creation keeps idempotency key for explicit retry", async () => {
 });
 test("lost creation response recovers the existing transaction without auto charging", async () => {
   await openSummary();
+  const reservedDraft = {
+    ...draft,
+    customer: { ...draft.customer, fullName: "Destinatario de la reserva" },
+    delivery: { ...draft.delivery, addressLine1: "Calle de la reserva 17" },
+  };
   jest
     .mocked(transport.api.create)
     .mockRejectedValueOnce(new Error("Respuesta perdida"));
-  jest
-    .mocked(transport.api.session)
-    .mockResolvedValueOnce({ ...session, activeTransactionId: transaction.id });
+  jest.mocked(transport.api.session).mockResolvedValueOnce({
+    ...session,
+    draft: reservedDraft,
+    activeTransactionId: transaction.id,
+  });
   fireEvent.click(screen.getByRole("button", { name: /Pagar.*203/ }));
   await screen.findByText("Tu pedido está reservado.");
   expect(transport.api.pay).not.toHaveBeenCalled();
   fireEvent.click(screen.getByRole("button", { name: "Completar pago" }));
   expect(screen.getByLabelText("Número de tarjeta")).toHaveValue("");
   expect(screen.queryByLabelText("Dirección")).not.toBeInTheDocument();
+  expect(
+    screen.getByRole("checkbox", { name: /Acepto los/ }),
+  ).not.toBeChecked();
+  expect(
+    screen.getByRole("checkbox", { name: /Autorizo el/ }),
+  ).not.toBeChecked();
   fillCard();
   await review();
+  expect(screen.getByText(reservedDraft.customer.fullName)).toBeInTheDocument();
+  expect(
+    screen.getByText(reservedDraft.delivery.addressLine1, { exact: false }),
+  ).toBeInTheDocument();
   fireEvent.click(screen.getByRole("button", { name: /Pagar.*203/ }));
   await screen.findByText("Tu luz está en camino.");
   expect(transport.api.create).toHaveBeenCalledTimes(1);

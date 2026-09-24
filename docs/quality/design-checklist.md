@@ -1,6 +1,6 @@
 # Checklist independiente de diseño y UX — Lumen
 
-**Revisión local ejecutada el 2026-09-23; alcance y pendientes explícitos.** No se aprueba un punto solo por estar documentado. APROBADO se limita a los escenarios identificados; PENDIENTE significa no ejecutado o cobertura parcial, no defecto demostrado. Los fixtures no son transacciones sandbox reales.
+**Revisión local y verificación sandbox real E14 ejecutadas el 2026-09-23, America/Bogota; alcance y pendientes explícitos.** No se aprueba un punto solo por estar documentado. APROBADO se limita a los escenarios identificados; PENDIENTE significa no ejecutado o cobertura parcial, no defecto demostrado. Los fixtures locales E4/E5/E11 no son transacciones sandbox reales; E14 tiene evidencia independiente del proveedor real.
 
 ## Registro de ejecución
 
@@ -9,15 +9,16 @@
 | Revisor | Auditor/QA independiente de implementación |
 | Fecha/zona | 2026-09-23, America/Bogota |
 | Versión | E4/E5 son evidencia histórica; E11 corresponde a QA/CSS 3edc404 con 79 PASS local y CI. Fix API posterior 0c74bf7 no modifica UI. |
-| URL/build | Vite 5174 + Nest 3002 reales; FileStore aislado; gateway/tokenización externos controlados |
+| URL/build | E4/E5/E11: Vite 5174 + Nest 3002 reales, FileStore aislado y gateway/tokenización externos controlados. E14: aplicación pública AWS, DynamoDB y proveedor UAT sandbox real. |
 | Motores | Chromium 153.0.8010.12, Firefox 155.0, WebKit 26.6 |
 | Dispositivo físico | No ejecutado; 375x667 es viewport CSS, no Safari/iPhone físico |
 | Automatización | Playwright + axe; screenshots explícitos saneados, traces/video desactivados |
 | Evidencia E4 | [55 ejecuciones PASS](../../tests/e2e/evidence/2026-09-23-full-55.json), 11 HTTP + 44 UI |
 | Evidencia E11 | [79 ejecuciones PASS](../../tests/e2e/evidence/2026-09-23-full-79.json): 11 HTTP + 17 UI × 4 proyectos; incluye 24 nuevas ejecuciones QA-X01–X06 |
 | Evidencia E5 | [12 retests visuales PASS](../../tests/e2e/evidence/2026-09-23-visual-retest-12.json), producto/formulario inválido/resumen largo en 4 proyectos |
+| Evidencia E14 | [Reporte sandbox real](../../tests/e2e/evidence/live-sandbox-35936568755/report.json), [workflow 35936568755](https://github.com/asantiago2809/lumen-checkout/actions/runs/35936568755), fuente fca0339: APPROVED/DECLINED en Chromium 153, 375×667, sin interceptación y con TLS validado. |
 | Capturas | [Directorio y alcance](../../tests/e2e/evidence/README.md) |
-| Límites | Sin lector de pantalla/teclado virtual físico, zoom 200%, autofill real ni sandbox real |
+| Límites | Sin lector de pantalla/teclado virtual físico, zoom 200% ni autofill real. Sandbox real limitado a los dos escenarios E14; no amplía la matriz local de navegadores/viewports. |
 
 E1/E2 son Jest API/frontend descritos en [QA](qa-report.md). Las capturas conservadas muestran el estilo moderno; el retest E5 valida después el último ajuste de labels 14 px y alineación a 320 px. No se atribuye a esas capturas un diff visual automático que no se realizó.
 
@@ -102,13 +103,13 @@ Paisaje: catálogo, formulario con errores y resumen largo se probaron a 667x375
 | A11Y-09 | Lectura con lector de pantalla revisada o limitación explícita, sin afirmar que axe la sustituye | APROBADO | Limitación explícita: no lector de pantalla real; axe no lo sustituye. |
 | PRIV-01 | Sin PAN/CVC en Redux, storage, URL, logs, screenshots, analytics o resumen | APROBADO | E4 requests propios/storage/DB/resumen sin PAN; revisión código sin persistencia de tarjeta; capturas solo campos vacíos/máscara. |
 | PRIV-02 | Evidencia y documentación pública sin PII real ni credenciales | APROBADO | Datos ficticios, escáner de 131 archivos PASS, evidencia sin PAN/CVC ni credenciales. |
-| PRIV-03 | Consentimiento/enlace proveedor real si requerido; nada preseleccionado ni inventado | BLOQUEADO | Dos casillas vacías y enlaces por contrato probados con fixtures; merchant/consentimiento real requiere sandbox accesible. |
+| PRIV-03 | Consentimiento/enlace proveedor real si requerido; nada preseleccionado ni inventado | APROBADO | E4/E11 verifican ambas casillas inicialmente vacías. [Verificación AWS](release-report.md#live-api-regression-and-pre-payment-verification): configuración 200 con políticas reales del comercio UAT; la UI usa esos enlaces. E14 recorre ambos consentimientos explícitos con configuración real y completa APPROVED/DECLINED sin interceptación; [alcance y evidencia](qa-report.md#pago-real-sandbox-inspeccionado-independientemente). |
 
 La navegación nativa por enlaces en WebKit Windows sigue siendo una limitación explícita: Tab y Alt+Tab enfocaron directamente el botón, omitiendo anchors. El test conserva esa observación y verifica la activación del salto tras foco explícito, sin presentarlo como Tab nativo aprobado. [Apple documenta preferencias distintas para Tab/Option-Tab](https://support.apple.com/guide/safari/cpsh003/mac); esta referencia no convierte el runner Windows en Safari físico.
 
 ## Contenido adverso y defectos
 
-QA ejecutó nombre largo, dirección cercana al límite y complemento largo dentro del contrato, en 320/375/667 paisaje/768. No se ejecutó presentación de total 9 cifras ni referencia 64 sin espacios. Jest cubre límites de tarjeta/entrega; E4 ejecuta formulario vacío, cambio de precio, tokenización fallida, incertidumbre y proveedor indisponible. Los datos sintéticos no salieron del gateway/tokenización interceptados.
+QA ejecutó nombre largo, dirección cercana al límite y complemento largo dentro del contrato, en 320/375/667 paisaje/768. No se ejecutó presentación de total 9 cifras ni referencia 64 sin espacios. Jest cubre límites de tarjeta/entrega; E4 ejecuta formulario vacío, cambio de precio, tokenización fallida, incertidumbre y proveedor indisponible. En E4/E5/E11 los datos sintéticos no salieron del gateway/tokenización interceptados; E14 utilizó datos ficticios oficiales contra el proveedor sandbox real.
 
 | ID | Severidad | Observado | Corrección y retest | Estado |
 |---|---|---|---|---|

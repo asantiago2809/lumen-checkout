@@ -2,7 +2,7 @@
 
 An original mobile-first checkout built with React, Redux Toolkit and a NestJS API. The Spanish interface sells one fictional Lumen One lamp through a five-step card-payment flow. The backend controls money, inventory and payment state. Sensitive card fields remain ephemeral in the browser and are tokenized directly by the sandbox provider.
 
-**Verified:** 68 backend Jest tests, 82 frontend Jest tests and 79 independent Playwright executions pass. The public AWS application and Swagger are live. [Genuine sandbox verification](https://github.com/asantiago2809/lumen-checkout/actions/runs/35936568755) passed approval and decline in Chromium with normal TLS, direct tokenization, one payment submission per purchase, refresh recovery and correct stock/delivery outcomes. Deterministic tests and real provider evidence are recorded separately.
+**Verified locally:** 75 backend Jest tests, 82 frontend Jest tests and 91 independent Playwright executions pass on `ad641f4`. A [second independent rubric review](docs/quality/rubric-evaluation.md) found and verified a correction for inconsistent checkout details across tabs. The public AWS application and Swagger are live. [Genuine sandbox verification](https://github.com/asantiago2809/lumen-checkout/actions/runs/35936568755) passed approval and decline on the earlier version in Chromium with normal TLS, direct tokenization, one payment submission per purchase, refresh recovery and correct stock/delivery outcomes. Deterministic tests, deployed regression checks and real provider evidence are recorded separately.
 
 | Resource | Location / status |
 | --- | --- |
@@ -12,7 +12,7 @@ An original mobile-first checkout built with React, Redux Toolkit and a NestJS A
 | Local OpenAPI JSON | [localhost:3001/api/docs-json](http://localhost:3001/api/docs-json) |
 | Public application | [Lumen on AWS](https://j67vc6cdn4.execute-api.us-east-1.amazonaws.com) |
 | Public API documentation | [Swagger](https://j67vc6cdn4.execute-api.us-east-1.amazonaws.com/api/docs) · [OpenAPI JSON](https://j67vc6cdn4.execute-api.us-east-1.amazonaws.com/api/docs-json) |
-| Remote CI | [Linux quality gates passed](https://github.com/asantiago2809/lumen-checkout/actions/runs/35936553836) on `fca0339`: 150 Jest tests, 79 E2E and five static-handler tests |
+| Remote CI | [Linux quality gates passed](https://github.com/asantiago2809/lumen-checkout/actions/runs/35939598641) on `ad641f4`: 157 Jest tests, 91 E2E and five static-handler tests |
 
 ![Lumen desktop product page](tests/e2e/evidence/product-desktop.png)
 
@@ -178,8 +178,8 @@ Recorded on **23 September 2026** from actual local executions after final forma
 
 | Jest application | Passing tests | Statements | Branches | Functions | Lines |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| API | 68 | 98.48% | 95.28% | 100% | 98.48% |
-| Web | 82 | 96.10% | 95.27% | 95.23% | 97.20% |
+| API | 75 | 98.50% | 95.34% | 100% | 98.50% |
+| Web | 82 | 96.16% | 95.27% | 95.27% | 97.25% |
 
 API coverage excludes only two thin process entrypoints. SSM loading and Lambda initialization/cache live in tested modules. Web exclusions cover test support and type-only declarations. Business rules, use cases, reducers and payment/HTTP adapters remain in scope.
 
@@ -192,7 +192,7 @@ npm run build
 
 Reports are generated under each application's `coverage/`, including `coverage-summary.json` and `lcov.info`. The [quality workflow](.github/workflows/quality.yml) runs clean installation, secret scanning, type checks, Jest coverage, static-handler tests, builds and the complete independent browser suite, uploading coverage and E2E artifacts. Both the [initial Linux run](https://github.com/asantiago2809/lumen-checkout/actions/runs/35932314066) and the [updated code/infrastructure run](https://github.com/asantiago2809/lumen-checkout/actions/runs/35933599708) passed all gates; the latter tests `f84fc56` with the final formatted source and alternative HTTPS infrastructure.
 
-Independent Playwright verification passed **79 executions: 11 API scenarios plus 17 browser scenarios across four projects**, with zero failures, skips or flaky outcomes in the recorded local run. Projects cover Chromium desktop, Chromium at the iPhone SE CSS viewport of 375×667, Firefox and WebKit. Scenarios include approval/decline through a controlled provider adapter, repeated submission, stock, refresh, unknown outcomes, provider unavailability, long content, focus, keyboard use and automated accessibility checks. Additional layouts exercise 320px, 390px, 1024px, portrait/landscape mobile and tablet sizes. Reduced motion, reverse focus containment, editable summaries, pending recovery, touch targets and catalogue loading/error/sold-out states have dedicated regressions. Native WebKit link tabbing is an explicitly recorded platform limitation; real 200% browser zoom and physical assistive technology are not claimed.
+Independent Playwright verification passed **91 executions: 11 API scenarios plus 20 browser scenarios across four projects**, with zero failures, skips or flaky outcomes in the recorded local run. Projects cover Chromium desktop, Chromium at the iPhone SE CSS viewport of 375×667, Firefox and WebKit. Scenarios include approval/decline through a controlled provider adapter, repeated submission, stock, refresh, unknown outcomes, provider unavailability, long content, focus, keyboard use and automated accessibility checks. Additional layouts exercise 320px, 390px, 1024px, portrait/landscape mobile and tablet sizes. Reduced motion, reverse focus containment, editable summaries, pending recovery, touch targets and catalogue loading/error/sold-out states have dedicated regressions. Three cross-tab regressions verify rejected late autosaves, replacement of an earlier divergent draft, and recovery of the authoritative recipient/address without reloading or sending a payment. Native WebKit link tabbing is an explicitly recorded platform limitation; real 200% browser zoom and physical assistive technology are not claimed.
 
 ```sh
 npx playwright install chromium firefox webkit

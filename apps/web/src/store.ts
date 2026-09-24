@@ -119,6 +119,19 @@ const slice = createSlice({
       state.error = null;
       state.notice = null;
     },
+    recoveredCheckout(
+      state,
+      action: PayloadAction<{ transaction: Transaction; draft: Draft | null }>,
+    ) {
+      // Recovery can find a reservation created by another tab. Its recipient
+      // and delivery must replace this tab's stale draft together with the ID.
+      state.transaction = action.payload.transaction;
+      state.draft = action.payload.draft;
+      state.quote = null;
+      state.step = "RESULT";
+      state.error = null;
+      state.notice = null;
+    },
     rememberKey(state, action: PayloadAction<string>) {
       state.idempotencyKey = action.payload;
     },

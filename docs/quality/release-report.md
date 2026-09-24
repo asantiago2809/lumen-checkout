@@ -1,6 +1,6 @@
 # Release verification — 2026-09-23
 
-**Status: verified release candidate with a favorable independent audit.** Runtime configuration and the cloud draft defect are resolved, genuine sandbox approval/decline passed, and the previous assessment instance is stopped. The [82-control audit](final-audit.md) records 81 compliant controls, zero blocked and one pending external assessor grade. No assessment has been sent to the employer.
+**Status: the cross-tab inconsistency found by the rubric reviewer is corrected, deployed and independently retested.** The [current evaluation](rubric-evaluation.md) records **147/150 internal points**, preserves the initial 144/150 and lists the remaining improvements. The [82-control audit](final-audit.md) and earlier payment evidence retain their original versions and scope. Genuine sandbox approval/decline passed on the earlier application; the new public checks deliberately stop before payment. The previous assessment instance is stopped. No assessment has been sent to the employer.
 
 ## Source and automated evidence
 
@@ -14,6 +14,20 @@
 - Static delivery adapter: five Node tests passed and independently reproduced. They cover allowed paths, traversal rejection, MIME/cache/HEAD behavior, private error handling and response-size limits.
 - Both CloudFormation templates pass cfn-lint. The first cloud template also passed AWS `validate-template` before provisioning.
 - Exact comparison against all five configured key/session values found zero matches in repository files, Git patch history and the built frontend. The reusable pattern scan also passed. Values were not printed or copied into this report.
+
+## Subsequent rubric correction — `ad641f4`
+
+The independent rubric review found that a second tab could change the visible recipient/address after another tab reserved a different order. Creation now writes the normalized reservation draft atomically, later writes receive `409 PAYMENT_IN_PROGRESS` even after a CAS retry, and client recovery replaces the draft and transaction together. Card and consents are cleared when recovering a conflict.
+
+- Source: `ad641f4b2e2327aebbf5ebbe7e726f324535e373`, [PR3](https://github.com/asantiago2809/lumen-checkout/pull/3).
+- [Independent Jest evidence](../../tests/e2e/evidence/2026-09-23-rubric-jest.json): 75 API + 82 web passing tests. [Independent E2E evidence](../../tests/e2e/evidence/2026-09-23-rubric-full-91.json): 91 passing executions, zero failures, skips or flaky outcomes. The new cases failed against the old behavior; their [historical summary](../../tests/e2e/evidence/2026-09-23-rubric-red-summary.json) preserves that result separately.
+- [Linux CI 35939598641](https://github.com/asantiago2809/lumen-checkout/actions/runs/35939598641): success on the exact application commit, including 157 Jest, 91 E2E, five static-handler tests, secret scan, typecheck and build.
+- API artifact: `api/api-ad641f4-20260923194156.zip`, SHA256 `F3F25AE9422E99DC426CC84CA27E26F3C399E234520546C769B2B7EC71CB153C`. Its 12,407 entries include the Lambda handler and no environment files. Production dependency audit reported zero vulnerabilities. Stack update completed; the new `index-DaPTUmLB.js` (281,035 bytes) was uploaded before the no-cache entrypoint. CSS remains `index-CAoB3uCW.css` and old hashed files were retained.
+- [Cutover evidence](../../tests/e2e/evidence/2026-09-23-rubric-deployment.json): complete consistent base-table counts found **zero PENDING** reservations before and after the deployment (27 records scanned each time). The fix protects newly created reservations; it does not repair an inconsistent historical draft restored from a backup. Test tabs must load the updated bundle.
+- [Live API retest](../../tests/e2e/evidence/2026-09-23-rubric-cloud-api.json), 2026-09-24T00:47:04Z: 24 checks passed plus sandbox configuration HTTP 200. A divergent earlier draft is replaced by the reserved order, stale writes and second-tab creation receive 409, recovery returns the confirmed details, and cancellation restores availability without a payment or delivery. The earlier real sandbox payment report is unchanged and is not presented as a new payment on this revision.
+- [Live browser retest](../../tests/e2e/evidence/2026-09-23-rubric-cloud-ui/report.json), 00:49:04–00:49:24 UTC: Chromium 153 at 375×667 loaded the exact updated assets and verified R09 through two real tabs without reloading. Recovery clears the card/consents and displays the reserved recipient/address. There were zero tokenization or payment attempts and no mocked API responses; an explicit network guard would block and fail any payment attempt. Its own unsubmitted reservation was cancelled to ERROR/NOT_STARTED without delivery, restoring stock 11→10→11. The [masked screenshot](../../tests/e2e/evidence/2026-09-23-rubric-cloud-ui/recovered-summary-masked.png) excludes personal/card input data.
+
+The [rubric report](rubric-evaluation.md) preserves the initial 144/150, the independent reevaluation and remaining improvements. The sections below describe the original deployment checks and retain their historical timestamps and versions.
 
 ## AWS provisioning and smoke checks
 
@@ -40,7 +54,7 @@ Public endpoint: https://j67vc6cdn4.execute-api.us-east-1.amazonaws.com
 
 The initial database probe used the authenticated local release profile. The later public API probe below runs through Lambda's own IAM role and actual DynamoDB persistence.
 
-The current API zip is built from `0c74bf7`, SHA256 `072B7066DA2E407FCEB91633DACBA2FA43628196C8B3D60D8F0EB30F21C4AB21`. Its 12,407 archive entries were inspected for the Lambda handler and absence of environment files. The stack reached `UPDATE_COMPLETE`. The static adapter object is keyed by its source hash, `web-a08d71c02d54.zip`. Current browser assets are `index-BfNWFEt7.js` and `index-CAoB3uCW.css`, published before the no-cache index; earlier hashed assets were retained.
+The original verified API zip was built from `0c74bf7`, SHA256 `072B7066DA2E407FCEB91633DACBA2FA43628196C8B3D60D8F0EB30F21C4AB21`. Its 12,407 archive entries were inspected for the Lambda handler and absence of environment files. The stack reached `UPDATE_COMPLETE`. The static adapter object is keyed by its source hash, `web-a08d71c02d54.zip`. Browser assets at that cut were `index-BfNWFEt7.js` and `index-CAoB3uCW.css`, published before the no-cache index; earlier hashed assets were retained. The current revision is recorded in the subsequent-correction section above.
 
 ## Live API regression and pre-payment verification
 

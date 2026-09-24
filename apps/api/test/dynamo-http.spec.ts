@@ -166,7 +166,7 @@ describe("HTTP DTO to DynamoDB serialization regression", () => {
     save.mockRestore();
   });
 
-  it("serializes transaction snapshots and the existing draft, then replays and releases its reservation", async () => {
+  it("serializes the canonical reservation draft, rejects a stale tab, then replays and releases its reservation", async () => {
     const create = jest.spyOn(service, "create");
     const key = randomUUID();
     const post = () =>
@@ -184,8 +184,25 @@ describe("HTTP DTO to DynamoDB serialization regression", () => {
     });
     const replay = await post().send(input).expect(200);
     expect(replay.body.data.id).toBe(created.body.data.id);
+    const canonicalDraft = {
+      productId: input.productId,
+      quantity: 1,
+      step: "SUMMARY",
+      customer: input.customer,
+      delivery: input.delivery,
+    };
     expect((await api.get("/api/checkout/session")).body.data.draft).toEqual(
-      draft,
+      canonicalDraft,
+    );
+    const stale = await api
+      .put("/api/checkout/draft")
+      .set("Origin", origin)
+      .set("X-CSRF-Token", csrf)
+      .send(draft)
+      .expect(409);
+    expect(stale.body.error.code).toBe("PAYMENT_IN_PROGRESS");
+    expect((await api.get("/api/checkout/session")).body.data.draft).toEqual(
+      canonicalDraft,
     );
     expect(
       (await api.get(`/api/products/${input.productId}`)).body.data.stock,

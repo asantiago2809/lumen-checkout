@@ -1,0 +1,210 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-24T00:43:52.525506+00:00",
+  "scope": "Sanitized historical metadata read independently from the frontend regression reports before the complete retest started. These are not additional executions by the rubric evaluator.",
+  "provenance": "The transient raw reports were subsequently removed by the Playwright test-results cleanup. This summary preserves only the metadata actually read before that cleanup; it does not reconstruct raw assertion errors.",
+  "sensitiveDataPolicy": "No request payloads, PAN, tokens, cookies, absolute filesystem paths, screenshots, raw errors or stdout are included.",
+  "runs": [
+    {
+      "sourceReport": "p1-reserved-draft-red-final.json",
+      "sourceStage": "Original application behavior before backend fix; regression tests were new working-tree files.",
+      "startTime": "2026-09-24T00:36:04.212Z",
+      "durationMs": 22506.387,
+      "expected": 0,
+      "skipped": 0,
+      "unexpected": 2,
+      "flaky": 0,
+      "cases": [
+        {
+          "title": "QA-R07: late autosave from a second tab cannot change a reserved delivery",
+          "project": "chromium-desktop",
+          "status": "unexpected",
+          "attempts": [
+            {
+              "status": "failed",
+              "errorCount": 4
+            }
+          ]
+        },
+        {
+          "title": "QA-R08: creation replaces a different saved draft with its authoritative input",
+          "project": "chromium-desktop",
+          "status": "unexpected",
+          "attempts": [
+            {
+              "status": "failed",
+              "errorCount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sourceReport": "p1-reserved-draft-ui-red-final.json",
+      "sourceStage": "Backend fix applied; frontend recovery fix not yet applied.",
+      "startTime": "2026-09-24T00:38:48.277Z",
+      "durationMs": 12644.148,
+      "expected": 0,
+      "skipped": 0,
+      "unexpected": 1,
+      "flaky": 0,
+      "cases": [
+        {
+          "title": "QA-R09: a stale open summary recovers the reserved snapshot without reloading",
+          "project": "chromium-desktop",
+          "status": "unexpected",
+          "attempts": [
+            {
+              "status": "failed",
+              "errorCount": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sourceReport": "p1-reserved-draft-green.json",
+      "sourceStage": "Backend and frontend fix working tree before candidate commit; frontend verification, not independent full retest.",
+      "startTime": "2026-09-24T00:39:50.055Z",
+      "durationMs": 29530.91,
+      "expected": 12,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0,
+      "cases": [
+        {
+          "title": "QA-R07: late autosave from a second tab cannot change a reserved delivery",
+          "project": "chromium-desktop",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "errorCount": 0
+            }
+          ]
+        },
+        {
+          "title": "QA-R08: creation replaces a different saved draft with its authoritative input",
+          "project": "chromium-desktop",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "errorCount": 0
+            }
+          ]
+        },
+        {
+          "title": "QA-R09: a stale open summary recovers the reserved snapshot without reloading",
+          "project": "chromium-desktop",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "errorCount": 0
+            }
+          ]
+        },
+        {
+          "title": "QA-R07: late autosave from a second tab cannot change a reserved delivery",
+          "project": "chromium-se",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "errorCount": 0
+            }
+          ]
+        },
+        {
+          "title": "QA-R08: creation replaces a different saved draft with its authoritative input",
+          "project": "chromium-se",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "errorCount": 0
+            }
+          ]
+        },
+        {
+          "title": "QA-R09: a stale open summary recovers the reserved snapshot without reloading",
+          "project": "chromium-se",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "errorCount": 0
+            }
+          ]
+        },
+        {
+          "title": "QA-R07: late autosave from a second tab cannot change a reserved delivery",
+          "project": "firefox-desktop",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "errorCount": 0
+            }
+          ]
+        },
+        {
+          "title": "QA-R08: creation replaces a different saved draft with its authoritative input",
+          "project": "firefox-desktop",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "errorCount": 0
+            }
+          ]
+        },
+        {
+          "title": "QA-R09: a stale open summary recovers the reserved snapshot without reloading",
+          "project": "firefox-desktop",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "errorCount": 0
+            }
+          ]
+        },
+        {
+          "title": "QA-R07: late autosave from a second tab cannot change a reserved delivery",
+          "project": "webkit-desktop",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "errorCount": 0
+            }
+          ]
+        },
+        {
+          "title": "QA-R08: creation replaces a different saved draft with its authoritative input",
+          "project": "webkit-desktop",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "errorCount": 0
+            }
+          ]
+        },
+        {
+          "title": "QA-R09: a stale open summary recovers the reserved snapshot without reloading",
+          "project": "webkit-desktop",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "errorCount": 0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
