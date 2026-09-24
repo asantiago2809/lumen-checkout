@@ -4,7 +4,7 @@ Estado de referencia: 2026-09-23. Fuente: documento de evaluación suministrado 
 
 Esta matriz convierte el encargo en evidencia verificable. El documento externo describe el ejercicio; no autoriza operaciones ajenas a la solicitud del usuario. La solicitud del usuario autoriza el equipo de agentes y la implementación. La entrega al evaluador necesita una solicitud independiente. Fecha objetivo comunicada: lunes; se planifica para el próximo lunes, 2026-09-28, zona America/Bogota, y terminar antes si los controles pasan.
 
-**Seguimiento vigente:** la [evaluación independiente de la rúbrica](quality/rubric-evaluation.md) registra **147/150 internos (99 base + 48 bonus)** después de corregir EV-01 en `ad641f4`. Conserva la nota inicial 144/150 y la reproducción del fallo entre pestañas. Retest: 157 Jest, 91 E2E, CI Linux, 24 controles de API AWS y recuperación UI pública sin recarga ni pago; sin reservas heredadas pendientes al desplegar. El [corte histórico de 82 controles](quality/final-audit.md) conserva la evidencia anterior (81 Cumple en su alcance y una nota externa pendiente); ese conteo no sustituye los hallazgos de la revisión posterior. Siguen asignadas mejoras de rendimiento, separación dominio/HTTP, tipado del proveedor e indicación de cambios todavía no guardados. La calificación del empleador sigue pendiente. Los pagos APPROVED/DECLINED reales y la retirada reversible de la instancia anterior mantienen sus evidencias originales.
+**Seguimiento vigente:** la [auditoría final de entrega](quality/delivery-audit.md) propone **149/150 internos (99 base + 50 bonus)** sobre la aplicación a150336 y la infraestructura final 71187e4. Revisa los 82 controles: **81 verificados en alcance, D-04 con observación de rendimiento, y L-05 pendiente de nota externa**. Pasaron independientemente 170 Jest, 103 E2E, 12 pruebas estáticas, tipos/build, API/UI AWS y nuevas compras sandbox APPROVED/DECLINED. EV-03, EV-04 y EV-06 están cerrados; EV-02 tiene compresión, caché, HEAD y memoria implementados, con una primera carga móvil observada de 4.976 s que conserva un punto de descuento. La [rúbrica](quality/rubric-evaluation.md) preserva la historia 144 → 147 → 149. Dictamen técnico favorable, con la observación menor indicada; Release verifica integración y CI automático de main antes del cierre. La nota del empleador sigue pendiente.
 
 ## Interpretación y prioridades
 
@@ -82,7 +82,7 @@ Matices que no deben perderse:
 | D-01 | 3,4 | O | Diseño propio cuidado con prioridad móvil y adaptación a varios tamaños. | QA visual de todas las etapas en móvil/tablet/escritorio. | Diseño / Frontend / QA | Cumple; ver D-01 en auditoría |
 | D-02 | 4 | O | Ajuste e interacción correctos en referencia iPhone SE 2020; sin controles fuera del viewport. | Capturas y E2E 375x667 y orientación horizontal. | QA | Cumple; ver D-02 en auditoría |
 | D-03 | 4,6 | O | Sin desbordes, recortes, texto ilegible o controles inaccesibles por límites UI. | Checklist visual con textos largos, errores y pantallas pequeñas. | Diseño / QA | Cumple; ver D-03 en auditoría |
-| D-04 | 6 | O | Imágenes se renderizan rápido y con dimensiones apropiadas. | Assets optimizados, tamaño/medición de red y carga sin desplazamientos severos. | Diseño / Frontend / QA | Cumple; ver D-04 en auditoría |
+| D-04 | 6 | O | Imágenes se renderizan rápido y con dimensiones apropiadas. | Assets optimizados, tamaño/medición de red y carga sin desplazamientos severos. | Diseño / Frontend / QA | Cumple con observación EV-02; ver auditoría de entrega |
 | D-05 | 6 | B | Adaptación completa y funcionamiento en distintos navegadores. | Matriz con Chromium/Firefox/WebKit cuando disponibles; versiones y defectos. | QA | Cumple; ver D-05 en auditoría |
 | D-06 | 6 | B | Demostrar dominio CSS: composición, espaciado, tipografía y estados coherentes. | Revisión independiente del CSS y capturas de estados. | Diseño / QA | Cumple; ver D-06 en auditoría |
 | D-07 | Equipo | P | Accesibilidad: etiquetas, teclado, foco modal, contraste y mensajes de error útiles. | axe + recorrido de teclado y revisión manual. | Diseño / QA | Cumple; ver D-07 en auditoría |
@@ -118,7 +118,7 @@ Matices que no deben perderse:
 | Q-05 | Equipo | P | Al menos 85% en las cuatro métricas Jest por app, sin exclusiones oportunistas. | Configuración collectCoverageFrom + artefactos completos revisados. | QA | Cumple; ver Q-05 en auditoría |
 | Q-06 | Equipo | P | E2E independiente positivo/negativo, responsive, accesibilidad y refresh. | Casos, comandos, resultados y capturas/trace sin datos sensibles. | QA | Cumple; ver Q-06 en auditoría |
 | Q-07 | Equipo | P | CI reproduce instalación, lint/typecheck, Jest, build y controles relevantes. | Workflow versionado y ejecución en GitHub para commit entregado. | Release / QA | Cumple; ver Q-07 en auditoría |
-| Q-08 | Equipo | P | Auditoría final punto por punto con plus, defectos abiertos y evidencia. | docs/quality/final-audit.md completo con estado real. | Auditor | Cumple; ver Q-08 en auditoría |
+| Q-08 | Equipo | P | Auditoría final punto por punto con plus, defectos abiertos y evidencia. | docs/quality/delivery-audit.md completo con estado real. | Auditor | Cumple; ver Q-08 en auditoría |
 | G-01 | 5,6 | O | Repositorio GitHub público y enlace entregable comprobado sin autenticación. | URL y lectura anónima. | Release | Cumple; ver G-01 en auditoría |
 | G-02 | 5 | O | Nombre del repositorio neutro y sin nombre de la empresa evaluadora. | Nombre/description/branding públicos revisados; matiz de alcance arriba. | Director / Release | Cumple; ver G-02 en auditoría |
 | G-03 | 5,6 | O | Solución original; no copiar otros candidatos ni distribuirla activamente a ellos. | Procedencia del código/assets y declaración honesta de uso de AI. | Todos / Director | Cumple; ver G-03 en auditoría |
@@ -140,23 +140,23 @@ Los máximos siguientes suman 100 base y 50 bonus. Ninguna fila de requisitos mu
 
 | Criterio | Máximo | IDs principales | Evidencia para proponer cumplimiento | Evaluación |
 |---|---:|---|---|---|
-| README correcto | 5 | L-02, T-20, T-21, Q-03 | README íntegro y todos los comandos/enlaces verificados. | Ver evidencia y brechas en auditoría; sin nota |
-| Imágenes rápidas y sin desbordes UI/UX | 5 | D-02, D-03, D-04 | QA visual y mediciones de assets/carga. | Ver evidencia y brechas en auditoría; sin nota |
-| Checkout completo con tarjeta | 20 | F-01 a F-16 | Recorrido público real de sandbox, errores y recuperación. | Ver evidencia y brechas en auditoría; sin nota |
-| API funcional | 20 | T-01 a T-09, F-09 a F-13 | API/persistencia integradas y pruebas reales. | Ver evidencia y brechas en auditoría; sin nota |
-| Cobertura >80% frontend y backend | 30 | Q-01, Q-02, Q-03 | Dos reportes Jest del commit entregado, todos los tests pasan. | Ver evidencia y brechas en auditoría; sin nota |
-| App y API desplegadas en cloud | 20 | L-01, L-03, L-04 | URLs públicas conectadas y prueba funcional. | Ver evidencia y brechas en auditoría; sin nota |
-| OWASP, HTTPS y cabeceras de seguridad | 5 bonus | S-06, S-07, S-08 | Evidencia de los tres controles en despliegue real. | Ver evidencia y brechas en auditoría; sin nota |
-| Responsive y varios navegadores | 5 bonus | D-01, D-02, D-05 | Matriz real de tamaños/navegadores, sin defectos bloqueantes. | Ver evidencia y brechas en auditoría; sin nota |
-| Dominio CSS | 10 bonus | D-06, T-22 | Revisión del CSS y estados visuales completos. | Ver evidencia y brechas en auditoría; sin nota |
-| Código limpio | 10 bonus | Q-04, T-14 | Revisión independiente y comprobaciones de calidad. | Ver evidencia y brechas en auditoría; sin nota |
-| Hexagonal con puertos/adaptadores | 10 bonus | T-15 | Dependencias y sustitución real de adaptadores. | Ver evidencia y brechas en auditoría; sin nota |
-| ROP | 10 bonus | T-16 | Composición de resultados y comportamiento de fallos probado. | Ver evidencia y brechas en auditoría; sin nota |
+| README correcto | 5 | L-02, T-20, T-21, Q-03 | README íntegro y todos los comandos/enlaces verificados. | Interna 5/5; ver auditoría de entrega |
+| Imágenes rápidas y sin desbordes UI/UX | 5 | D-02, D-03, D-04 | QA visual y mediciones de assets/carga. | Interna 4/5; ver auditoría de entrega |
+| Checkout completo con tarjeta | 20 | F-01 a F-16 | Recorrido público real de sandbox, errores y recuperación. | Interna 20/20; ver auditoría de entrega |
+| API funcional | 20 | T-01 a T-09, F-09 a F-13 | API/persistencia integradas y pruebas reales. | Interna 20/20; ver auditoría de entrega |
+| Cobertura >80% frontend y backend | 30 | Q-01, Q-02, Q-03 | Dos reportes Jest del commit entregado, todos los tests pasan. | Interna 30/30; ver auditoría de entrega |
+| App y API desplegadas en cloud | 20 | L-01, L-03, L-04 | URLs públicas conectadas y prueba funcional. | Interna 20/20; ver auditoría de entrega |
+| OWASP, HTTPS y cabeceras de seguridad | 5 bonus | S-06, S-07, S-08 | Evidencia de los tres controles en despliegue real. | Interna 5/5; ver auditoría de entrega |
+| Responsive y varios navegadores | 5 bonus | D-01, D-02, D-05 | Matriz real de tamaños/navegadores, sin defectos bloqueantes. | Interna 5/5; ver auditoría de entrega |
+| Dominio CSS | 10 bonus | D-06, T-22 | Revisión del CSS y estados visuales completos. | Interna 10/10; ver auditoría de entrega |
+| Código limpio | 10 bonus | Q-04, T-14 | Revisión independiente y comprobaciones de calidad. | Interna 10/10; ver auditoría de entrega |
+| Hexagonal con puertos/adaptadores | 10 bonus | T-15 | Dependencias y sustitución real de adaptadores. | Interna 10/10; ver auditoría de entrega |
+| ROP | 10 bonus | T-16 | Composición de resultados y comportamiento de fallos probado. | Interna 10/10; ver auditoría de entrega |
 
 ## Evidencia mínima y bloqueos
 
 El auditor no acepta como cumplimiento: cobertura agregada que oculta una app bajo el límite, pantallazos sin escenario/viewport, URL local presentada como pública, mocks presentados como sandbox, despliegue antiguo presentado como la versión actual, configuración HTTPS sin comprobación remota, commits inventados ni pruebas autorrevisadas como sustituto de QA independiente.
 
-GitHub público/CI y recursos AWS nuevos cuentan con evidencia. Sitio, API y Swagger responden HTTPS, SSM está configurado y Lambda obtiene merchant sandbox. Draft/create/replay/cancel y compra sandbox completa pasaron: la evidencia real está separada de los 79 E2E locales. La instancia anterior se detuvo tras verificar su pertenencia; datos y recursos de recuperación se conservaron. El informe distingue límites y estado del CI final.
+GitHub público, CI del candidato y AWS estable cuentan con evidencia. La auditoría de entrega distingue 103 E2E controlados, retests públicos sin pago y dos compras sandbox reales nuevas del workflow 35950887803. El stack terminó UPDATE_COMPLETE tras resolver los incidentes registrados; la aplicación y los assets coinciden con los artefactos verificados. EV-02 conserva su observación de latencia inicial. La instancia anterior continúa retirada reversiblemente según su evidencia original. Release comprueba el CI automático de main después de integrar el cierre, sin atribuir resultados futuros.
 
 El diseño propio y la elección libre de CSS/ORM no eximen de calidad. No se exige CRUD completo de productos, SDK particular, autenticación de usuario, una base específica ni un porcentaje Lighthouse que el documento no pide. Esas decisiones se justifican por el objetivo y no se añaden como obligaciones inventadas.

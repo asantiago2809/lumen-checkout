@@ -1,6 +1,46 @@
 # Release verification — 2026-09-23
 
-**Status: the cross-tab inconsistency found by the rubric reviewer is corrected, deployed and independently retested.** The [current evaluation](rubric-evaluation.md) records **147/150 internal points**, preserves the initial 144/150 and lists the remaining improvements. The [82-control audit](final-audit.md) and earlier payment evidence retain their original versions and scope. Genuine sandbox approval/decline passed on the earlier application; the new public checks deliberately stop before payment. The previous assessment instance is stopped. No assessment has been sent to the employer.
+**Current release: final application improvements deployed and verified, including a new genuine sandbox approval/decline.** The [delivery audit](delivery-audit.md) contains the current independent grade, individual 82-control checklist and readiness decision. The [rubric history](rubric-evaluation.md), earlier audit and older payment evidence retain their original versions and scope. Initial mobile latency remains a documented limitation. The previous assessment instance is stopped. No assessment has been sent to the employer.
+
+## Final improvement release
+
+Application revision `a150336` includes compressed static delivery, exhaustive domain-to-HTTP error mapping, explicit validation of unknown provider JSON, and reliable draft save feedback with close-time persistence. `f096001` only relocates performance output; `71187e4` adds actual TLS-wire HEAD verification and increases static Lambda memory to 512 MiB. API, web and static handler source remain unchanged after the independent application freeze.
+
+| Gate | Verified result | Evidence |
+| --- | --- | --- |
+| Independent local verification | 81 API + 89 web Jest tests; 103 E2E; 12 static-handler tests; typecheck/build passed | [Gates](../../tests/e2e/evidence/2026-09-23-delivery-gates.json), [individual E2E results](../../tests/e2e/evidence/2026-09-23-delivery-full-103.json) |
+| Linux CI | SUCCESS on `f096001`, same application source | [35950070341](https://github.com/asantiago2809/lumen-checkout/actions/runs/35950070341); final PR and main run status remains available in [Actions](https://github.com/asantiago2809/lumen-checkout/actions/workflows/quality.yml) |
+| AWS deployment | UPDATE_COMPLETE; both runtime zip hashes match; API/static memory 512 MiB | [Artifact and runtime evidence](../../tests/e2e/evidence/2026-09-23-delivery-deployment.json) |
+| Public API regression | 24 checks PASS plus provider config HTTP 200; own reservation cancelled and released | [API evidence](../../tests/e2e/evidence/2026-09-23-delivery-cloud-api.json) |
+| Public cross-tab recovery | Updated assets, authoritative recipient/address, card/consents cleared; no tokenization/payment; own stock 11→10→11 | [Browser evidence](../../tests/e2e/evidence/2026-09-23-delivery-cloud-ui/report.json) |
+| Genuine provider regression | APPROVED with delivery and stock 11→10; DECLINED without delivery and stock 10→10 | [Sandbox workflow 35950887803](https://github.com/asantiago2809/lumen-checkout/actions/runs/35950887803), [sanitized report and screenshots](../../tests/e2e/evidence/live-sandbox-35950887803/report.json) |
+
+Both real sandbox cases issued exactly one PENDING creation, direct card tokenization and payment POST, then recovered the same transaction after refresh. The Linux browser used normal TLS and no intercepted responses. The report records zero network failures and a browser `ERR_ABORTED` draft DELETE at product return per case; it also records the completed DELETE HTTP 204. These observations are retained without inventing a cause. The memory-only update happened after this payment pair and did not change application code; no additional payments were needed.
+
+The API zip is `api/api-929a550-20260923220204.zip` (17,544,828 bytes), SHA256 `B5C4518A7CCAEA33C0528AE46799F45151AFD325D06CFAD08583A99CCD456C12`. The static zip is `web/web-497a00175cc1.zip` (3,610 bytes), SHA256 `5E8EA50152823D9D858B3227ABD34F1C6F6CA93F623ED6F80AC32556ACAD7DE0`. The API archive has 12,411 entries, includes the Lambda handler and contains no environment file. Its production dependency audit reported zero vulnerabilities. Browser assets are `index-CjZzrNZL.js` (282,680 bytes) and `index-Dg5qOyc5.css` (19,571 bytes), uploaded before the no-cache entrypoint; previous hashed assets were retained.
+
+### Performance observations and remaining limit
+
+The [initial summary](../../tests/e2e/evidence/2026-09-23-delivery-performance-initial-summary.json) preserves a 12.332-second mobile outlier. Its raw temporary report was removed by Playwright cleanup before copying, so it is explicitly a summary, not reconstructed raw evidence. A separate [full baseline](../../tests/e2e/evidence/2026-09-23-delivery-performance-before.json) retains twelve navigations and the original HEAD metadata mismatch. The probe output now lives outside Playwright cleanup.
+
+The [first post-compression report](../../tests/e2e/evidence/2026-09-23-delivery-performance-after.json) verified transfer savings but recorded a 13.172-second mobile first visit. Platform REPORT records show initial static executions of 4.267/4.432 seconds at 128 MiB, and API initialization plus work above two seconds. They establish server execution delay in that interval, without isolating a unique cause. After increasing the static function to 512 MiB, the [final report](../../tests/e2e/evidence/2026-09-23-delivery-performance-tuned.json) records:
+
+| Viewport / visit | LCP min / median / max, seconds | Maximum CLS |
+| --- | --- | --- |
+| Mobile 375×667, first visit | 0.748 / 1.592 / 4.976 | 0 |
+| Mobile, repeat visit | 0.220 / 0.236 / 0.336 | 0 |
+| Desktop 1440×900, first visit | 0.672 / 0.692 / 1.020 | 0.0158 |
+| Desktop, repeat visit | 0.236 / 0.236 / 0.244 | 0.0158 |
+
+All twelve final navigations loaded images without overflow or failed requests. Gzip transfers JavaScript in **90,643 bytes (67.93% reduction)** and CSS in **4,759 bytes (75.68% reduction)**. Decoded hashes match identity; `gzip;q=0`, `Vary`, immutable caching and security headers pass. Actual TLS-wire HEAD responses contain zero body bytes and the same length/encoding metadata as GET. Three fresh browser contexts per viewport with repeat visits provide observations, not controlled cold-Lambda experiments, field percentiles or a universal latency guarantee. The 4.976-second first mobile visit remains visible in the final quality decision.
+
+### Deployment incidents retained
+
+The first application update failed with S3 `NoSuchKey` even though the earlier upload process exited zero. CloudFormation rolled back successfully. Release uploaded the API zip through explicit `put-object`, verified its MD5/ETag and all four artifact/asset byte sizes, and retried successfully at 03:13:54 UTC. The index was published only after the successful application update.
+
+A later performance adjustment attempted API memory of 1,024 MiB; this account rejected values above 512 MiB. The immediate rollback collided with an in-progress static update (409), temporarily leaving UPDATE_ROLLBACK_FAILED. Release waited for the function to finish and continued rollback without skipping resources. The final template changes only static memory 128→512 MiB, leaves API at 512 MiB and reached UPDATE_COMPLETE. No financial records were rolled back. The final template passes cfn-lint; AWS template validation also passed. The runbook now requires object verification before updates and explicit stable-state verification after rollback.
+
+The remaining sections are historical release records and keep their original revision identifiers, counts and limits.
 
 ## Source and automated evidence
 

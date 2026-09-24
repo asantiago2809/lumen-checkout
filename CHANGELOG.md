@@ -2,6 +2,16 @@
 
 Changes are recorded as implemented and verified. Git contains the incremental development record; an unreleased entry does not imply a public deployment or completed sandbox integration.
 
+## Final delivery improvements — 2026-09-23
+
+- Added negotiated gzip, correct encoding refusal/HEAD handling and a bounded warm cache for immutable static files. Public verification confirms JS/CSS transfer reductions of 67.93%/75.68%, including byte integrity and actual HEAD wire behavior. Browser-cold and repeat-visit measurements preserve the baseline and outliers.
+- Increased static Lambda memory/CPU from 128 to 512 MiB within the account's limit. Final mobile first-visit LCP samples are 0.748/1.592/4.976 seconds; initial latency remains explicitly documented. Deployment failures, rollback recovery and verified artifact hashes are retained in release evidence.
+- Moved all HTTP status translation out of domain errors into an exhaustive adapter mapping, preserving the 14 existing business error codes and API behavior.
+- Parse provider JSON as unknown data through explicit validators. Malformed or mismatched approvals remain uncertain with reservations retained; invalid optional card metadata is discarded.
+- Show pending/saving/saved/error progress with accessible retry. Closing waits for persistence and stays open on failure; an older save cannot announce a newer edit as saved. Unconfirmed edits still require waiting before a page reload.
+- Independent local gates on `a150336`: 81 API + 89 web Jest tests, 103 E2E executions and 12 static-delivery tests passed, plus typecheck/build. See the [delivery audit](docs/quality/delivery-audit.md) for cloud, real sandbox, score and readiness evidence.
+- Repeated real sandbox approval and decline on the corrected public application: one payment per case, safe reloads, delivery only after approval, stock 11→10 on approval and 10→10 on decline. The separate Linux workflow and eight masked screenshots preserve genuine provider evidence.
+
 ## Independent rubric review — 2026-09-23
 
 - Preserved the initial 144/150 internal assessment and its blocking finding: another tab could make the checkout summary differ from the reserved order.

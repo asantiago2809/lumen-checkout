@@ -2,7 +2,7 @@
 
 An original mobile-first checkout built with React, Redux Toolkit and a NestJS API. The Spanish interface sells one fictional Lumen One lamp through a five-step card-payment flow. The backend controls money, inventory and payment state. Sensitive card fields remain ephemeral in the browser and are tokenized directly by the sandbox provider.
 
-**Verified locally:** 75 backend Jest tests, 82 frontend Jest tests and 91 independent Playwright executions pass on `ad641f4`. A [second independent rubric review](docs/quality/rubric-evaluation.md) found and verified a correction for inconsistent checkout details across tabs. The public AWS application and Swagger are live. [Genuine sandbox verification](https://github.com/asantiago2809/lumen-checkout/actions/runs/35936568755) passed approval and decline on the earlier version in Chromium with normal TLS, direct tokenization, one payment submission per purchase, refresh recovery and correct stock/delivery outcomes. Deterministic tests, deployed regression checks and real provider evidence are recorded separately.
+**Verified application:** 81 backend Jest tests, 89 frontend Jest tests, 103 independent Playwright executions and 12 static-delivery tests pass on `a150336`. AWS regression checks and a new genuine sandbox approval/decline also pass. The [delivery audit](docs/quality/delivery-audit.md) records **149/150 as an internal assessment**, with a remaining first-visit latency observation; the [rubric history](docs/quality/rubric-evaluation.md) preserves earlier findings and scores. Deterministic tests, deployed regression checks and genuine provider evidence are recorded separately.
 
 | Resource | Location / status |
 | --- | --- |
@@ -12,7 +12,7 @@ An original mobile-first checkout built with React, Redux Toolkit and a NestJS A
 | Local OpenAPI JSON | [localhost:3001/api/docs-json](http://localhost:3001/api/docs-json) |
 | Public application | [Lumen on AWS](https://j67vc6cdn4.execute-api.us-east-1.amazonaws.com) |
 | Public API documentation | [Swagger](https://j67vc6cdn4.execute-api.us-east-1.amazonaws.com/api/docs) · [OpenAPI JSON](https://j67vc6cdn4.execute-api.us-east-1.amazonaws.com/api/docs-json) |
-| Remote CI | [Linux quality gates passed](https://github.com/asantiago2809/lumen-checkout/actions/runs/35939598641) on `ad641f4`: 157 Jest tests, 91 E2E and five static-handler tests |
+| Remote CI | [Linux quality gates passed](https://github.com/asantiago2809/lumen-checkout/actions/runs/35950070341) on `f096001`: 170 Jest tests, 103 E2E and 12 static-handler tests |
 
 ![Lumen desktop product page](tests/e2e/evidence/product-desktop.png)
 
@@ -178,8 +178,8 @@ Recorded on **23 September 2026** from actual local executions after final forma
 
 | Jest application | Passing tests | Statements | Branches | Functions | Lines |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| API | 75 | 98.50% | 95.34% | 100% | 98.50% |
-| Web | 82 | 96.16% | 95.27% | 95.27% | 97.25% |
+| API | 81 | 99.00% | 95.66% | 100% | 99.00% |
+| Web | 89 | 96.55% | 95.09% | 96.15% | 97.60% |
 
 API coverage excludes only two thin process entrypoints. SSM loading and Lambda initialization/cache live in tested modules. Web exclusions cover test support and type-only declarations. Business rules, use cases, reducers and payment/HTTP adapters remain in scope.
 
@@ -192,7 +192,7 @@ npm run build
 
 Reports are generated under each application's `coverage/`, including `coverage-summary.json` and `lcov.info`. The [quality workflow](.github/workflows/quality.yml) runs clean installation, secret scanning, type checks, Jest coverage, static-handler tests, builds and the complete independent browser suite, uploading coverage and E2E artifacts. Both the [initial Linux run](https://github.com/asantiago2809/lumen-checkout/actions/runs/35932314066) and the [updated code/infrastructure run](https://github.com/asantiago2809/lumen-checkout/actions/runs/35933599708) passed all gates; the latter tests `f84fc56` with the final formatted source and alternative HTTPS infrastructure.
 
-Independent Playwright verification passed **91 executions: 11 API scenarios plus 20 browser scenarios across four projects**, with zero failures, skips or flaky outcomes in the recorded local run. Projects cover Chromium desktop, Chromium at the iPhone SE CSS viewport of 375×667, Firefox and WebKit. Scenarios include approval/decline through a controlled provider adapter, repeated submission, stock, refresh, unknown outcomes, provider unavailability, long content, focus, keyboard use and automated accessibility checks. Additional layouts exercise 320px, 390px, 1024px, portrait/landscape mobile and tablet sizes. Reduced motion, reverse focus containment, editable summaries, pending recovery, touch targets and catalogue loading/error/sold-out states have dedicated regressions. Three cross-tab regressions verify rejected late autosaves, replacement of an earlier divergent draft, and recovery of the authoritative recipient/address without reloading or sending a payment. Native WebKit link tabbing is an explicitly recorded platform limitation; real 200% browser zoom and physical assistive technology are not claimed.
+Independent Playwright verification passed **103 executions: 11 API scenarios plus 23 browser scenarios across four projects**, with zero failures, skips or flaky outcomes in the recorded local run. Projects cover Chromium desktop, Chromium at the iPhone SE CSS viewport of 375×667, Firefox and WebKit. Scenarios include approval/decline through a controlled provider adapter, repeated submission, stock, refresh, unknown outcomes, provider unavailability, long content, focus, keyboard use and automated accessibility checks. Additional layouts exercise 320px, 390px, 1024px, portrait/landscape mobile and tablet sizes. Reduced motion, reverse focus containment, editable summaries, pending recovery, touch targets and catalogue loading/error/sold-out states have dedicated regressions. Three cross-tab regressions verify rejected late autosaves, replacement of an earlier divergent draft, and recovery of the authoritative recipient/address without reloading or sending a payment. Three saving regressions verify close-time persistence, failure/retry at narrow viewports, and new edits while an older save completes. Native WebKit link tabbing is an explicitly recorded platform limitation; real 200% browser zoom and physical assistive technology are not claimed.
 
 ```sh
 npx playwright install chromium firefox webkit
@@ -202,9 +202,9 @@ npm run test:e2e
 
 On Linux without browser system libraries, use Playwright's `install --with-deps` option. E2E starts its own SPA on **5174** and real Nest API on **3002**, with an isolated temporary persistent database. It injects a controlled payment gateway and intercepts tokenization, without contacting the provider or altering the development database. Results appear in `test-results/e2e-results.json`, with sanitized scenario screenshots. These application tests do **not** certify an external sandbox payment.
 
-The [QA plan](docs/quality/qa-plan.md), [execution report](docs/quality/qa-report.md), [design checklist](docs/quality/design-checklist.md) and [final requirement audit](docs/quality/final-audit.md) distinguish test levels, evidence and verification limits.
+The [QA plan](docs/quality/qa-plan.md), [execution report](docs/quality/qa-report.md), [design checklist](docs/quality/design-checklist.md) and [delivery audit](docs/quality/delivery-audit.md) distinguish test levels, evidence and verification limits.
 
-The separate [live sandbox run](https://github.com/asantiago2809/lumen-checkout/actions/runs/35936568755) uses the public application, DynamoDB and the real provider without interception. It verified a PENDING record before submission, tokenization HTTP 201, payment HTTP 202 followed by APPROVED/DECLINED, and refresh without another payment POST. Approval changed stock 12→11 and created a delivery; decline left stock at 11 with no delivery. Its safe report and screenshots are linked in the release evidence. The explicit workflow can run manually or when a maintainer adds the `verify-live-sandbox` PR label; each run consumes one fictional inventory unit on approval.
+The separate [live sandbox run](https://github.com/asantiago2809/lumen-checkout/actions/runs/35950887803) verifies the final application against the public AWS deployment, DynamoDB and real provider without interception. It verified PENDING before submission, tokenization HTTP 201, payment HTTP 202 followed by APPROVED/DECLINED, and refresh without another payment POST. Approval changed stock 11→10 and created a delivery; decline left stock at 10 with no delivery. The [safe report](tests/e2e/evidence/live-sandbox-35950887803/report.json) records one browser-cancelled draft DELETE at product return in each scenario, with no network failures or repeated payments. The explicit workflow can run manually or when a maintainer adds the `verify-live-sandbox` PR label; each run consumes one fictional inventory unit on approval.
 
 ## Deployment and known limits
 
@@ -215,6 +215,7 @@ The separate [live sandbox run](https://github.com/asantiago2809/lumen-checkout/
 3. **An uncertain submission without an external ID needs operational reconciliation.** No verified reference-search mechanism is assumed. The application retains the reservation and does not blindly resubmit the payment.
 4. **Rate counters are per process.** A larger deployment should add an edge or shared quota; file persistence remains local-only.
 5. **Verification describes the recorded environment and date.** Provider uptime and future infrastructure changes require fresh checks; the release report identifies deployed artifacts and observed behavior.
+6. **First-visit latency varies.** The final three mobile first-visit samples had LCP 0.748 / 1.592 / 4.976 seconds; repeated visits were 0.220–0.336 seconds. Gzip and additional static Lambda resources reduce transfer/initial execution costs, but the largest sample remains a performance limitation. These small, unthrottled measurements are not field percentiles.
 
 ## Traceability and AI-assisted development
 
