@@ -1,0 +1,1569 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-24T03:08:09.695Z",
+  "revision": "a150336361ba20ea19d2e1c6b239f1d66d1c2312",
+  "headAtCompletion": "f096001dc7ba97ac2cbc7dc400212198d99dac78",
+  "execution": "independent-delivery-auditor",
+  "command": "npm run test:e2e",
+  "exitCode": 0,
+  "scope": "Real local SPA and Nest API with isolated persistent FileStore; external tokenization intercepted and payment gateway controlled. New autosave tests delay requests or inject HTTP 503 explicitly. No live provider payment.",
+  "sourceReport": "test-results/e2e-results.json",
+  "sourceReportSha256": "7febbf6c030e94c098ec345d013e256d292558e3b0a6ec2433683bf730d7d0c2",
+  "sanitization": "Aggregate and individual scenario metadata only; omitted raw stdout, errors, bodies, attachments and absolute filesystem paths.",
+  "stats": {
+    "startTime": "2026-09-24T03:05:31.556Z",
+    "duration": 132359.942,
+    "expected": 103,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "globalErrorCount": 0,
+  "cases": [
+    {
+      "title": "QA-S03/S04: origin and CSRF enforced; session cookie and no-store present",
+      "file": "api-security.spec.ts",
+      "line": 4,
+      "project": "api-independent",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 105,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-M01/M02: server rejects unknown financial fields and changed price before reservation",
+      "file": "api-security.spec.ts",
+      "line": 25,
+      "project": "api-independent",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 26,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-M04/M05: concurrent create is durable idempotent; changed body conflicts",
+      "file": "api-security.spec.ts",
+      "line": 38,
+      "project": "api-independent",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 34,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-M07: two sessions cannot reserve the same last unit",
+      "file": "api-security.spec.ts",
+      "line": 53,
+      "project": "api-independent",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 44,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-S03: other sessions cannot read or pay transaction, customer or delivery",
+      "file": "api-security.spec.ts",
+      "line": 64,
+      "project": "api-independent",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 66,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-F08/M08/M09: repeated pay finalizes one delivery and consumes stock once",
+      "file": "api-security.spec.ts",
+      "line": 79,
+      "project": "api-independent",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 48,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-F09: decline releases reservation and never creates delivery",
+      "file": "api-security.spec.ts",
+      "line": 94,
+      "project": "api-independent",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 35,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-M11/R05: ambiguous timeout stays UNKNOWN and blocks repeated charge/cancel",
+      "file": "api-security.spec.ts",
+      "line": 105,
+      "project": "api-independent",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 37,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-M12: expired unsubmitted reservation cannot be paid and replay is terminal",
+      "file": "api-security.spec.ts",
+      "line": 124,
+      "project": "api-independent",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 41,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-R01/R03: saved draft and active transaction survive new client context with same cookie",
+      "file": "api-security.spec.ts",
+      "line": 137,
+      "project": "api-independent",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 33,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-L04: OpenAPI documents meaningful request body schemas",
+      "file": "api-security.spec.ts",
+      "line": 149,
+      "project": "api-independent",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 12,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-R07: late autosave from a second tab cannot change a reserved delivery",
+      "file": "checkout.spec.ts",
+      "line": 90,
+      "project": "chromium-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 2291,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-R08: creation replaces a different saved draft with its authoritative input",
+      "file": "checkout.spec.ts",
+      "line": 124,
+      "project": "chromium-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 536,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-R09: a stale open summary recovers the reserved snapshot without reloading",
+      "file": "checkout.spec.ts",
+      "line": 143,
+      "project": "chromium-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 983,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-F01/V01/V03: real catalogue, responsive boundaries and accessible product",
+      "file": "checkout.spec.ts",
+      "line": 188,
+      "project": "chromium-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 776,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-F02/F03/V02/V03: modal validation, keyboard containment and focus restoration",
+      "file": "checkout.spec.ts",
+      "line": 210,
+      "project": "chromium-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 1013,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-F08/F12/R06/S01: approved checkout, double click, refresh and stock exactly once",
+      "file": "checkout.spec.ts",
+      "line": 237,
+      "project": "chromium-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 1135,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-R01/R02: refresh restores delivery but clears card and both consents",
+      "file": "checkout.spec.ts",
+      "line": 269,
+      "project": "chromium-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 530,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-M11/R05: ambiguous payment remains pending after refresh with no new charge",
+      "file": "checkout.spec.ts",
+      "line": 285,
+      "project": "chromium-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 1001,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-F09: rejected payment returns unchanged physical stock and no delivery",
+      "file": "checkout.spec.ts",
+      "line": 306,
+      "project": "chromium-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 949,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-F11: unavailable payment service has honest recovery and disabled submit",
+      "file": "checkout.spec.ts",
+      "line": 321,
+      "project": "chromium-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 363,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-M02: changed total requires a fresh review before payment",
+      "file": "checkout.spec.ts",
+      "line": 334,
+      "project": "chromium-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 528,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-R04: tokenization failure and reload resume the existing unpaid order",
+      "file": "checkout.spec.ts",
+      "line": 348,
+      "project": "chromium-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 867,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-R03: a lost creation response recovers the persisted order from session",
+      "file": "checkout.spec.ts",
+      "line": 373,
+      "project": "chromium-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 595,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-V01/V04: long summary remains readable at narrow and landscape sizes",
+      "file": "checkout.spec.ts",
+      "line": 397,
+      "project": "chromium-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 859,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-X01: reduced motion dynamically removes skeleton and CTA motion",
+      "file": "checkout.spec.ts",
+      "line": 418,
+      "project": "chromium-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 224,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-X02: skip link, reverse focus loop, inert background and keyboard actions",
+      "file": "checkout.spec.ts",
+      "line": 441,
+      "project": "chromium-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 471,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-X03: editing a summary preserves delivery and never reveals full card outside fields",
+      "file": "checkout.spec.ts",
+      "line": 493,
+      "project": "chromium-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 756,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-X04: leaving a pending result and reopening retains the same payment and reservation",
+      "file": "checkout.spec.ts",
+      "line": 519,
+      "project": "chromium-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 655,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-X05: mobile target sizes and extra product form summary viewports",
+      "file": "checkout.spec.ts",
+      "line": 543,
+      "project": "chromium-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 1548,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-X06: catalogue loading error and sold-out states remain clear and recoverable",
+      "file": "checkout.spec.ts",
+      "line": 618,
+      "project": "chromium-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 920,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-U01: closing flushes a new edit and waits for real delivery confirmation",
+      "file": "checkout.spec.ts",
+      "line": 657,
+      "project": "chromium-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 1358,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-U02: failed close preserves edits with accessible retry on narrow screens",
+      "file": "checkout.spec.ts",
+      "line": 696,
+      "project": "chromium-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 1796,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-U03: resolving an older save never confirms a newer edit awaiting persistence",
+      "file": "checkout.spec.ts",
+      "line": 738,
+      "project": "chromium-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 2254,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-R07: late autosave from a second tab cannot change a reserved delivery",
+      "file": "checkout.spec.ts",
+      "line": 90,
+      "project": "chromium-se",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 2278,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-R08: creation replaces a different saved draft with its authoritative input",
+      "file": "checkout.spec.ts",
+      "line": 124,
+      "project": "chromium-se",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 490,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-R09: a stale open summary recovers the reserved snapshot without reloading",
+      "file": "checkout.spec.ts",
+      "line": 143,
+      "project": "chromium-se",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 916,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-F01/V01/V03: real catalogue, responsive boundaries and accessible product",
+      "file": "checkout.spec.ts",
+      "line": 188,
+      "project": "chromium-se",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 761,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-F02/F03/V02/V03: modal validation, keyboard containment and focus restoration",
+      "file": "checkout.spec.ts",
+      "line": 210,
+      "project": "chromium-se",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 944,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-F08/F12/R06/S01: approved checkout, double click, refresh and stock exactly once",
+      "file": "checkout.spec.ts",
+      "line": 237,
+      "project": "chromium-se",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 1017,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-R01/R02: refresh restores delivery but clears card and both consents",
+      "file": "checkout.spec.ts",
+      "line": 269,
+      "project": "chromium-se",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 533,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-M11/R05: ambiguous payment remains pending after refresh with no new charge",
+      "file": "checkout.spec.ts",
+      "line": 285,
+      "project": "chromium-se",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 893,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-F09: rejected payment returns unchanged physical stock and no delivery",
+      "file": "checkout.spec.ts",
+      "line": 306,
+      "project": "chromium-se",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 890,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-F11: unavailable payment service has honest recovery and disabled submit",
+      "file": "checkout.spec.ts",
+      "line": 321,
+      "project": "chromium-se",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 305,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-M02: changed total requires a fresh review before payment",
+      "file": "checkout.spec.ts",
+      "line": 334,
+      "project": "chromium-se",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 513,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-R04: tokenization failure and reload resume the existing unpaid order",
+      "file": "checkout.spec.ts",
+      "line": 348,
+      "project": "chromium-se",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 755,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-R03: a lost creation response recovers the persisted order from session",
+      "file": "checkout.spec.ts",
+      "line": 373,
+      "project": "chromium-se",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 554,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-V01/V04: long summary remains readable at narrow and landscape sizes",
+      "file": "checkout.spec.ts",
+      "line": 397,
+      "project": "chromium-se",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 890,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-X01: reduced motion dynamically removes skeleton and CTA motion",
+      "file": "checkout.spec.ts",
+      "line": 418,
+      "project": "chromium-se",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 243,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-X02: skip link, reverse focus loop, inert background and keyboard actions",
+      "file": "checkout.spec.ts",
+      "line": 441,
+      "project": "chromium-se",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 354,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-X03: editing a summary preserves delivery and never reveals full card outside fields",
+      "file": "checkout.spec.ts",
+      "line": 493,
+      "project": "chromium-se",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 614,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-X04: leaving a pending result and reopening retains the same payment and reservation",
+      "file": "checkout.spec.ts",
+      "line": 519,
+      "project": "chromium-se",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 626,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-X05: mobile target sizes and extra product form summary viewports",
+      "file": "checkout.spec.ts",
+      "line": 543,
+      "project": "chromium-se",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 1518,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-X06: catalogue loading error and sold-out states remain clear and recoverable",
+      "file": "checkout.spec.ts",
+      "line": 618,
+      "project": "chromium-se",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 882,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-U01: closing flushes a new edit and waits for real delivery confirmation",
+      "file": "checkout.spec.ts",
+      "line": 657,
+      "project": "chromium-se",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 1326,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-U02: failed close preserves edits with accessible retry on narrow screens",
+      "file": "checkout.spec.ts",
+      "line": 696,
+      "project": "chromium-se",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 1761,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-U03: resolving an older save never confirms a newer edit awaiting persistence",
+      "file": "checkout.spec.ts",
+      "line": 738,
+      "project": "chromium-se",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 2245,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-R07: late autosave from a second tab cannot change a reserved delivery",
+      "file": "checkout.spec.ts",
+      "line": 90,
+      "project": "firefox-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 3718,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-R08: creation replaces a different saved draft with its authoritative input",
+      "file": "checkout.spec.ts",
+      "line": 124,
+      "project": "firefox-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 844,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-R09: a stale open summary recovers the reserved snapshot without reloading",
+      "file": "checkout.spec.ts",
+      "line": 143,
+      "project": "firefox-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 1633,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-F01/V01/V03: real catalogue, responsive boundaries and accessible product",
+      "file": "checkout.spec.ts",
+      "line": 188,
+      "project": "firefox-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 1026,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-F02/F03/V02/V03: modal validation, keyboard containment and focus restoration",
+      "file": "checkout.spec.ts",
+      "line": 210,
+      "project": "firefox-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 1516,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-F08/F12/R06/S01: approved checkout, double click, refresh and stock exactly once",
+      "file": "checkout.spec.ts",
+      "line": 237,
+      "project": "firefox-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 1565,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-R01/R02: refresh restores delivery but clears card and both consents",
+      "file": "checkout.spec.ts",
+      "line": 269,
+      "project": "firefox-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 894,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-M11/R05: ambiguous payment remains pending after refresh with no new charge",
+      "file": "checkout.spec.ts",
+      "line": 285,
+      "project": "firefox-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 1443,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-F09: rejected payment returns unchanged physical stock and no delivery",
+      "file": "checkout.spec.ts",
+      "line": 306,
+      "project": "firefox-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 1304,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-F11: unavailable payment service has honest recovery and disabled submit",
+      "file": "checkout.spec.ts",
+      "line": 321,
+      "project": "firefox-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 971,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-M02: changed total requires a fresh review before payment",
+      "file": "checkout.spec.ts",
+      "line": 334,
+      "project": "firefox-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 881,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-R04: tokenization failure and reload resume the existing unpaid order",
+      "file": "checkout.spec.ts",
+      "line": 348,
+      "project": "firefox-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 1428,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-R03: a lost creation response recovers the persisted order from session",
+      "file": "checkout.spec.ts",
+      "line": 373,
+      "project": "firefox-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 931,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-V01/V04: long summary remains readable at narrow and landscape sizes",
+      "file": "checkout.spec.ts",
+      "line": 397,
+      "project": "firefox-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 1166,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-X01: reduced motion dynamically removes skeleton and CTA motion",
+      "file": "checkout.spec.ts",
+      "line": 418,
+      "project": "firefox-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 322,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-X02: skip link, reverse focus loop, inert background and keyboard actions",
+      "file": "checkout.spec.ts",
+      "line": 441,
+      "project": "firefox-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 590,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-X03: editing a summary preserves delivery and never reveals full card outside fields",
+      "file": "checkout.spec.ts",
+      "line": 493,
+      "project": "firefox-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 1183,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-X04: leaving a pending result and reopening retains the same payment and reservation",
+      "file": "checkout.spec.ts",
+      "line": 519,
+      "project": "firefox-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 1020,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-X05: mobile target sizes and extra product form summary viewports",
+      "file": "checkout.spec.ts",
+      "line": 543,
+      "project": "firefox-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 1772,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-X06: catalogue loading error and sold-out states remain clear and recoverable",
+      "file": "checkout.spec.ts",
+      "line": 618,
+      "project": "firefox-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 1677,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-U01: closing flushes a new edit and waits for real delivery confirmation",
+      "file": "checkout.spec.ts",
+      "line": 657,
+      "project": "firefox-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 1633,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-U02: failed close preserves edits with accessible retry on narrow screens",
+      "file": "checkout.spec.ts",
+      "line": 696,
+      "project": "firefox-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 2209,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-U03: resolving an older save never confirms a newer edit awaiting persistence",
+      "file": "checkout.spec.ts",
+      "line": 738,
+      "project": "firefox-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 2585,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-R07: late autosave from a second tab cannot change a reserved delivery",
+      "file": "checkout.spec.ts",
+      "line": 90,
+      "project": "webkit-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 3758,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-R08: creation replaces a different saved draft with its authoritative input",
+      "file": "checkout.spec.ts",
+      "line": 124,
+      "project": "webkit-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 1648,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-R09: a stale open summary recovers the reserved snapshot without reloading",
+      "file": "checkout.spec.ts",
+      "line": 143,
+      "project": "webkit-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 2868,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-F01/V01/V03: real catalogue, responsive boundaries and accessible product",
+      "file": "checkout.spec.ts",
+      "line": 188,
+      "project": "webkit-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 1547,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-F02/F03/V02/V03: modal validation, keyboard containment and focus restoration",
+      "file": "checkout.spec.ts",
+      "line": 210,
+      "project": "webkit-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 2112,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-F08/F12/R06/S01: approved checkout, double click, refresh and stock exactly once",
+      "file": "checkout.spec.ts",
+      "line": 237,
+      "project": "webkit-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 2656,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-R01/R02: refresh restores delivery but clears card and both consents",
+      "file": "checkout.spec.ts",
+      "line": 269,
+      "project": "webkit-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 1663,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-M11/R05: ambiguous payment remains pending after refresh with no new charge",
+      "file": "checkout.spec.ts",
+      "line": 285,
+      "project": "webkit-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 2587,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-F09: rejected payment returns unchanged physical stock and no delivery",
+      "file": "checkout.spec.ts",
+      "line": 306,
+      "project": "webkit-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 2292,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-F11: unavailable payment service has honest recovery and disabled submit",
+      "file": "checkout.spec.ts",
+      "line": 321,
+      "project": "webkit-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 1018,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-M02: changed total requires a fresh review before payment",
+      "file": "checkout.spec.ts",
+      "line": 334,
+      "project": "webkit-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 1594,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-R04: tokenization failure and reload resume the existing unpaid order",
+      "file": "checkout.spec.ts",
+      "line": 348,
+      "project": "webkit-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 2718,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-R03: a lost creation response recovers the persisted order from session",
+      "file": "checkout.spec.ts",
+      "line": 373,
+      "project": "webkit-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 1813,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-V01/V04: long summary remains readable at narrow and landscape sizes",
+      "file": "checkout.spec.ts",
+      "line": 397,
+      "project": "webkit-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 2310,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-X01: reduced motion dynamically removes skeleton and CTA motion",
+      "file": "checkout.spec.ts",
+      "line": 418,
+      "project": "webkit-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 486,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-X02: skip link, reverse focus loop, inert background and keyboard actions",
+      "file": "checkout.spec.ts",
+      "line": 441,
+      "project": "webkit-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 779,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-X03: editing a summary preserves delivery and never reveals full card outside fields",
+      "file": "checkout.spec.ts",
+      "line": 493,
+      "project": "webkit-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 2234,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-X04: leaving a pending result and reopening retains the same payment and reservation",
+      "file": "checkout.spec.ts",
+      "line": 519,
+      "project": "webkit-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 2098,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-X05: mobile target sizes and extra product form summary viewports",
+      "file": "checkout.spec.ts",
+      "line": 543,
+      "project": "webkit-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 3968,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-X06: catalogue loading error and sold-out states remain clear and recoverable",
+      "file": "checkout.spec.ts",
+      "line": 618,
+      "project": "webkit-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 1693,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-U01: closing flushes a new edit and waits for real delivery confirmation",
+      "file": "checkout.spec.ts",
+      "line": 657,
+      "project": "webkit-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 2067,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-U02: failed close preserves edits with accessible retry on narrow screens",
+      "file": "checkout.spec.ts",
+      "line": 696,
+      "project": "webkit-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 2787,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    },
+    {
+      "title": "QA-U03: resolving an older save never confirms a newer edit awaiting persistence",
+      "file": "checkout.spec.ts",
+      "line": 738,
+      "project": "webkit-desktop",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "durationMs": 2741,
+          "retry": 0,
+          "errorCount": 0
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "scope": "Historical console summary from the first baseline before final improvements; public assets were index-DaPTUmLB.js and index-CAoB3uCW.css",
+  "provenance": "Recorded console output; the raw per-navigation report was removed when concurrent Playwright verification cleaned test-results. No detailed resources are reconstructed here. A fresh baseline is measured separately before deployment.",
+  "passed": false,
+  "summary": [
+    {"width":375,"cache":"browser-cold","samples":3,"lcpMinMs":948,"lcpMedianMs":1080,"lcpMaxMs":12332,"maxCls":0},
+    {"width":375,"cache":"repeat-visit","samples":3,"lcpMinMs":272,"lcpMedianMs":292,"lcpMaxMs":528,"maxCls":0},
+    {"width":1440,"cache":"browser-cold","samples":3,"lcpMinMs":980,"lcpMedianMs":996,"lcpMaxMs":1000,"maxCls":0.01570471536351166},
+    {"width":1440,"cache":"repeat-visit","samples":3,"lcpMinMs":232,"lcpMedianMs":240,"lcpMaxMs":272,"maxCls":0.01570471536351166}
+  ],
+  "assets": [
+    {"path":"/assets/index-DaPTUmLB.js","statuses":[200,200,200,200],"identityBytes":281035,"transferredBytes":281035,"contentEncoding":"identity","vary":null,"reductionPercent":0,"decodedMatchesIdentity":true,"qZeroHonored":true,"headMatches":false,"immutable":true,"securityHeadersPreserved":true},
+    {"path":"/assets/index-CAoB3uCW.css","statuses":[200,200,200,200],"identityBytes":18839,"transferredBytes":18839,"contentEncoding":"identity","vary":null,"reductionPercent":0,"decodedMatchesIdentity":true,"qZeroHonored":true,"headMatches":false,"immutable":true,"securityHeadersPreserved":true}
+  ]
+}

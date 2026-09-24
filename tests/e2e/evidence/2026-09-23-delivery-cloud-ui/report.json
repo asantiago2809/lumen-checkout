@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-09-24T03:17:44.650Z",
+  "finishedAt": "2026-09-24T03:17:52.501Z",
+  "origin": "https://j67vc6cdn4.execute-api.us-east-1.amazonaws.com",
+  "scope": "Live AWS R09 recovery before payment; no payment verification",
+  "tlsVerification": "enabled",
+  "responseMocks": false,
+  "browser": {
+    "engine": "chromium",
+    "version": "153.0.8010.12"
+  },
+  "assets": [
+    "/assets/index-CjZzrNZL.js",
+    "/assets/index-Dg5qOyc5.css"
+  ],
+  "steps": [
+    {
+      "name": "sandbox-configuration-with-normal-tls",
+      "at": "2026-09-24T03:17:45.468Z",
+      "status": "PASS"
+    },
+    {
+      "name": "fresh-isolated-session-and-deployed-assets",
+      "at": "2026-09-24T03:17:47.742Z",
+      "status": "PASS"
+    },
+    {
+      "name": "tab-b-has-open-summary-with-synthetic-card",
+      "at": "2026-09-24T03:17:49.532Z",
+      "status": "PASS"
+    },
+    {
+      "name": "tab-a-reserved-authoritative-recipient-and-address",
+      "at": "2026-09-24T03:17:50.711Z",
+      "status": "PASS"
+    },
+    {
+      "name": "conflict-recovers-authoritative-summary-without-reload-or-payment",
+      "at": "2026-09-24T03:17:51.592Z",
+      "status": "PASS"
+    },
+    {
+      "name": "own-reservation-cancelled-with-no-delivery-and-restored-stock",
+      "at": "2026-09-24T03:17:52.460Z",
+      "status": "PASS"
+    }
+  ],
+  "http": [
+    {
+      "route": "/api/checkout/config",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/checkout/session",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/products",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/checkout/session",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/products/:id",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/transactions",
+      "method": "POST",
+      "status": 409
+    },
+    {
+      "route": "/api/checkout/session",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/transactions/:id",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/checkout/session",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/transactions/:id",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/checkout/session",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/checkout/draft",
+      "method": "DELETE",
+      "status": 204
+    },
+    {
+      "route": "/api/transactions/:id",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/checkout/session",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/products/:id",
+      "method": "GET",
+      "status": 200
+    }
+  ],
+  "blockedPaymentRequests": [],
+  "blockedExternalRequestCount": 0,
+  "transactionId": "85ffbbb5-578e-4ffa-96e3-ca9d3df363e0",
+  "stockBefore": 11,
+  "stockReserved": 10,
+  "stockAfter": 11,
+  "screenshots": [
+    "recovered-summary-masked.png"
+  ],
+  "cleanup": {
+    "attempted": true,
+    "passed": true,
+    "failure": null,
+    "transactionStatus": "ERROR",
+    "submissionStatus": "NOT_STARTED",
+    "deliveryExists": false
+  },
+  "passed": true,
+  "failure": null
+}

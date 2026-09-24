@@ -1,0 +1,428 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-09-24T03:18:55.776Z",
+  "finishedAt": "2026-09-24T03:19:25.349Z",
+  "origin": "https://j67vc6cdn4.execute-api.us-east-1.amazonaws.com",
+  "execution": "real-sandbox-no-interception",
+  "tlsVerification": "enabled",
+  "browser": {
+    "engine": "chromium",
+    "version": "153.0.8010.12"
+  },
+  "preflight": [
+    {
+      "route": "/api/checkout/config",
+      "status": 200
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "approved",
+      "expectedStatus": "APPROVED",
+      "startedAt": "2026-09-24T03:18:56.440Z",
+      "finishedAt": "2026-09-24T03:19:12.124Z",
+      "passed": true,
+      "steps": [
+        {
+          "name": "product-from-live-api",
+          "at": "2026-09-24T03:18:57.134Z",
+          "status": "PASS"
+        },
+        {
+          "name": "details-and-masked-summary",
+          "at": "2026-09-24T03:18:57.924Z",
+          "status": "PASS"
+        },
+        {
+          "name": "one-pending-creation-one-tokenization-one-payment",
+          "at": "2026-09-24T03:19:08.091Z",
+          "status": "PASS"
+        },
+        {
+          "name": "refresh-after-payment-submission",
+          "at": "2026-09-24T03:19:08.270Z",
+          "status": "PASS"
+        },
+        {
+          "name": "authoritative-terminal-state-and-delivery",
+          "at": "2026-09-24T03:19:11.416Z",
+          "status": "PASS"
+        },
+        {
+          "name": "terminal-result-survives-refresh-without-repayment",
+          "at": "2026-09-24T03:19:11.790Z",
+          "status": "PASS"
+        },
+        {
+          "name": "stock-updates-only-after-approval",
+          "at": "2026-09-24T03:19:12.124Z",
+          "status": "PASS"
+        }
+      ],
+      "http": [
+        {
+          "route": "/api/checkout/session",
+          "method": "POST",
+          "status": 201
+        },
+        {
+          "route": "/api/products",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "route": "/api/products",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "route": "/api/checkout/config",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "route": "/api/checkout/draft",
+          "method": "PUT",
+          "status": 200
+        },
+        {
+          "route": "/api/checkout/quote",
+          "method": "POST",
+          "status": 200
+        },
+        {
+          "route": "/api/transactions",
+          "method": "POST",
+          "status": 201
+        },
+        {
+          "route": "/api/transactions/:id",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "route": "/api/transactions/:id",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "route": "/v1/tokens/cards",
+          "method": "POST",
+          "status": 201
+        },
+        {
+          "route": "/api/transactions/:id/pay",
+          "method": "POST",
+          "status": 202
+        },
+        {
+          "route": "/api/checkout/session",
+          "method": "POST",
+          "status": 200
+        },
+        {
+          "route": "/api/products",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "route": "/api/transactions/:id",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "route": "/api/transactions/:id",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "route": "/api/checkout/config",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "route": "/api/transactions/:id",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "route": "/api/transactions/:id",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "route": "/api/deliveries/:id",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "route": "/api/checkout/session",
+          "method": "POST",
+          "status": 200
+        },
+        {
+          "route": "/api/products",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "route": "/api/transactions/:id",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "route": "/api/checkout/config",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "route": "/api/checkout/draft",
+          "method": "DELETE",
+          "status": 204
+        },
+        {
+          "route": "/api/products",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "route": "/api/products",
+          "method": "GET",
+          "status": 200
+        }
+      ],
+      "networkFailures": [],
+      "cancelledRequests": [
+        {
+          "route": "/api/checkout/draft",
+          "method": "DELETE",
+          "at": "2026-09-24T03:19:11.922Z",
+          "phase": "approved:stock-verification",
+          "reason": "ERR_ABORTED"
+        }
+      ],
+      "screenshots": [
+        "approved-product.png",
+        "approved-summary-masked.png",
+        "approved-result-restored.png",
+        "approved-product-return.png"
+      ],
+      "createRequestCount": 1,
+      "tokenizationRequestCount": 1,
+      "payRequestCount": 1,
+      "transactionId": "9e37abd6-fd50-4157-867d-5abd5cb475b0",
+      "transactionStatus": "APPROVED",
+      "deliveryExists": true,
+      "stockBefore": 11,
+      "stockAfter": 10,
+      "failure": null,
+      "totalInCents": 20350000
+    },
+    {
+      "name": "declined",
+      "expectedStatus": "DECLINED",
+      "startedAt": "2026-09-24T03:19:12.128Z",
+      "finishedAt": "2026-09-24T03:19:25.324Z",
+      "passed": true,
+      "steps": [
+        {
+          "name": "product-from-live-api",
+          "at": "2026-09-24T03:19:12.691Z",
+          "status": "PASS"
+        },
+        {
+          "name": "details-and-masked-summary",
+          "at": "2026-09-24T03:19:13.374Z",
+          "status": "PASS"
+        },
+        {
+          "name": "one-pending-creation-one-tokenization-one-payment",
+          "at": "2026-09-24T03:19:18.226Z",
+          "status": "PASS"
+        },
+        {
+          "name": "refresh-after-payment-submission",
+          "at": "2026-09-24T03:19:18.319Z",
+          "status": "PASS"
+        },
+        {
+          "name": "authoritative-terminal-state-and-delivery",
+          "at": "2026-09-24T03:19:24.550Z",
+          "status": "PASS"
+        },
+        {
+          "name": "terminal-result-survives-refresh-without-repayment",
+          "at": "2026-09-24T03:19:24.990Z",
+          "status": "PASS"
+        },
+        {
+          "name": "stock-updates-only-after-approval",
+          "at": "2026-09-24T03:19:25.324Z",
+          "status": "PASS"
+        }
+      ],
+      "http": [
+        {
+          "route": "/api/products",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "route": "/api/checkout/session",
+          "method": "POST",
+          "status": 201
+        },
+        {
+          "route": "/api/products",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "route": "/api/checkout/config",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "route": "/api/checkout/draft",
+          "method": "PUT",
+          "status": 200
+        },
+        {
+          "route": "/api/checkout/quote",
+          "method": "POST",
+          "status": 200
+        },
+        {
+          "route": "/api/transactions",
+          "method": "POST",
+          "status": 201
+        },
+        {
+          "route": "/api/transactions/:id",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "route": "/v1/tokens/cards",
+          "method": "POST",
+          "status": 201
+        },
+        {
+          "route": "/api/transactions/:id/pay",
+          "method": "POST",
+          "status": 202
+        },
+        {
+          "route": "/api/products",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "route": "/api/checkout/session",
+          "method": "POST",
+          "status": 200
+        },
+        {
+          "route": "/api/transactions/:id",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "route": "/api/checkout/config",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "route": "/api/transactions/:id",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "route": "/api/transactions/:id",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "route": "/api/transactions/:id",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "route": "/api/transactions/:id",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "route": "/api/transactions/:id",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "route": "/api/checkout/session",
+          "method": "POST",
+          "status": 200
+        },
+        {
+          "route": "/api/products",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "route": "/api/transactions/:id",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "route": "/api/checkout/config",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "route": "/api/checkout/draft",
+          "method": "DELETE",
+          "status": 204
+        },
+        {
+          "route": "/api/products",
+          "method": "GET",
+          "status": 200
+        },
+        {
+          "route": "/api/products",
+          "method": "GET",
+          "status": 200
+        }
+      ],
+      "networkFailures": [],
+      "cancelledRequests": [
+        {
+          "route": "/api/checkout/draft",
+          "method": "DELETE",
+          "at": "2026-09-24T03:19:25.133Z",
+          "phase": "declined:stock-verification",
+          "reason": "ERR_ABORTED"
+        }
+      ],
+      "screenshots": [
+        "declined-product.png",
+        "declined-summary-masked.png",
+        "declined-result-restored.png",
+        "declined-product-return.png"
+      ],
+      "createRequestCount": 1,
+      "tokenizationRequestCount": 1,
+      "payRequestCount": 1,
+      "transactionId": "a5c19d14-685f-4bda-b5d9-7fbaf4950b43",
+      "transactionStatus": "DECLINED",
+      "deliveryExists": false,
+      "stockBefore": 10,
+      "stockAfter": 10,
+      "failure": null,
+      "totalInCents": 20350000
+    }
+  ],
+  "passed": true,
+  "failure": null,
+  "environment": "sandbox",
+  "sandboxApiOrigin": "https://api-sandbox.co.uat.wompi.dev"
+}
