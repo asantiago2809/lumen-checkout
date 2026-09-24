@@ -1,0 +1,802 @@
+{
+  "observedAt": "2026-09-24T03:17:25.564Z",
+  "origin": "https://j67vc6cdn4.execute-api.us-east-1.amazonaws.com",
+  "label": "after",
+  "method": "Three fresh contexts per viewport; first visit and repeat visit in each context; no throttling or payments. Browser cache cold does not imply Lambda cold. Network and cloud load uncontrolled.",
+  "browser": "153.0.8010.12",
+  "navigations": [
+    {
+      "viewport": {
+        "width": 375,
+        "height": 667
+      },
+      "sample": 1,
+      "cache": "browser-cold",
+      "status": 200,
+      "lcpMs": 13172,
+      "cls": 0,
+      "ttfbMs": 4643.700000017881,
+      "domContentLoadedMs": 9897.800000011921,
+      "overflow": false,
+      "imageWidth": 335,
+      "resources": [
+        {
+          "path": "/assets/index-CjZzrNZL.js",
+          "durationMs": 897.9000000059605,
+          "ttfbMs": 768.5999999940395,
+          "transferBytes": 90943,
+          "encodedBytes": 90643,
+          "decodedBytes": 282680
+        },
+        {
+          "path": "/assets/index-Dg5qOyc5.css",
+          "durationMs": 4898.200000017881,
+          "ttfbMs": 4893.899999976158,
+          "transferBytes": 5059,
+          "encodedBytes": 4759,
+          "decodedBytes": 19571
+        },
+        {
+          "path": "/api/products",
+          "durationMs": 3091.2000000178814,
+          "ttfbMs": 3090,
+          "transferBytes": 659,
+          "encodedBytes": 359,
+          "decodedBytes": 359
+        },
+        {
+          "path": "/api/checkout/session",
+          "durationMs": 2700.699999988079,
+          "ttfbMs": 2699.4000000059605,
+          "transferBytes": 447,
+          "encodedBytes": 147,
+          "decodedBytes": 147
+        },
+        {
+          "path": "/lumen-one-640.webp",
+          "durationMs": 159.2000000178814,
+          "ttfbMs": 158.2000000178814,
+          "transferBytes": 12492,
+          "encodedBytes": 12192,
+          "decodedBytes": 12192
+        }
+      ],
+      "failedRequests": []
+    },
+    {
+      "viewport": {
+        "width": 375,
+        "height": 667
+      },
+      "sample": 1,
+      "cache": "repeat-visit",
+      "status": 200,
+      "lcpMs": 388,
+      "cls": 0,
+      "ttfbMs": 242.5,
+      "domContentLoadedMs": 251.7000000178814,
+      "overflow": false,
+      "imageWidth": 335,
+      "resources": [
+        {
+          "path": "/assets/index-CjZzrNZL.js",
+          "durationMs": 0,
+          "ttfbMs": 0,
+          "transferBytes": 0,
+          "encodedBytes": 90643,
+          "decodedBytes": 282680
+        },
+        {
+          "path": "/assets/index-Dg5qOyc5.css",
+          "durationMs": 0,
+          "ttfbMs": 0,
+          "transferBytes": 0,
+          "encodedBytes": 4759,
+          "decodedBytes": 19571
+        },
+        {
+          "path": "/api/products",
+          "durationMs": 106.90000000596046,
+          "ttfbMs": 105.7999999821186,
+          "transferBytes": 659,
+          "encodedBytes": 359,
+          "decodedBytes": 359
+        },
+        {
+          "path": "/api/checkout/session",
+          "durationMs": 110.7999999821186,
+          "ttfbMs": 110,
+          "transferBytes": 447,
+          "encodedBytes": 147,
+          "decodedBytes": 147
+        },
+        {
+          "path": "/lumen-one-640.webp",
+          "durationMs": 0,
+          "ttfbMs": 0,
+          "transferBytes": 0,
+          "encodedBytes": 12192,
+          "decodedBytes": 12192
+        }
+      ],
+      "failedRequests": []
+    },
+    {
+      "viewport": {
+        "width": 375,
+        "height": 667
+      },
+      "sample": 2,
+      "cache": "browser-cold",
+      "status": 200,
+      "lcpMs": 1216,
+      "cls": 0,
+      "ttfbMs": 155.5,
+      "domContentLoadedMs": 849.3999999761581,
+      "overflow": false,
+      "imageWidth": 335,
+      "resources": [
+        {
+          "path": "/assets/index-CjZzrNZL.js",
+          "durationMs": 545.2999999821186,
+          "ttfbMs": 417,
+          "transferBytes": 90943,
+          "encodedBytes": 90643,
+          "decodedBytes": 282680
+        },
+        {
+          "path": "/assets/index-Dg5qOyc5.css",
+          "durationMs": 292.5,
+          "ttfbMs": 288.90000000596046,
+          "transferBytes": 5059,
+          "encodedBytes": 4759,
+          "decodedBytes": 19571
+        },
+        {
+          "path": "/api/products",
+          "durationMs": 151,
+          "ttfbMs": 150.2999999821186,
+          "transferBytes": 659,
+          "encodedBytes": 359,
+          "decodedBytes": 359
+        },
+        {
+          "path": "/api/checkout/session",
+          "durationMs": 204.80000001192093,
+          "ttfbMs": 204.09999999403954,
+          "transferBytes": 447,
+          "encodedBytes": 147,
+          "decodedBytes": 147
+        },
+        {
+          "path": "/lumen-one-640.webp",
+          "durationMs": 141,
+          "ttfbMs": 139.7999999821186,
+          "transferBytes": 12492,
+          "encodedBytes": 12192,
+          "decodedBytes": 12192
+        }
+      ],
+      "failedRequests": []
+    },
+    {
+      "viewport": {
+        "width": 375,
+        "height": 667
+      },
+      "sample": 2,
+      "cache": "repeat-visit",
+      "status": 200,
+      "lcpMs": 320,
+      "cls": 0,
+      "ttfbMs": 150,
+      "domContentLoadedMs": 163.30000001192093,
+      "overflow": false,
+      "imageWidth": 335,
+      "resources": [
+        {
+          "path": "/assets/index-CjZzrNZL.js",
+          "durationMs": 0,
+          "ttfbMs": 0,
+          "transferBytes": 0,
+          "encodedBytes": 90643,
+          "decodedBytes": 282680
+        },
+        {
+          "path": "/assets/index-Dg5qOyc5.css",
+          "durationMs": 0,
+          "ttfbMs": 0,
+          "transferBytes": 0,
+          "encodedBytes": 4759,
+          "decodedBytes": 19571
+        },
+        {
+          "path": "/api/products",
+          "durationMs": 119.7999999821186,
+          "ttfbMs": 118.59999999403954,
+          "transferBytes": 659,
+          "encodedBytes": 359,
+          "decodedBytes": 359
+        },
+        {
+          "path": "/api/checkout/session",
+          "durationMs": 106.90000000596046,
+          "ttfbMs": 106,
+          "transferBytes": 447,
+          "encodedBytes": 147,
+          "decodedBytes": 147
+        },
+        {
+          "path": "/lumen-one-640.webp",
+          "durationMs": 0,
+          "ttfbMs": 0,
+          "transferBytes": 0,
+          "encodedBytes": 12192,
+          "decodedBytes": 12192
+        }
+      ],
+      "failedRequests": []
+    },
+    {
+      "viewport": {
+        "width": 375,
+        "height": 667
+      },
+      "sample": 3,
+      "cache": "browser-cold",
+      "status": 200,
+      "lcpMs": 908,
+      "cls": 0,
+      "ttfbMs": 140.40000000596046,
+      "domContentLoadedMs": 620.6999999880791,
+      "overflow": false,
+      "imageWidth": 335,
+      "resources": [
+        {
+          "path": "/assets/index-CjZzrNZL.js",
+          "durationMs": 219.5,
+          "ttfbMs": 91.09999999403954,
+          "transferBytes": 90943,
+          "encodedBytes": 90643,
+          "decodedBytes": 282680
+        },
+        {
+          "path": "/assets/index-Dg5qOyc5.css",
+          "durationMs": 91.80000001192093,
+          "ttfbMs": 87.5,
+          "transferBytes": 5059,
+          "encodedBytes": 4759,
+          "decodedBytes": 19571
+        },
+        {
+          "path": "/api/products",
+          "durationMs": 106.7000000178814,
+          "ttfbMs": 105.2999999821186,
+          "transferBytes": 659,
+          "encodedBytes": 359,
+          "decodedBytes": 359
+        },
+        {
+          "path": "/api/checkout/session",
+          "durationMs": 115.69999998807907,
+          "ttfbMs": 114.5,
+          "transferBytes": 447,
+          "encodedBytes": 147,
+          "decodedBytes": 147
+        },
+        {
+          "path": "/lumen-one-640.webp",
+          "durationMs": 135.69999998807907,
+          "ttfbMs": 134.40000000596046,
+          "transferBytes": 12492,
+          "encodedBytes": 12192,
+          "decodedBytes": 12192
+        }
+      ],
+      "failedRequests": []
+    },
+    {
+      "viewport": {
+        "width": 375,
+        "height": 667
+      },
+      "sample": 3,
+      "cache": "repeat-visit",
+      "status": 200,
+      "lcpMs": 316,
+      "cls": 0,
+      "ttfbMs": 175.09999999403954,
+      "domContentLoadedMs": 183.59999999403954,
+      "overflow": false,
+      "imageWidth": 335,
+      "resources": [
+        {
+          "path": "/assets/index-CjZzrNZL.js",
+          "durationMs": 0,
+          "ttfbMs": 0,
+          "transferBytes": 0,
+          "encodedBytes": 90643,
+          "decodedBytes": 282680
+        },
+        {
+          "path": "/assets/index-Dg5qOyc5.css",
+          "durationMs": 0,
+          "ttfbMs": 0,
+          "transferBytes": 0,
+          "encodedBytes": 4759,
+          "decodedBytes": 19571
+        },
+        {
+          "path": "/api/products",
+          "durationMs": 109.2999999821186,
+          "ttfbMs": 108.2999999821186,
+          "transferBytes": 659,
+          "encodedBytes": 359,
+          "decodedBytes": 359
+        },
+        {
+          "path": "/api/checkout/session",
+          "durationMs": 94,
+          "ttfbMs": 92.7999999821186,
+          "transferBytes": 447,
+          "encodedBytes": 147,
+          "decodedBytes": 147
+        },
+        {
+          "path": "/lumen-one-640.webp",
+          "durationMs": 0,
+          "ttfbMs": 0,
+          "transferBytes": 0,
+          "encodedBytes": 12192,
+          "decodedBytes": 12192
+        }
+      ],
+      "failedRequests": []
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sample": 1,
+      "cache": "browser-cold",
+      "status": 200,
+      "lcpMs": 764,
+      "cls": 0.01570471536351166,
+      "ttfbMs": 130.5,
+      "domContentLoadedMs": 458.89999997615814,
+      "overflow": false,
+      "imageWidth": 720,
+      "resources": [
+        {
+          "path": "/assets/index-CjZzrNZL.js",
+          "durationMs": 195.10000002384186,
+          "ttfbMs": 83.7000000178814,
+          "transferBytes": 90943,
+          "encodedBytes": 90643,
+          "decodedBytes": 282680
+        },
+        {
+          "path": "/assets/index-Dg5qOyc5.css",
+          "durationMs": 194.69999998807907,
+          "ttfbMs": 192.10000002384186,
+          "transferBytes": 5059,
+          "encodedBytes": 4759,
+          "decodedBytes": 19571
+        },
+        {
+          "path": "/api/products",
+          "durationMs": 94.7999999821186,
+          "ttfbMs": 93.69999998807907,
+          "transferBytes": 659,
+          "encodedBytes": 359,
+          "decodedBytes": 359
+        },
+        {
+          "path": "/api/checkout/session",
+          "durationMs": 121.19999998807907,
+          "ttfbMs": 120.40000000596046,
+          "transferBytes": 447,
+          "encodedBytes": 147,
+          "decodedBytes": 147
+        },
+        {
+          "path": "/lumen-one-1200.webp",
+          "durationMs": 153.30000001192093,
+          "ttfbMs": 151.90000000596046,
+          "transferBytes": 31356,
+          "encodedBytes": 31056,
+          "decodedBytes": 31056
+        }
+      ],
+      "failedRequests": []
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sample": 1,
+      "cache": "repeat-visit",
+      "status": 200,
+      "lcpMs": 292,
+      "cls": 0.01570471536351166,
+      "ttfbMs": 164.80000001192093,
+      "domContentLoadedMs": 170.30000001192093,
+      "overflow": false,
+      "imageWidth": 720,
+      "resources": [
+        {
+          "path": "/assets/index-CjZzrNZL.js",
+          "durationMs": 0,
+          "ttfbMs": 0,
+          "transferBytes": 0,
+          "encodedBytes": 90643,
+          "decodedBytes": 282680
+        },
+        {
+          "path": "/assets/index-Dg5qOyc5.css",
+          "durationMs": 0,
+          "ttfbMs": 0,
+          "transferBytes": 0,
+          "encodedBytes": 4759,
+          "decodedBytes": 19571
+        },
+        {
+          "path": "/api/products",
+          "durationMs": 89.09999999403954,
+          "ttfbMs": 87.90000000596046,
+          "transferBytes": 659,
+          "encodedBytes": 359,
+          "decodedBytes": 359
+        },
+        {
+          "path": "/api/checkout/session",
+          "durationMs": 91.69999998807907,
+          "ttfbMs": 90.60000002384186,
+          "transferBytes": 447,
+          "encodedBytes": 147,
+          "decodedBytes": 147
+        },
+        {
+          "path": "/lumen-one-1200.webp",
+          "durationMs": 0,
+          "ttfbMs": 0,
+          "transferBytes": 0,
+          "encodedBytes": 31056,
+          "decodedBytes": 31056
+        }
+      ],
+      "failedRequests": []
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sample": 2,
+      "cache": "browser-cold",
+      "status": 200,
+      "lcpMs": 1020,
+      "cls": 0.01570471536351166,
+      "ttfbMs": 286.7999999821186,
+      "domContentLoadedMs": 651.6000000238419,
+      "overflow": false,
+      "imageWidth": 720,
+      "resources": [
+        {
+          "path": "/assets/index-CjZzrNZL.js",
+          "durationMs": 216.90000000596046,
+          "ttfbMs": 87.90000000596046,
+          "transferBytes": 90943,
+          "encodedBytes": 90643,
+          "decodedBytes": 282680
+        },
+        {
+          "path": "/assets/index-Dg5qOyc5.css",
+          "durationMs": 216,
+          "ttfbMs": 212.30000001192093,
+          "transferBytes": 5059,
+          "encodedBytes": 4759,
+          "decodedBytes": 19571
+        },
+        {
+          "path": "/api/products",
+          "durationMs": 174.30000001192093,
+          "ttfbMs": 172.90000000596046,
+          "transferBytes": 659,
+          "encodedBytes": 359,
+          "decodedBytes": 359
+        },
+        {
+          "path": "/api/checkout/session",
+          "durationMs": 122.60000002384186,
+          "ttfbMs": 121.19999998807907,
+          "transferBytes": 447,
+          "encodedBytes": 147,
+          "decodedBytes": 147
+        },
+        {
+          "path": "/lumen-one-1200.webp",
+          "durationMs": 157,
+          "ttfbMs": 155.5,
+          "transferBytes": 31356,
+          "encodedBytes": 31056,
+          "decodedBytes": 31056
+        }
+      ],
+      "failedRequests": []
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sample": 2,
+      "cache": "repeat-visit",
+      "status": 200,
+      "lcpMs": 284,
+      "cls": 0.01570471536351166,
+      "ttfbMs": 134.5,
+      "domContentLoadedMs": 144.7000000178814,
+      "overflow": false,
+      "imageWidth": 720,
+      "resources": [
+        {
+          "path": "/assets/index-CjZzrNZL.js",
+          "durationMs": 0,
+          "ttfbMs": 0,
+          "transferBytes": 0,
+          "encodedBytes": 90643,
+          "decodedBytes": 282680
+        },
+        {
+          "path": "/assets/index-Dg5qOyc5.css",
+          "durationMs": 0,
+          "ttfbMs": 0,
+          "transferBytes": 0,
+          "encodedBytes": 4759,
+          "decodedBytes": 19571
+        },
+        {
+          "path": "/api/products",
+          "durationMs": 99,
+          "ttfbMs": 97.7999999821186,
+          "transferBytes": 659,
+          "encodedBytes": 359,
+          "decodedBytes": 359
+        },
+        {
+          "path": "/api/checkout/session",
+          "durationMs": 104.89999997615814,
+          "ttfbMs": 104,
+          "transferBytes": 447,
+          "encodedBytes": 147,
+          "decodedBytes": 147
+        },
+        {
+          "path": "/lumen-one-1200.webp",
+          "durationMs": 0,
+          "ttfbMs": 0,
+          "transferBytes": 0,
+          "encodedBytes": 31056,
+          "decodedBytes": 31056
+        }
+      ],
+      "failedRequests": []
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sample": 3,
+      "cache": "browser-cold",
+      "status": 200,
+      "lcpMs": 972,
+      "cls": 0.01570471536351166,
+      "ttfbMs": 113.7000000178814,
+      "domContentLoadedMs": 467.5,
+      "overflow": false,
+      "imageWidth": 720,
+      "resources": [
+        {
+          "path": "/assets/index-CjZzrNZL.js",
+          "durationMs": 207.80000001192093,
+          "ttfbMs": 81.89999997615814,
+          "transferBytes": 90943,
+          "encodedBytes": 90643,
+          "decodedBytes": 282680
+        },
+        {
+          "path": "/assets/index-Dg5qOyc5.css",
+          "durationMs": 207.5,
+          "ttfbMs": 204.7999999821186,
+          "transferBytes": 5059,
+          "encodedBytes": 4759,
+          "decodedBytes": 19571
+        },
+        {
+          "path": "/api/products",
+          "durationMs": 100.40000000596046,
+          "ttfbMs": 99.30000001192093,
+          "transferBytes": 659,
+          "encodedBytes": 359,
+          "decodedBytes": 359
+        },
+        {
+          "path": "/api/checkout/session",
+          "durationMs": 339.90000000596046,
+          "ttfbMs": 338.60000002384186,
+          "transferBytes": 447,
+          "encodedBytes": 147,
+          "decodedBytes": 147
+        },
+        {
+          "path": "/lumen-one-1200.webp",
+          "durationMs": 129.30000001192093,
+          "ttfbMs": 127.7000000178814,
+          "transferBytes": 31356,
+          "encodedBytes": 31056,
+          "decodedBytes": 31056
+        }
+      ],
+      "failedRequests": []
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "sample": 3,
+      "cache": "repeat-visit",
+      "status": 200,
+      "lcpMs": 288,
+      "cls": 0.01570471536351166,
+      "ttfbMs": 143.10000002384186,
+      "domContentLoadedMs": 153.59999999403954,
+      "overflow": false,
+      "imageWidth": 720,
+      "resources": [
+        {
+          "path": "/assets/index-CjZzrNZL.js",
+          "durationMs": 0,
+          "ttfbMs": 0,
+          "transferBytes": 0,
+          "encodedBytes": 90643,
+          "decodedBytes": 282680
+        },
+        {
+          "path": "/assets/index-Dg5qOyc5.css",
+          "durationMs": 0,
+          "ttfbMs": 0,
+          "transferBytes": 0,
+          "encodedBytes": 4759,
+          "decodedBytes": 19571
+        },
+        {
+          "path": "/api/products",
+          "durationMs": 108.40000000596046,
+          "ttfbMs": 107.59999999403954,
+          "transferBytes": 659,
+          "encodedBytes": 359,
+          "decodedBytes": 359
+        },
+        {
+          "path": "/api/checkout/session",
+          "durationMs": 87.2999999821186,
+          "ttfbMs": 86.59999999403954,
+          "transferBytes": 447,
+          "encodedBytes": 147,
+          "decodedBytes": 147
+        },
+        {
+          "path": "/lumen-one-1200.webp",
+          "durationMs": 0,
+          "ttfbMs": 0,
+          "transferBytes": 0,
+          "encodedBytes": 31056,
+          "decodedBytes": 31056
+        }
+      ],
+      "failedRequests": []
+    }
+  ],
+  "assets": [
+    {
+      "path": "/assets/index-CjZzrNZL.js",
+      "statuses": [
+        200,
+        200,
+        200,
+        200
+      ],
+      "identityBytes": 282680,
+      "transferredBytes": 90643,
+      "contentEncoding": "gzip",
+      "vary": "Accept-Encoding",
+      "reductionPercent": 67.93,
+      "decodedMatchesIdentity": true,
+      "qZeroHonored": true,
+      "headMatches": true,
+      "headBodyBytes": 0,
+      "headContentLength": "90643",
+      "getContentLength": "90643",
+      "headWire": {
+        "status": 200,
+        "bodyBytes": 0,
+        "contentLength": "90643",
+        "contentEncoding": "gzip"
+      },
+      "immutable": true,
+      "securityHeadersPreserved": true
+    },
+    {
+      "path": "/assets/index-Dg5qOyc5.css",
+      "statuses": [
+        200,
+        200,
+        200,
+        200
+      ],
+      "identityBytes": 19571,
+      "transferredBytes": 4759,
+      "contentEncoding": "gzip",
+      "vary": "Accept-Encoding",
+      "reductionPercent": 75.68,
+      "decodedMatchesIdentity": true,
+      "qZeroHonored": true,
+      "headMatches": true,
+      "headBodyBytes": 0,
+      "headContentLength": "4759",
+      "getContentLength": "4759",
+      "headWire": {
+        "status": 200,
+        "bodyBytes": 0,
+        "contentLength": "4759",
+        "contentEncoding": "gzip"
+      },
+      "immutable": true,
+      "securityHeadersPreserved": true
+    }
+  ],
+  "passed": true,
+  "summary": [
+    {
+      "width": 375,
+      "cache": "browser-cold",
+      "samples": 3,
+      "lcpMinMs": 908,
+      "lcpMedianMs": 1216,
+      "lcpMaxMs": 13172,
+      "maxCls": 0
+    },
+    {
+      "width": 375,
+      "cache": "repeat-visit",
+      "samples": 3,
+      "lcpMinMs": 316,
+      "lcpMedianMs": 320,
+      "lcpMaxMs": 388,
+      "maxCls": 0
+    },
+    {
+      "width": 1440,
+      "cache": "browser-cold",
+      "samples": 3,
+      "lcpMinMs": 764,
+      "lcpMedianMs": 972,
+      "lcpMaxMs": 1020,
+      "maxCls": 0.01570471536351166
+    },
+    {
+      "width": 1440,
+      "cache": "repeat-visit",
+      "samples": 3,
+      "lcpMinMs": 284,
+      "lcpMedianMs": 288,
+      "lcpMaxMs": 292,
+      "maxCls": 0.01570471536351166
+    }
+  ]
+}

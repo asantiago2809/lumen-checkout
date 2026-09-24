@@ -12,18 +12,18 @@ export function quote(
   quantity: number,
 ): Result<Amounts> {
   return andThen(
-    product ? ok(product) : fail("NOT_FOUND", "El producto no existe.", 404),
+    product ? ok(product) : fail("NOT_FOUND", "El producto no existe."),
     (p) =>
       andThen(
         quantity === 1
           ? ok(p)
-          : fail("INVALID_QUANTITY", "Compra una unidad por pedido.", 422),
+          : fail("INVALID_QUANTITY", "Compra una unidad por pedido."),
         (valid) => {
           if (valid.stockAvailable < quantity)
-            return fail("OUT_OF_STOCK", "Este producto está agotado.", 409);
+            return fail("OUT_OF_STOCK", "Este producto está agotado.");
           const total = valid.priceInCents + BASE_FEE + DELIVERY_FEE;
           if (!Number.isSafeInteger(total) || valid.priceInCents < 1)
-            return fail("INVALID_PRICE", "El precio no está disponible.", 503);
+            return fail("INVALID_PRICE", "El precio no está disponible.");
           return ok({
             currency: "COP",
             subtotalInCents: valid.priceInCents,

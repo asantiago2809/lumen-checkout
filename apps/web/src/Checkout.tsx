@@ -17,6 +17,7 @@ import {
 } from "./components";
 import {
   actions,
+  draftSaveStatus,
   persistDraft,
   returnToProduct,
   useAppDispatch,
@@ -96,10 +97,12 @@ export function Checkout() {
   const [personal, setPersonal] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
+  const [savingToClose, setSavingToClose] = useState(false);
   const [uncertain, setUncertain] = useState(false);
   const submitting = useRef(false);
   const mounted = useRef(true);
   const form = useRef<HTMLFormElement>(null);
+  const saveStatus = draftSaveStatus(state);
   const loadConfig = useCallback(async () => {
     setConfigLoading(true);
     setConfigError(null);
@@ -120,12 +123,19 @@ export function Checkout() {
     };
   }, [loadConfig]);
   useEffect(() => {
-    if (!draft || transaction || step !== "DETAILS") return;
+    if (
+      !draft ||
+      transaction ||
+      step !== "DETAILS" ||
+      busy ||
+      saveStatus !== "pending"
+    )
+      return;
     const timer = setTimeout(() => {
       void dispatch(persistDraft(draft));
     }, 500);
     return () => clearTimeout(timer);
-  }, [draft, transaction, step, dispatch]);
+  }, [draft, transaction, step, busy, saveStatus, dispatch]);
 
   const receive = useCallback(
     (next: Transaction) => {
@@ -144,12 +154,29 @@ export function Checkout() {
   );
   const polling = usePolling(transaction, receive, pollError);
 
-  const close = () => {
+  const close = async () => {
     if (submitting.current) return;
     if (transaction) dispatch(actions.setStep("RESULT"));
     else {
-      if (draft) void dispatch(persistDraft(draft));
-      dispatch(actions.setStep("PRODUCT"));
+      if (!draft || saveStatus === "saved") {
+        dispatch(actions.setStep("PRODUCT"));
+        return;
+      }
+      submitting.current = true;
+      setBusy(true);
+      setSavingToClose(true);
+      try {
+        await dispatch(persistDraft(draft)).unwrap();
+        dispatch(actions.setStep("PRODUCT"));
+      } catch {
+        // Keep the form and its edits available; the save status offers retry.
+      } finally {
+        submitting.current = false;
+        if (mounted.current) {
+          setBusy(false);
+          setSavingToClose(false);
+        }
+      }
     }
   };
   const allErrors = (): Record<string, string> => ({
@@ -350,6 +377,51 @@ export function Checkout() {
             Revisa el resumen antes de confirmar el pago. Todos los campos son
             obligatorios salvo donde se indica.
           </p>
+          {!transaction && (
+            <div className={`save-progress ${saveStatus}`}>
+              <Icon
+                name={
+                  saveStatus === "saved"
+                    ? "check"
+                    : saveStatus === "error"
+                      ? "warning"
+                      : "clock"
+                }
+              />
+              <div>
+                <p role="status" aria-atomic="true">
+                  {saveStatus === "saving"
+                    ? savingToClose
+                      ? "Guardando antes de salir…"
+                      : "Guardando datos de entrega…"
+                    : saveStatus === "saved"
+                      ? "Datos de entrega guardados."
+                      : saveStatus === "error"
+                        ? "No pudimos guardar el progreso."
+                        : "Cambios pendientes de guardar."}
+                </p>
+                <small>
+                  {saveStatus === "saved"
+                    ? "Puedes retomarlos al volver. La tarjeta no se guarda."
+                    : saveStatus === "error"
+                      ? "Tus cambios siguen aquí. Vuelve a guardar antes de salir o recargar."
+                      : "Espera la confirmación antes de recargar esta página."}
+                </small>
+                {saveStatus === "error" && (
+                  <button
+                    className="text-button"
+                    type="button"
+                    disabled={busy}
+                    onClick={() => {
+                      if (draft) void dispatch(persistDraft(draft));
+                    }}
+                  >
+                    Volver a guardar
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
           {banner}
           {configLoading && (
             <p className="muted" role="status">
@@ -623,12 +695,6 @@ export function Checkout() {
                 </small>
               )}
             </fieldset>
-            {state.saveError && (
-              <Alert>
-                No pudimos guardar el progreso. Intenta continuar de nuevo para
-                guardarlo.
-              </Alert>
-            )}
             <div className="form-actions">
               <p>El pago se confirma en el siguiente paso.</p>
               <button
@@ -636,7 +702,9 @@ export function Checkout() {
                 type="submit"
                 disabled={busy || configLoading || !config}
               >
-                {busy ? "Preparando resumen…" : "Continuar al resumen"}
+                {busy && !savingToClose
+                  ? "Preparando resumen…"
+                  : "Continuar al resumen"}
                 <Icon name="arrow" />
               </button>
               <button
@@ -647,7 +715,9 @@ export function Checkout() {
               >
                 {transaction
                   ? "Volver al estado del pedido"
-                  : "Volver al producto"}
+                  : savingToClose
+                    ? "Guardando antes de salir…"
+                    : "Volver al producto"}
               </button>
               <p className="privacy-note">
                 <Icon name="lock" /> La tarjeta permanece fuera de tu progreso

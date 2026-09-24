@@ -1,17 +1,31 @@
+export type DomainErrorCode =
+  | "NOT_FOUND"
+  | "INVALID_QUANTITY"
+  | "OUT_OF_STOCK"
+  | "INVALID_PRICE"
+  | "CONCURRENT_UPDATE"
+  | "SESSION_EXPIRED"
+  | "PAYMENT_IN_PROGRESS"
+  | "IDEMPOTENCY_CONFLICT"
+  | "PRICE_CHANGED"
+  | "DATA_UNAVAILABLE"
+  | "INVENTORY_UNAVAILABLE"
+  | "PAYMENT_UNAVAILABLE"
+  | "PAYMENT_REJECTED"
+  | "PAYMENT_UNCERTAIN";
+
 export type DomainError = {
-  code: string;
+  code: DomainErrorCode;
   message: string;
-  httpStatus: number;
   fields?: Record<string, string>;
 };
 export type Result<T> =
   { ok: true; value: T } | { ok: false; error: DomainError };
 export const ok = <T>(value: T): Result<T> => ({ ok: true, value });
 export const fail = (
-  code: string,
+  code: DomainErrorCode,
   message: string,
-  httpStatus = 400,
-): Result<never> => ({ ok: false, error: { code, message, httpStatus } });
+): Result<never> => ({ ok: false, error: { code, message } });
 export function andThen<A, B>(
   result: Result<A>,
   next: (value: A) => Result<B>,

@@ -25,6 +25,7 @@ import { CheckoutService } from "../../application/checkout.service";
 import { Session } from "../../domain/models";
 import { Result } from "../../domain/result";
 import { CreateDto, DraftDto, EmptyDto, PayDto, QuoteDto } from "./dtos";
+import { DOMAIN_ERROR_STATUS } from "./domain-error-status";
 
 export type CheckoutRequest = Request & {
   checkout: Session;
@@ -32,7 +33,10 @@ export type CheckoutRequest = Request & {
 };
 export function unwrap<T>(result: Result<T>): T {
   if (!result.ok)
-    throw new HttpException(result.error, result.error.httpStatus);
+    throw new HttpException(
+      result.error,
+      DOMAIN_ERROR_STATUS[result.error.code],
+    );
   return result.value;
 }
 

@@ -1,0 +1,108 @@
+{
+  "observedAt": "2026-09-24T03:17:44.597Z",
+  "origin": "https://j67vc6cdn4.execute-api.us-east-1.amazonaws.com",
+  "scope": "Live AWS pre-payment only; no card or payment submitted",
+  "results": [
+    {
+      "check": "Public API health",
+      "result": "PASS"
+    },
+    {
+      "check": "API security headers",
+      "result": "PASS"
+    },
+    {
+      "check": "Public Swagger HTML",
+      "result": "PASS"
+    },
+    {
+      "check": "Public OpenAPI transaction contract",
+      "result": "PASS"
+    },
+    {
+      "check": "Persistent seeded catalogue",
+      "result": "PASS"
+    },
+    {
+      "check": "Stock available for isolated pre-payment probe",
+      "result": "PASS"
+    },
+    {
+      "check": "New cloud checkout session",
+      "result": "PASS"
+    },
+    {
+      "check": "HttpOnly Secure SameSite cookie",
+      "result": "PASS"
+    },
+    {
+      "check": "Private session response is not cached",
+      "result": "PASS"
+    },
+    {
+      "check": "Untrusted Origin rejected",
+      "result": "PASS"
+    },
+    {
+      "check": "Invalid CSRF rejected",
+      "result": "PASS"
+    },
+    {
+      "check": "Cloud draft persisted (HTTP 200, no error code)",
+      "result": "PASS"
+    },
+    {
+      "check": "Draft restored through another HTTP request",
+      "result": "PASS"
+    },
+    {
+      "check": "Server quote uses integer money",
+      "result": "PASS"
+    },
+    {
+      "check": "Durable PENDING created before any payment",
+      "result": "PASS"
+    },
+    {
+      "check": "Reservation atomically replaces an earlier divergent draft",
+      "result": "PASS"
+    },
+    {
+      "check": "Late autosave from a second tab is rejected",
+      "result": "PASS"
+    },
+    {
+      "check": "Second-tab creation cannot replace a pending purchase",
+      "result": "PASS"
+    },
+    {
+      "check": "Recovery after second-tab conflicts returns the confirmed customer and address",
+      "result": "PASS"
+    },
+    {
+      "check": "Idempotent cloud retry returns the same attempt",
+      "result": "PASS"
+    },
+    {
+      "check": "Reservation reduces publicly available stock",
+      "result": "PASS"
+    },
+    {
+      "check": "Unsubmitted attempt cancelled through API",
+      "result": "PASS"
+    },
+    {
+      "check": "Cancelled attempt cannot be paid and has no delivery",
+      "result": "PASS"
+    },
+    {
+      "check": "Reservation released and publicly available stock restored",
+      "result": "PASS"
+    },
+    {
+      "check": "External sandbox configuration",
+      "status": 200,
+      "result": "AVAILABLE; no payment performed by this probe"
+    }
+  ]
+}

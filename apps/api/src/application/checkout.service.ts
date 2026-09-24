@@ -42,7 +42,6 @@ export class CheckoutService {
     return fail(
       "CONCURRENT_UPDATE",
       "La operación está en curso. Consulta de nuevo.",
-      409,
     );
   }
   async seed(): Promise<void> {
@@ -74,11 +73,7 @@ export class CheckoutService {
   }
   async sessionFromToken(token?: string): Promise<Result<Session>> {
     if (!token || !/^[a-zA-Z0-9_-]{32,128}$/.test(token))
-      return fail(
-        "SESSION_EXPIRED",
-        "Tu sesión venció. Inicia nuevamente.",
-        401,
-      );
+      return fail("SESSION_EXPIRED", "Tu sesión venció. Inicia nuevamente.");
     const session = await this.store.get<Session>(
       keys.session(this.runtime.hash(token)),
     );
@@ -86,11 +81,7 @@ export class CheckoutService {
       !session ||
       Date.parse(session.value.expiresAt) <= this.runtime.now().getTime()
     )
-      return fail(
-        "SESSION_EXPIRED",
-        "Tu sesión venció. Inicia nuevamente.",
-        401,
-      );
+      return fail("SESSION_EXPIRED", "Tu sesión venció. Inicia nuevamente.");
     return ok(session.value);
   }
   async bootstrap(
@@ -125,7 +116,7 @@ export class CheckoutService {
     const record = await this.store.get<T>(key);
     return record?.value.ownerSessionHash === owner
       ? ok(record)
-      : fail("NOT_FOUND", "El recurso no existe.", 404);
+      : fail("NOT_FOUND", "El recurso no existe.");
   }
   async saveDraft(
     owner: string,
@@ -142,7 +133,7 @@ export class CheckoutService {
     };
     return this.retry(async () => {
       const session = await this.store.get<Session>(keys.session(owner));
-      if (!session) return fail("SESSION_EXPIRED", "Tu sesión venció.", 401);
+      if (!session) return fail("SESSION_EXPIRED", "Tu sesión venció.");
       // Recheck on every CAS retry: another tab may reserve the order after
       // this autosave started. Its confirmed customer/address must stay fixed.
       if (session.value.activeTransactionId) {
@@ -153,11 +144,10 @@ export class CheckoutService {
           return fail(
             "PAYMENT_IN_PROGRESS",
             "Ya tienes una compra pendiente. Consulta su estado antes de cambiar los datos.",
-            409,
           );
       }
       if (!(await this.store.get(keys.product(draft.productId))))
-        return fail("NOT_FOUND", "El producto no existe.", 404);
+        return fail("NOT_FOUND", "El producto no existe.");
       await this.store.commit([
         {
           key: keys.session(owner),
@@ -171,18 +161,14 @@ export class CheckoutService {
   async clearDraft(owner: string): Promise<Result<null>> {
     return this.retry(async () => {
       const session = await this.store.get<Session>(keys.session(owner));
-      if (!session) return fail("SESSION_EXPIRED", "Tu sesión venció.", 401);
+      if (!session) return fail("SESSION_EXPIRED", "Tu sesión venció.");
       if (session.value.activeTransactionId) {
         const tx = await this.store.get<Transaction>(
           keys.transaction(session.value.activeTransactionId),
         );
         if (tx?.value.status === "PENDING") {
           if (tx.value.submissionStatus !== "NOT_STARTED")
-            return fail(
-              "PAYMENT_IN_PROGRESS",
-              "Estamos confirmando el pago.",
-              409,
-            );
+            return fail("PAYMENT_IN_PROGRESS", "Estamos confirmando el pago.");
           const cancelled = await this.finalize(
             tx.value.id,
             "ERROR",
@@ -192,11 +178,7 @@ export class CheckoutService {
           );
           if (!cancelled.ok) return cancelled;
           if (cancelled.value.status === "PENDING")
-            return fail(
-              "PAYMENT_IN_PROGRESS",
-              "Estamos confirmando el pago.",
-              409,
-            );
+            return fail("PAYMENT_IN_PROGRESS", "Estamos confirmando el pago.");
         }
       }
       await this.store.commit([
@@ -223,7 +205,7 @@ export class CheckoutService {
     const product = await this.store.get<Product>(keys.product(id));
     return product
       ? ok(publicProduct(product.value))
-      : fail("NOT_FOUND", "El producto no existe.", 404);
+      : fail("NOT_FOUND", "El producto no existe.");
   }
   async quote(productId: string, quantity: number) {
     for (const pending of await this.store.pending())
@@ -275,17 +257,12 @@ export class CheckoutService {
           return fail(
             "IDEMPOTENCY_CONFLICT",
             "Este intento de compra ya contiene otros datos.",
-            409,
           );
         const existing = await this.store.get<Transaction>(
           keys.transaction(previous.value.transactionId),
         );
         if (!existing)
-          return fail(
-            "DATA_UNAVAILABLE",
-            "No podemos recuperar la compra.",
-            503,
-          );
+          return fail("DATA_UNAVAILABLE", "No podemos recuperar la compra.");
         await this.expire(existing.value);
         const refreshed = (await this.store.get<Transaction>(
           keys.transaction(existing.value.id),
@@ -293,7 +270,7 @@ export class CheckoutService {
         return ok({ transaction: view(refreshed.value), created: false });
       }
       const session = await this.store.get<Session>(keys.session(owner));
-      if (!session) return fail("SESSION_EXPIRED", "Tu sesión venció.", 401);
+      if (!session) return fail("SESSION_EXPIRED", "Tu sesión venció.");
       if (session.value.activeTransactionId) {
         const active = await this.store.get<Transaction>(
           keys.transaction(session.value.activeTransactionId),
@@ -307,7 +284,6 @@ export class CheckoutService {
             return fail(
               "PAYMENT_IN_PROGRESS",
               "Ya tienes una compra pendiente. Consulta su estado.",
-              409,
             );
         }
       }
@@ -320,7 +296,6 @@ export class CheckoutService {
         return fail(
           "PRICE_CHANGED",
           "El total cambió. Revisa el resumen nuevamente.",
-          409,
         );
       const now = this.now(),
         txId = this.runtime.id(),
@@ -419,7 +394,7 @@ export class CheckoutService {
   ): Promise<Result<Transaction>> {
     return this.retry(async () => {
       const stored = await this.store.get<Transaction>(keys.transaction(id));
-      if (!stored) return fail("NOT_FOUND", "El pago no existe.", 404);
+      if (!stored) return fail("NOT_FOUND", "El pago no existe.");
       const tx = stored.value;
       if (tx.status !== "PENDING") return ok(tx);
       if (unsubmittedOnly && tx.submissionStatus !== "NOT_STARTED")
@@ -446,7 +421,6 @@ export class CheckoutService {
           return fail(
             "INVENTORY_UNAVAILABLE",
             "Estamos verificando tu compra.",
-            503,
           );
         const approved = status === "APPROVED";
         writes.push({
@@ -503,7 +477,6 @@ export class CheckoutService {
         return fail(
           "PAYMENT_UNAVAILABLE",
           "El servicio de pagos de prueba no está disponible.",
-          503,
         );
       const tx: Transaction = {
         ...stored.value,
@@ -526,7 +499,7 @@ export class CheckoutService {
       keys.customer(claim.value.tx.customerId),
     );
     if (!customer)
-      return fail("DATA_UNAVAILABLE", "Estamos verificando tu compra.", 503);
+      return fail("DATA_UNAVAILABLE", "Estamos verificando tu compra.");
     const response = await this.gateway.create(
       claim.value.tx,
       customer.value.email,

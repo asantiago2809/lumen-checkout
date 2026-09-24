@@ -3,6 +3,7 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
 const { Readable } = require("node:stream");
+const { gunzipSync } = require("node:zlib");
 const { createHandler } = require("./index.cjs");
 
 const event = (rawPath, method = "GET") => ({
@@ -12,6 +13,10 @@ const event = (rawPath, method = "GET") => ({
 });
 const decoded = (response) => Buffer.from(response.body, "base64");
 const asset = (bytes) => ({ Body: Readable.from([bytes]) });
+const withEncoding = (path, encoding, method = "GET") => ({
+  ...event(path, method),
+  headers: { "Accept-Encoding": encoding },
+});
 
 test("root/index use exact S3 key, byte-safe body and security/no-cache headers", async () => {
   const requests = [];
@@ -215,4 +220,188 @@ test("size limit applies to metadata, direct bytes and streamed bodies before ba
   const success = await boundary(event("/"));
   assert.equal(success.statusCode, 200);
   assert.equal(success.body.length, 5 * 1024 * 1024);
+});
+
+test("gzip text round-trips exact UTF-8 bytes, negotiates Vary and preserves HEAD/security/cache headers", async () => {
+  const bytes = Buffer.from("const label = 'Lámpara · diseño';\n".repeat(200));
+  const handler = createHandler({
+    bucket: "web",
+    getObject: async () => asset(bytes),
+  });
+  for (const path of [
+    "/",
+    "/assets/app-AbCdEfGh.js",
+    "/assets/app-AbCdEfGh.css",
+    "/favicon.svg",
+  ]) {
+    const get = await handler(withEncoding(path, "br, gzip, deflate"));
+    assert.equal(get.headers["content-encoding"], "gzip");
+    assert.equal(get.headers.vary, "Accept-Encoding");
+    assert.equal(Number(get.headers["content-length"]), decoded(get).length);
+    assert.ok(decoded(get).length < bytes.length / 2);
+    assert.deepEqual(gunzipSync(decoded(get)), bytes);
+    assert.equal(get.headers["x-content-type-options"], "nosniff");
+    const head = await handler(withEncoding(path, "br, gzip, deflate", "HEAD"));
+    assert.equal(head.body, "");
+    assert.deepEqual(head.headers, get.headers);
+  }
+});
+
+test("encoding negotiation honors explicit q=0, wildcard exclusions and identity preference", async () => {
+  const bytes = Buffer.from("export const text = 'safe';\n".repeat(100));
+  const handler = createHandler({
+    bucket: "web",
+    getObject: async () => asset(bytes),
+  });
+  for (const encoding of [
+    "",
+    "br",
+    "gzip;q=0",
+    "gzip;q=0, *;q=1",
+    "gzip;q=invalid",
+    "gzip;q=1.1",
+    "identity;q=1, gzip;q=0.5",
+  ]) {
+    const response = await handler(
+      withEncoding("/assets/app-AbCdEfGh.js", encoding),
+    );
+    assert.equal(response.statusCode, 200, encoding);
+    assert.equal(response.headers["content-encoding"], undefined, encoding);
+    assert.deepEqual(decoded(response), bytes);
+  }
+  for (const encoding of [
+    "GZip",
+    "*;q=0.8",
+    "gzip;q=0.5, identity;q=0.1",
+    "gzip;q=1, *;q=0",
+    "x-gzip",
+  ]) {
+    const response = await handler(
+      withEncoding("/assets/app-AbCdEfGh.js", encoding),
+    );
+    assert.equal(response.headers["content-encoding"], "gzip", encoding);
+    assert.deepEqual(gunzipSync(decoded(response)), bytes);
+  }
+  for (const encoding of [
+    "gzip;q=0, identity;q=0",
+    "*;q=0",
+    "br, identity;q=0",
+  ]) {
+    const response = await handler(
+      withEncoding("/assets/app-AbCdEfGh.js", encoding),
+    );
+    assert.equal(response.statusCode, 406, encoding);
+    assert.equal(response.headers["cache-control"], "no-store");
+    assert.equal(response.headers.vary, "Accept-Encoding");
+    assert.equal(decoded(response).toString(), "Not acceptable.");
+    assert.equal((await handler(withEncoding("/", encoding, "HEAD"))).body, "");
+  }
+});
+
+test("small text uses identity unless refused; WebP is never recompressed", async () => {
+  const bytes = Buffer.from("small asset");
+  const handler = createHandler({
+    bucket: "web",
+    getObject: async () => asset(bytes),
+  });
+  const small = await handler(withEncoding("/", "gzip"));
+  assert.equal(small.headers["content-encoding"], undefined);
+  const forced = await handler(withEncoding("/", "gzip, identity;q=0"));
+  assert.deepEqual(gunzipSync(decoded(forced)), bytes);
+  const image = await handler(withEncoding("/lumen-one-640.webp", "gzip"));
+  assert.deepEqual(decoded(image), bytes);
+  assert.equal(image.headers["content-encoding"], undefined);
+  assert.equal(image.headers.vary, undefined);
+  assert.equal(
+    (await handler(withEncoding("/lumen-one-640.webp", "gzip, identity;q=0")))
+      .statusCode,
+    406,
+  );
+});
+
+test("warm cache reuses immutable assets across encodings while index and mutable images stay fresh", async () => {
+  const calls = [];
+  const handler = createHandler({
+    bucket: "web",
+    getObject: async ({ Key }) => {
+      calls.push(Key);
+      return asset(Buffer.from(`version ${calls.length} `.repeat(200)));
+    },
+  });
+  const path = "/assets/app-AbCdEfGh.js";
+  const first = await handler(event(path));
+  const compressed = await handler(withEncoding(path, "gzip"));
+  assert.deepEqual(gunzipSync(decoded(compressed)), decoded(first));
+  assert.equal(calls.length, 1);
+  for (const mutable of ["/", "/lumen-one-640.webp"]) {
+    const a = await handler(event(mutable));
+    const b = await handler(event(mutable));
+    assert.notDeepEqual(decoded(a), decoded(b));
+  }
+  await handler(event("/assets/app-QrStUvWx.js"));
+  assert.equal(calls.length, 6);
+});
+
+test("immutable cache is bounded by retained bytes and evicts older versions", async () => {
+  const calls = [];
+  const handler = createHandler({
+    bucket: "web",
+    getObject: async ({ Key }) => {
+      calls.push(Key);
+      return asset(Buffer.alloc(3 * 1024 * 1024, 65));
+    },
+  });
+  for (const name of [
+    "aaaaaaaa",
+    "bbbbbbbb",
+    "cccccccc",
+    "aaaaaaaa",
+    "aaaaaaaa",
+  ])
+    assert.equal(
+      (await handler(withEncoding(`/assets/app-${name}.js`, "gzip")))
+        .statusCode,
+      200,
+    );
+  assert.equal(calls.length, 4);
+});
+
+test("errors are not cached and a later successful upload is served", async () => {
+  let calls = 0;
+  const handler = createHandler({
+    bucket: "web",
+    getObject: async () => {
+      if (++calls === 1) throw new Error("not uploaded yet");
+      return asset(Buffer.from("recovered"));
+    },
+  });
+  assert.equal(
+    (await handler(event("/assets/app-AbCdEfGh.js"))).statusCode,
+    404,
+  );
+  assert.equal(
+    decoded(await handler(event("/assets/app-AbCdEfGh.js"))).toString(),
+    "recovered",
+  );
+  assert.equal(calls, 2);
+});
+
+test("HTTP API proxy HEAD envelope includes the selected representation for gateway length calculation", async () => {
+  const bytes = Buffer.from("const name = 'Lumen';\n".repeat(200));
+  const handler = createHandler({
+    bucket: "web",
+    gatewayManagesHead: true,
+    getObject: async () => asset(bytes),
+  });
+  for (const encoding of ["identity", "gzip"]) {
+    const get = await handler(
+      withEncoding("/assets/app-AbCdEfGh.js", encoding),
+    );
+    const head = await handler(
+      withEncoding("/assets/app-AbCdEfGh.js", encoding, "HEAD"),
+    );
+    assert.deepEqual(head, get);
+    assert.equal(decoded(head).length, Number(head.headers["content-length"]));
+  }
+  // The deployed wire probe must separately verify no bytes reach HEAD clients.
 });

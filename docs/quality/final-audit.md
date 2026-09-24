@@ -1,6 +1,6 @@
 # Auditoría de cumplimiento y condiciones de entrega
 
-> **Registro histórico, sustituido por la [evaluación de rúbrica](rubric-evaluation.md).** La revisión posterior encontró EV-01, una inconsistencia entre el resumen y la dirección reservada en dos pestañas. Se corrigió en `ad641f4` y pasó 157 Jest, 91 E2E, CI y retests públicos de API/UI sin pago; el informe vigente registra **147/150 internos** y las mejoras abiertas. Las evidencias siguientes conservan sus versiones y alcances originales: no se borró el hallazgo ni se atribuyeron las pruebas nuevas a este corte anterior.
+> **Registro histórico, sustituido por la [auditoría de entrega](delivery-audit.md).** La [rúbrica](rubric-evaluation.md) conserva la progresión y los hallazgos de cada revisión. El cierre posterior verifica 170 Jest, 103 E2E, 12 pruebas estáticas y una nueva pareja sandbox real sobre la aplicación corregida. Las evidencias siguientes conservan sus versiones y alcances originales: no se borraron hallazgos ni se atribuyeron pruebas nuevas a este corte anterior.
 
 **Dictamen al 2026-09-23: implementación, QA local y pagos sandbox públicos verificados; CI final aprobado y sustitución reversible completada. Recomendación de entrega favorable en el alcance probado.** Se revisaron los 82 controles. Hay **81 Cumple en el alcance indicado, 0 Bloqueados y 1 Pendiente (nota externa)**. Un Cumple local demuestra el criterio específico; no convierte el gateway de prueba en una integración real. No se asigna puntuación ni se promete ausencia absoluta de defectos.
 

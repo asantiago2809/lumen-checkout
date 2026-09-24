@@ -1,4 +1,17 @@
-# Evidencia independiente local
+# Evidencia de verificación
+
+## Cierre de entrega
+
+La [auditoría vigente](../../../docs/quality/delivery-audit.md) vincula cada requisito con evidencia y conserva los límites de verificación.
+
+- [Gates independientes](2026-09-23-delivery-gates.json): 81 API + 89 web Jest, 12 estáticos, typecheck/build.
+- [103 ejecuciones E2E](2026-09-23-delivery-full-103.json): 11 API y 23 flujos en cuatro proyectos, con proveedor controlado. [Capturas del guardado](2026-09-23-delivery-visual/) enmascaradas.
+- [API pública](2026-09-23-delivery-cloud-api.json) y [recuperación entre pestañas](2026-09-23-delivery-cloud-ui/report.json): AWS real, sin pagos.
+- [Sandbox real 35950887803](live-sandbox-35950887803/report.json): aprobado con entrega/stock 11→10 y rechazado sin entrega/stock 10→10; refresh sin segundo pago, TLS normal y ocho capturas revisadas. Registra los DELETE cancelados por navegador y cero networkFailures.
+- [Despliegue](2026-09-23-delivery-deployment.json): hashes de paquetes/Lambda, recursos finales e incidentes resueltos. Solo se incluyen líneas REPORT de plataforma, sin logs de aplicación ni secretos.
+- Rendimiento: [resumen inicial](2026-09-23-delivery-performance-initial-summary.json), [baseline completo](2026-09-23-delivery-performance-before.json), [compresión](2026-09-23-delivery-performance-after.json) y [ajuste final](2026-09-23-delivery-performance-tuned.json). Los outliers y el fallo original de metadatos HEAD se conservan; no se suman estas muestras como un percentil de campo.
+
+## Primera ejecución local (histórica)
 
 Fecha: 2026-09-23. La ejecución base obtuvo **55 passed, 0 skipped, 0 flaky**, con 11 casos HTTP y 11 flujos UI repetidos en Chromium escritorio, Chromium 375x667, Firefox y WebKit. Reporte original: `2026-09-23-full-55.json`.
 

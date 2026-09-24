@@ -1,6 +1,10 @@
 # Evaluación interna de la rúbrica original
 
-**Nota vigente: 147/150 (99/100 base + 48/50 bonus), en `ad641f4b2e2327aebbf5ebbe7e726f324535e373`.** Supera el mínimo de 100 por 47 puntos. La [reevaluación independiente](#reevaluación-independiente-del-candidato-corregido) documenta el retest local completo y la verificación del despliegue, API y UI pública AWS. **Dictamen actualizado: favorable para entrega en el alcance probado, con EV-01 corregido y mejoras menores abiertas.** Esta nota es interna; no pertenece al empleador, no garantiza su evaluación ni sustituye sus decisiones.
+**Cierre final vigente: 149/150 internos (99/100 base + 50/50 bonus).** La [auditoría final de entrega](delivery-audit.md) verifica las cuatro mejoras solicitadas, 170 Jest, 103 E2E, 12 pruebas estáticas, AWS y un nuevo par de pagos sandbox reales. EV-03, EV-04 y EV-06 se cierran; EV-02 tiene optimizaciones comprobadas y conserva una observación de primera carga variable, por lo que se mantiene 4/5 en imágenes/UI. Dictamen técnico favorable con esa observación menor; Release debe completar integración y verificar el CI de main antes del cierre. Esta calificación es interna y no pertenece al empleador.
+
+> Los apartados históricos siguientes conservan los cortes 144 y 147 con sus fechas, defectos y alcances; sus estados “vigente” se entienden dentro de cada corte. El anexo final registra el cambio posterior sin borrar evidencia.
+
+**Nota del corte anterior: 147/150 (99/100 base + 48/50 bonus), en `ad641f4b2e2327aebbf5ebbe7e726f324535e373`.** Supera el mínimo de 100 por 47 puntos. La [reevaluación independiente](#reevaluación-independiente-del-candidato-corregido) documenta el retest local completo y la verificación del despliegue, API y UI pública AWS. **Dictamen actualizado: favorable para entrega en el alcance probado, con EV-01 corregido y mejoras menores abiertas.** Esta nota es interna; no pertenece al empleador, no garantiza su evaluación ni sustituye sus decisiones.
 
 **Evaluación inicial histórica conservada:** `a7d045f` obtuvo **144/150 (96 base + 48 bonus)** y un dictamen de entrega bloqueado por EV-01, aun superando el mínimo numérico. La tabla inicial y la reproducción se conservan debajo; no describen el estado actual del candidato corregido. El arreglo protege reservas nuevas y recuperación con el frontend actualizado, sin reparar retrospectivamente registros antiguos.
 
@@ -253,3 +257,22 @@ Este cierre verifica el defecto y su arreglo en la aplicación pública. Los pag
 EV-02, EV-03, EV-04 y el límite UX EV-06 permanecen asignados como mejoras abiertas; no se ampliaron durante esta corrección. No se afirma que se repararan backups antiguos, que una pestaña con JavaScript anterior esté actualizada, que no existan otros defectos ni que el evaluador externo conceda esta nota. El coordinador conserva la integración documental/CI posterior; un cambio adicional de aplicación requiere valorar su propio retest.
 
 **Registro de notificación final:** el evaluador comunicó mediante mensajes internos el cierre de EV-01 y la nota vigente a Backend/director, Frontend/QA y coordinador/Release. Backend/director mantiene **EV-03 y EV-04**; Release mantiene **EV-02**; Frontend mantiene **EV-06** como mejora UX opcional sin descuento ni bloqueo. Los destinatarios, el alcance y los criterios de retest quedan registrados en este informe. No se solicitó una implementación adicional de esas mejoras en esta ronda ni se notificó a terceros.
+
+## Anexo final: mejoras verificadas y dictamen de entrega
+
+La [auditoría independiente final](delivery-audit.md) corresponde a la aplicación **a150336** y la infraestructura final **71187e4**: código de apps/handler/tests idéntico durante la corrida; API empaquetada desde **929a550**, contrastada por hash con Lambda. El único ajuste final de memoria fue estática 128→512 MB; API permanece 512 MB. Stack UPDATE_COMPLETE. La aplicación y el despliegue tienen evidencia propia; el coordinador sella después la integración/main CI.
+
+| Concepto | Corte 147 | Cierre final | Evidencia y decisión |
+| --- | ---: | ---: | --- |
+| Código limpio, EV-04 | 9/10 | **10/10** | Parser de JSON unknown sin any/casts, negativos ante formas extrañas y aprobaciones desalineadas; [sandbox nuevo](../../tests/e2e/evidence/live-sandbox-35950887803/report.json) APPROVED/DECLINED con TLS normal |
+| Hexagonal, EV-03 | 9/10 | **10/10** | DomainError sin HTTP; unión de 14 códigos y traducción exhaustiva en adapter; mismas respuestas HTTP verificadas |
+| Imágenes/UI, EV-02 | 4/5 | **4/5** | Gzip reduce JS 67.93% y CSS 75.68%, caché/HEAD/seguridad comprobados. [Medición final](../../tests/e2e/evidence/2026-09-23-delivery-performance-tuned.json): primera carga móvil 4.976 s, mediana 1.592 s; variación residual, sin garantía causal ni de percentiles |
+| Checkout, EV-01/06 | 20/20 | **20/20** | Se conserva el arreglo entre pestañas y se añade guardado/cierre/reintento honesto; las 12 regresiones EV-01 y 12 EV-06 pasan en cuatro proyectos |
+| Resto de criterios | 105/105 | **105/105** | Revalidación funcional, segura, visual, cloud y de documentación en los 82 controles |
+| **Total** | **147/150** | **149/150** | **99 base + 50 bonus**; no se otorga 150 por intención o número de tests |
+
+Ejecución propia única: **81 API + 89 frontend Jest PASS**, cobertura API **99/95.66/100/99%** y web **96.55/95.09/96.15/97.60%**; **103 E2E PASS** sin omitidos/fallidos/flaky; **12 estáticos PASS** y tipos/build. Evidencia: [gates](../../tests/e2e/evidence/2026-09-23-delivery-gates.json) y [103 escenarios saneados](../../tests/e2e/evidence/2026-09-23-delivery-full-103.json). El evaluador contrastó públicamente CI 35950070341 y sandbox 35950887803 como SUCCESS/f096001; no realizó compras propias.
+
+**Dictamen técnico final: favorable para entrega con observación menor EV-02; sin bloqueantes funcionales conocidos en lo probado.** Son 81 controles verificados en alcance (D-04 con observación) y 1 pendiente externo, L-05. La interfaz conserva explícitamente el límite de una edición no confirmada durante recarga; el cierre normal espera guardado y conserva el formulario ante fallo. Se mantiene la historia **144→147→149**, las mediciones previas con outliers, las incidencias de release resueltas y los límites operativos. No se declara futura CI de main aprobada antes de ejecutarse ni se sustituye la evaluación del empleador.
+
+**Notificación:** el coordinador recibió la nota 149, cierre de EV-03/04/06 y observación residual EV-02; Backend y Frontend recibieron el retest independiente. Release conserva la observación y el gate de integración. No se contactó a terceros ni se envió la prueba al empleador.

@@ -653,3 +653,130 @@ test('QA-X06: catalogue loading error and sold-out states remain clear and recov
   await expect(page.getByRole('button', { name: 'Pagar con tarjeta' })).toBeEnabled();
   expect(harness.gateway.createCount).toBe(0);
 });
+
+test('QA-U01: closing flushes a new edit and waits for real delivery confirmation', async ({ page, harness }) => {
+  const paymentTraffic = observePaymentTraffic(page);
+  await page.setViewportSize({ width: 375, height: 667 });
+  await openCheckout(page);
+  const card = syntheticCard();
+  await fillCard(page, card);
+  await fillDelivery(page);
+  await expect(page.locator('.save-progress [role="status"]')).toHaveText('Datos de entrega guardados.');
+  const changedAddress = 'Calle recién editada 42';
+  let release!: () => void;
+  const gate = new Promise<void>(resolve => { release = resolve; });
+  await page.route('**/api/checkout/draft', async route => {
+    if (route.request().method() === 'PUT' && route.request().postDataJSON()?.delivery?.addressLine1 === changedAddress) await gate;
+    await route.continue();
+  });
+  try {
+    await page.getByLabel('Dirección', { exact: true }).fill(changedAddress);
+    await page.keyboard.press('Escape');
+    await expect(page.locator('.save-progress [role="status"]')).toHaveText('Guardando antes de salir…');
+    await expect(page.getByRole('dialog')).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Cerrar formulario de pago' })).toBeDisabled();
+    await expect(page.getByLabel('Dirección', { exact: true })).toBeDisabled();
+    expect((await browserApi(page, '/checkout/session')).body.data.draft.delivery.addressLine1).toBe(delivery.addressLine1);
+    release();
+    await expect(page.getByRole('dialog')).toHaveCount(0);
+    await page.getByRole('button', { name: 'Pagar con tarjeta' }).click();
+    await page.reload();
+    await expect(page.getByLabel('Dirección', { exact: true })).toHaveValue(changedAddress);
+    await expect(page.getByLabel('Número de tarjeta', { exact: true })).toHaveValue('');
+    await expect(page.getByLabel('Código de seguridad', { exact: true })).toHaveValue('');
+    await expect(page.getByRole('checkbox', { name: /Acepto los/ })).not.toBeChecked();
+    expect(await page.getByRole('dialog').evaluate(element => element.scrollWidth <= element.clientWidth)).toBe(true);
+    expect(await page.evaluate(() => JSON.stringify({ ...localStorage, ...sessionStorage }))).not.toContain(card);
+    expect(JSON.stringify(await harness.readState())).not.toContain(card);
+    expect(paymentTraffic).toEqual([]);
+    expect(harness.gateway.createCount).toBe(0);
+  } finally { release(); }
+});
+
+test('QA-U02: failed close preserves edits with accessible retry on narrow screens', async ({ page, harness }, testInfo) => {
+  const paymentTraffic = observePaymentTraffic(page);
+  await page.setViewportSize({ width: 320, height: 667 });
+  await openCheckout(page);
+  await fillDelivery(page);
+  await expect(page.locator('.save-progress [role="status"]')).toHaveText('Datos de entrega guardados.');
+  let fail = true;
+  const changedAddress = 'Carrera pendiente 28';
+  await page.route('**/api/checkout/draft', async route => {
+    if (fail && route.request().method() === 'PUT') {
+      await route.fulfill({ status: 503, contentType: 'application/json', body: JSON.stringify({ error: { code: 'SERVICE_UNAVAILABLE', message: 'Fallo temporal de guardado de prueba.' } }) });
+    } else await route.continue();
+  });
+  await page.getByLabel('Dirección', { exact: true }).fill(changedAddress);
+  await page.getByRole('button', { name: 'Volver al producto' }).click();
+  await expect(page.locator('.save-progress [role="status"]')).toHaveText('No pudimos guardar el progreso.');
+  await expect(page.getByLabel('Dirección', { exact: true })).toHaveValue(changedAddress);
+  await expect(page.getByLabel('Dirección', { exact: true })).toBeEnabled();
+  await expect(page.getByText('Tus cambios siguen aquí. Vuelve a guardar antes de salir o recargar.')).toBeVisible();
+  expect((await browserApi(page, '/checkout/session')).body.data.draft.delivery.addressLine1).toBe(delivery.addressLine1);
+  const retry = page.getByRole('button', { name: 'Volver a guardar' });
+  const box = await retry.boundingBox();
+  expect(box?.height).toBeGreaterThanOrEqual(44);
+  await page.locator('.save-progress').scrollIntoViewIfNeeded();
+  await page.screenshot({ path: testInfo.outputPath('save-failed-mobile.png'), mask: [page.locator('.field input')] });
+  expect(await axeSerious(page)).toEqual([]);
+  for (const width of [320, 375]) {
+    await page.setViewportSize({ width, height: 667 });
+    expect(await page.getByRole('dialog').evaluate(element => element.scrollWidth <= element.clientWidth)).toBe(true);
+  }
+  fail = false;
+  await retry.click();
+  await expect(page.locator('.save-progress [role="status"]')).toHaveText('Datos de entrega guardados.');
+  await page.getByRole('button', { name: 'Cerrar formulario de pago' }).click();
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await page.getByRole('button', { name: 'Pagar con tarjeta' }).click();
+  await page.reload();
+  await expect(page.getByLabel('Dirección', { exact: true })).toHaveValue(changedAddress);
+  expect(paymentTraffic).toEqual([]);
+  expect(harness.gateway.createCount).toBe(0);
+});
+
+test('QA-U03: resolving an older save never confirms a newer edit awaiting persistence', async ({ page, harness }) => {
+  const paymentTraffic = observePaymentTraffic(page);
+  await openCheckout(page);
+  await fillDelivery(page);
+  await expect(page.locator('.save-progress [role="status"]')).toHaveText('Datos de entrega guardados.');
+  let releaseFirst!: () => void;
+  let releaseLatest!: () => void;
+  let firstStarted!: () => void;
+  let latestStarted!: () => void;
+  const firstGate = new Promise<void>(resolve => { releaseFirst = resolve; });
+  const latestGate = new Promise<void>(resolve => { releaseLatest = resolve; });
+  const firstRequest = new Promise<void>(resolve => { firstStarted = resolve; });
+  const latestRequest = new Promise<void>(resolve => { latestStarted = resolve; });
+  await page.route('**/api/checkout/draft', async route => {
+    const name = route.request().method() === 'PUT' && route.request().postDataJSON()?.customer?.fullName;
+    if (name === 'Primera edición') { firstStarted(); await firstGate; }
+    if (name === 'Última edición') { latestStarted(); await latestGate; }
+    await route.continue();
+  });
+  try {
+    await page.getByLabel('Nombre de quien recibe', { exact: true }).fill('Primera edición');
+    await firstRequest;
+    const status = page.locator('.save-progress [role="status"]');
+    await expect(status).toHaveText('Guardando datos de entrega…');
+    await status.evaluate(element => {
+      const observed = element as HTMLElement & { observations?: string[] };
+      observed.observations = [];
+      new MutationObserver(() => observed.observations!.push(element.textContent ?? '')).observe(element, { childList: true, subtree: true, characterData: true });
+    });
+    await page.getByLabel('Nombre de quien recibe', { exact: true }).fill('Última edición');
+    releaseFirst();
+    await latestRequest;
+    await expect(status).toHaveText('Guardando datos de entrega…');
+    const observed = await status.evaluate(element => (element as HTMLElement & { observations: string[] }).observations);
+    expect(observed).not.toContain('Datos de entrega guardados.');
+    expect((await browserApi(page, '/checkout/session')).body.data.draft.customer.fullName).toBe('Primera edición');
+    await expect(page.getByLabel('Nombre de quien recibe', { exact: true })).toHaveValue('Última edición');
+    releaseLatest();
+    await expect(status).toHaveText('Datos de entrega guardados.');
+    await page.reload();
+    await expect(page.getByLabel('Nombre de quien recibe', { exact: true })).toHaveValue('Última edición');
+    expect(paymentTraffic).toEqual([]);
+    expect(harness.gateway.createCount).toBe(0);
+  } finally { releaseFirst(); releaseLatest(); }
+});

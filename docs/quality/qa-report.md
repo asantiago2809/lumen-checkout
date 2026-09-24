@@ -1,5 +1,7 @@
 # Informe de QA independiente
 
+> Corte histórico. La [auditoría final de entrega](delivery-audit.md) contiene el retest de `a150336`: 170 Jest, 103 E2E, 12 pruebas estáticas y los controles cloud posteriores. Las cifras siguientes conservan sus versiones originales.
+
 Fecha: 2026-09-23, America/Bogota. **Validación local, núcleo AWS y pagos sandbox reales completados; CI final aprobado.** UI y API reales, FileStore temporal aislado y gateway controlado inyectado exclusivamente por tests. Tokenización externa interceptada. Estas pruebas no demuestran pago sandbox real. Las comprobaciones AWS y el pago real sandbox se enumeran por separado; el flujo público aprobado/rechazado tiene evidencia propia.
 
 ## Resultados reproducidos por QA

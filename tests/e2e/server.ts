@@ -57,13 +57,13 @@ export class TestGateway {
   private payments = new Map<string, any>();
   configured() { return this.mode !== 'unavailable'; }
   async config() {
-    if (!this.configured()) return { ok: false, error: { code: 'PAYMENT_UNAVAILABLE', message: 'El proveedor de pruebas no está disponible.', httpStatus: 503 } };
+    if (!this.configured()) return { ok: false, error: { code: 'PAYMENT_UNAVAILABLE', message: 'El proveedor de pruebas no está disponible.' } };
     return { ok: true, value: { environment: 'sandbox', paymentApiUrl: 'https://sandbox.wompi.co/v1', publicKey: 'pub_test_qa', currency: 'COP', baseFeeInCents: amounts.baseFeeInCents, deliveryFeeInCents: amounts.deliveryFeeInCents,
       acceptance: { terms: { token: 'qa-terms', url: 'https://example.test/terms' }, personalData: { token: 'qa-personal', url: 'https://example.test/privacy' } } } };
   }
   async create(tx: any) {
     this.createCount += 1;
-    if (this.mode === 'uncertain') return { ok: false, error: { code: 'PAYMENT_UNCERTAIN', message: 'La respuesta de prueba se perdió.', httpStatus: 503 } };
+    if (this.mode === 'uncertain') return { ok: false, error: { code: 'PAYMENT_UNCERTAIN', message: 'La respuesta de prueba se perdió.' } };
     const result = { id: `qa-${randomUUID()}`, reference: tx.reference, status: this.mode === 'declined' ? 'DECLINED' : this.mode === 'pending' ? 'PENDING' : 'APPROVED', amountInCents: tx.amounts.totalInCents, currency: 'COP', card: { brand: 'VISA', lastFour: '0000' } };
     this.payments.set(result.id, result);
     return { ok: true, value: result };
@@ -71,7 +71,7 @@ export class TestGateway {
   async get(id: string) {
     this.getCount += 1;
     const value = this.payments.get(id);
-    return value ? { ok: true, value } : { ok: false, error: { code: 'PAYMENT_UNCERTAIN', message: 'Consulta de prueba sin respuesta.', httpStatus: 503 } };
+    return value ? { ok: true, value } : { ok: false, error: { code: 'PAYMENT_UNCERTAIN', message: 'Consulta de prueba sin respuesta.' } };
   }
 }
 

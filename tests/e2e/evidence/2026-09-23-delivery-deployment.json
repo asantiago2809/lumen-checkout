@@ -1,0 +1,572 @@
+{
+  "observedAt": "2026-09-24T03:23:25.2673910Z",
+  "applicationCommit": "a150336361ba20ea19d2e1c6b239f1d66d1c2312",
+  "origin": "https://j67vc6cdn4.execute-api.us-east-1.amazonaws.com",
+  "stack": {
+    "status": "UPDATE_COMPLETE",
+    "lastUpdated": "2026-09-23T22:22:09.367-05:00"
+  },
+  "artifacts": [
+    {
+      "key": "api/api-929a550-20260923220204.zip",
+      "runtimeHashMatches": true,
+      "sha256": "B5C4518A7CCAEA33C0528AE46799F45151AFD325D06CFAD08583A99CCD456C12",
+      "s3SizeMatches": true,
+      "runtime": {
+        "status": "Successful",
+        "sha256": "tcRRinzK6jPAUorkZ5n0UVGv0yXQbPrQhYOpnM1FbBI=",
+        "runtime": "nodejs22.x",
+        "memoryMB": 512
+      },
+      "bytes": 17544828
+    },
+    {
+      "key": "web/web-497a00175cc1.zip",
+      "runtimeHashMatches": true,
+      "sha256": "5E8EA50152823D9D858B3227ABD34F1C6F6CA93F623ED6F80AC32556ACAD7DE0",
+      "s3SizeMatches": true,
+      "runtime": {
+        "status": "Successful",
+        "sha256": "Xo6lAVKCPZ2FizInq9NPHG9sqT9iPtb4CsMlVqytfeA=",
+        "runtime": "nodejs22.x",
+        "memoryMB": 512
+      },
+      "bytes": 3610
+    }
+  ],
+  "assets": [
+    {
+      "name": "index-CjZzrNZL.js",
+      "sha256": "B0250F7FB9E90E12726A303B6C70D349EBF4FAEE2CCE8D43D7EFDE09C57164B2",
+      "metadata": {
+        "bytes": 282680,
+        "contentType": "application/javascript",
+        "cacheControl": "public,max-age=31536000,immutable"
+      },
+      "bytes": 282680
+    },
+    {
+      "name": "index-Dg5qOyc5.css",
+      "sha256": "E584E843F816A8E8918C723FF603D045C407A25F89FA18918957B114D7B60599",
+      "metadata": {
+        "bytes": 19571,
+        "contentType": "text/css",
+        "cacheControl": "public,max-age=31536000,immutable"
+      },
+      "bytes": 19571
+    }
+  ],
+  "incidents": [
+    {
+      "at": "2026-09-24T03:11:09Z",
+      "reason": "API artifact NoSuchKey despite earlier upload process exiting zero",
+      "resolution": "Automatic rollback completed; explicit put-object with matching MD5 and all object sizes verified; retry UPDATE_COMPLETE at 03:13:54Z"
+    },
+    {
+      "at": "2026-09-24T03:20:32Z",
+      "reason": "Account rejects API MemorySize above 512 MB; immediate rollback collided with active static update",
+      "resolution": "Waited for Lambda Successful, continued rollback without skipping resources; retained API512 and updated only static128 to512"
+    }
+  ],
+  "initialPerformanceDiagnostics": {
+    "reports": {
+      "api": [
+        {
+          "timestamp": 1790219858667,
+          "message": "REPORT RequestId: afa0efbc-7e75-46f6-9b84-62f4c1a36979\tDuration: 1096.44 ms\tBilled Duration: 2188 ms\tMemory Size: 512 MB\tMax Memory Used: 156 MB\tInit Duration: 1091.05 ms\t\n"
+        },
+        {
+          "timestamp": 1790219859058,
+          "message": "REPORT RequestId: f35b97b0-0da5-42dd-912a-c6d8b50f1999\tDuration: 1054.34 ms\tBilled Duration: 2451 ms\tMemory Size: 512 MB\tMax Memory Used: 156 MB\tInit Duration: 1395.79 ms\t\n"
+        },
+        {
+          "timestamp": 1790219860049,
+          "message": "REPORT RequestId: 5058eeed-c3ee-4289-bb46-b672f16508d3\tDuration: 13.63 ms\tBilled Duration: 14 ms\tMemory Size: 512 MB\tMax Memory Used: 156 MB\t\n"
+        },
+        {
+          "timestamp": 1790219860057,
+          "message": "REPORT RequestId: 38642f13-a6f8-4113-b1c3-1805eb8e902d\tDuration: 28.79 ms\tBilled Duration: 29 ms\tMemory Size: 512 MB\tMax Memory Used: 157 MB\t\n"
+        },
+        {
+          "timestamp": 1790219861505,
+          "message": "REPORT RequestId: 72010d95-ae25-4d05-99e8-6479f0e2c893\tDuration: 58.85 ms\tBilled Duration: 59 ms\tMemory Size: 512 MB\tMax Memory Used: 156 MB\t\n"
+        },
+        {
+          "timestamp": 1790219861557,
+          "message": "REPORT RequestId: 0b1cf7d4-51ad-4628-a79c-8b893cba4db9\tDuration: 123.73 ms\tBilled Duration: 124 ms\tMemory Size: 512 MB\tMax Memory Used: 157 MB\t\n"
+        },
+        {
+          "timestamp": 1790219862032,
+          "message": "REPORT RequestId: 727e169c-c22d-4177-9d52-e6adddd079cc\tDuration: 2.93 ms\tBilled Duration: 3 ms\tMemory Size: 512 MB\tMax Memory Used: 157 MB\t\n"
+        },
+        {
+          "timestamp": 1790219862251,
+          "message": "REPORT RequestId: 65da8ec7-4943-4a07-a5d1-787cf81064aa\tDuration: 3.19 ms\tBilled Duration: 4 ms\tMemory Size: 512 MB\tMax Memory Used: 156 MB\t\n"
+        },
+        {
+          "timestamp": 1790219862281,
+          "message": "REPORT RequestId: 652c4e46-6f3a-4ab1-a6ea-230a709e3c32\tDuration: 33.39 ms\tBilled Duration: 34 ms\tMemory Size: 512 MB\tMax Memory Used: 157 MB\t\n"
+        },
+        {
+          "timestamp": 1790219862285,
+          "message": "REPORT RequestId: 650e6e7b-acf9-4848-b431-e21b8bb61790\tDuration: 28.13 ms\tBilled Duration: 29 ms\tMemory Size: 512 MB\tMax Memory Used: 156 MB\t\n"
+        },
+        {
+          "timestamp": 1790219862346,
+          "message": "REPORT RequestId: 0519e922-c1e7-47b0-848f-6525b8ef31a1\tDuration: 3.22 ms\tBilled Duration: 4 ms\tMemory Size: 512 MB\tMax Memory Used: 156 MB\t\n"
+        },
+        {
+          "timestamp": 1790219862465,
+          "message": "REPORT RequestId: a9d12bc5-0358-4135-875b-012d08ba28cd\tDuration: 32.01 ms\tBilled Duration: 33 ms\tMemory Size: 512 MB\tMax Memory Used: 156 MB\t\n"
+        },
+        {
+          "timestamp": 1790219862568,
+          "message": "REPORT RequestId: 6432e7e9-9bc1-4921-8704-5245b40778a6\tDuration: 24.55 ms\tBilled Duration: 25 ms\tMemory Size: 512 MB\tMax Memory Used: 156 MB\t\n"
+        },
+        {
+          "timestamp": 1790219862647,
+          "message": "REPORT RequestId: 22341e95-16de-4013-b804-f0d5e6e8c1b7\tDuration: 4.45 ms\tBilled Duration: 5 ms\tMemory Size: 512 MB\tMax Memory Used: 156 MB\t\n"
+        },
+        {
+          "timestamp": 1790219862747,
+          "message": "REPORT RequestId: 3be486c6-39aa-4ba7-bf8f-155493e6ce2f\tDuration: 11.05 ms\tBilled Duration: 12 ms\tMemory Size: 512 MB\tMax Memory Used: 156 MB\t\n"
+        },
+        {
+          "timestamp": 1790219862909,
+          "message": "REPORT RequestId: ea1bbf27-8d69-4a47-80fa-b3ab041d8f0b\tDuration: 67.60 ms\tBilled Duration: 68 ms\tMemory Size: 512 MB\tMax Memory Used: 157 MB\t\n"
+        },
+        {
+          "timestamp": 1790219863004,
+          "message": "REPORT RequestId: 5ae2da16-570f-4186-bc60-013fa2e7b5f4\tDuration: 7.45 ms\tBilled Duration: 8 ms\tMemory Size: 512 MB\tMax Memory Used: 157 MB\t\n"
+        },
+        {
+          "timestamp": 1790219863125,
+          "message": "REPORT RequestId: 1450a74c-9507-4f8e-bdd7-f12655d63a47\tDuration: 30.70 ms\tBilled Duration: 31 ms\tMemory Size: 512 MB\tMax Memory Used: 157 MB\t\n"
+        },
+        {
+          "timestamp": 1790219863293,
+          "message": "REPORT RequestId: f914cbe0-32f2-40dc-ad24-8cc51328c43f\tDuration: 89.02 ms\tBilled Duration: 90 ms\tMemory Size: 512 MB\tMax Memory Used: 159 MB\t\n"
+        },
+        {
+          "timestamp": 1790219863385,
+          "message": "REPORT RequestId: 7dbb6ec5-5e0f-4fed-9a82-fde83a671b02\tDuration: 8.93 ms\tBilled Duration: 9 ms\tMemory Size: 512 MB\tMax Memory Used: 160 MB\t\n"
+        },
+        {
+          "timestamp": 1790219863444,
+          "message": "REPORT RequestId: fa02697f-be74-408b-96eb-fffedd13487a\tDuration: 14.80 ms\tBilled Duration: 15 ms\tMemory Size: 512 MB\tMax Memory Used: 157 MB\t\n"
+        },
+        {
+          "timestamp": 1790219863453,
+          "message": "REPORT RequestId: b7a14a30-5dd7-4421-b07d-8d22cc7f7876\tDuration: 23.86 ms\tBilled Duration: 24 ms\tMemory Size: 512 MB\tMax Memory Used: 160 MB\t\n"
+        },
+        {
+          "timestamp": 1790219863507,
+          "message": "REPORT RequestId: 936d4961-b6b8-4b40-bead-7edb6f2fe7ca\tDuration: 35.77 ms\tBilled Duration: 36 ms\tMemory Size: 512 MB\tMax Memory Used: 160 MB\t\n"
+        },
+        {
+          "timestamp": 1790219863606,
+          "message": "REPORT RequestId: 6985b600-76a3-4a07-9e6f-dcefe8b978e0\tDuration: 29.00 ms\tBilled Duration: 29 ms\tMemory Size: 512 MB\tMax Memory Used: 160 MB\t\n"
+        },
+        {
+          "timestamp": 1790219863702,
+          "message": "REPORT RequestId: b3d7c14a-6394-4cb9-8418-4b23e23778dd\tDuration: 6.63 ms\tBilled Duration: 7 ms\tMemory Size: 512 MB\tMax Memory Used: 160 MB\t\n"
+        },
+        {
+          "timestamp": 1790219863805,
+          "message": "REPORT RequestId: c5c53535-430c-4ff0-b20f-1ac77888a55a\tDuration: 29.92 ms\tBilled Duration: 30 ms\tMemory Size: 512 MB\tMax Memory Used: 160 MB\t\n"
+        },
+        {
+          "timestamp": 1790219863885,
+          "message": "REPORT RequestId: 744281fc-9748-4cfb-9044-736e801e0bd1\tDuration: 11.29 ms\tBilled Duration: 12 ms\tMemory Size: 512 MB\tMax Memory Used: 160 MB\t\n"
+        },
+        {
+          "timestamp": 1790219864040,
+          "message": "REPORT RequestId: 41edc8b3-cadc-4d1c-8601-457c8894ba79\tDuration: 79.82 ms\tBilled Duration: 80 ms\tMemory Size: 512 MB\tMax Memory Used: 160 MB\t\n"
+        },
+        {
+          "timestamp": 1790219864165,
+          "message": "REPORT RequestId: ea56f3dd-3c3e-49a0-b592-220944fbd19e\tDuration: 31.94 ms\tBilled Duration: 32 ms\tMemory Size: 512 MB\tMax Memory Used: 161 MB\t\n"
+        },
+        {
+          "timestamp": 1790219864184,
+          "message": "REPORT RequestId: 0399732d-7f4c-466e-b039-e0ea2a84c4fc\tDuration: 6.43 ms\tBilled Duration: 7 ms\tMemory Size: 512 MB\tMax Memory Used: 161 MB\t\n"
+        },
+        {
+          "timestamp": 1790219864198,
+          "message": "REPORT RequestId: fc7a27d3-118a-44c6-a7f6-e7669672ba63\tDuration: 20.17 ms\tBilled Duration: 21 ms\tMemory Size: 512 MB\tMax Memory Used: 159 MB\t\n"
+        },
+        {
+          "timestamp": 1790219864357,
+          "message": "REPORT RequestId: e3f86186-b81a-44af-9b42-ecf6bdb4607c\tDuration: 12.51 ms\tBilled Duration: 13 ms\tMemory Size: 512 MB\tMax Memory Used: 159 MB\t\n"
+        },
+        {
+          "timestamp": 1790219865018,
+          "message": "REPORT RequestId: 13dd69e1-54f2-4d37-8408-1a76aefd4983\tDuration: 579.35 ms\tBilled Duration: 580 ms\tMemory Size: 512 MB\tMax Memory Used: 167 MB\t\n"
+        },
+        {
+          "timestamp": 1790219865211,
+          "message": "REPORT RequestId: 8fb44b31-c8a7-4f83-acf2-373d192d9343\tDuration: 11.18 ms\tBilled Duration: 12 ms\tMemory Size: 512 MB\tMax Memory Used: 161 MB\t\n"
+        },
+        {
+          "timestamp": 1790219865257,
+          "message": "REPORT RequestId: 76b50251-a0fe-4d17-844e-a3ecd693e007\tDuration: 57.05 ms\tBilled Duration: 58 ms\tMemory Size: 512 MB\tMax Memory Used: 167 MB\t\n"
+        },
+        {
+          "timestamp": 1790219865878,
+          "message": "REPORT RequestId: 8c86ab44-c82e-4072-8282-1b6715582a52\tDuration: 244.26 ms\tBilled Duration: 245 ms\tMemory Size: 512 MB\tMax Memory Used: 176 MB\t\n"
+        },
+        {
+          "timestamp": 1790219865985,
+          "message": "REPORT RequestId: f5b01af1-a955-4a2b-a2b5-108b0d163f77\tDuration: 20.94 ms\tBilled Duration: 21 ms\tMemory Size: 512 MB\tMax Memory Used: 161 MB\t\n"
+        },
+        {
+          "timestamp": 1790219865996,
+          "message": "REPORT RequestId: 6d14624d-41d3-4454-b578-bb073ee02c00\tDuration: 34.19 ms\tBilled Duration: 35 ms\tMemory Size: 512 MB\tMax Memory Used: 176 MB\t\n"
+        },
+        {
+          "timestamp": 1790219866735,
+          "message": "REPORT RequestId: 85a3a124-3249-4f98-94f1-ee5855281dba\tDuration: 29.76 ms\tBilled Duration: 30 ms\tMemory Size: 512 MB\tMax Memory Used: 161 MB\t\n"
+        },
+        {
+          "timestamp": 1790219866756,
+          "message": "REPORT RequestId: 9e578462-21df-49b9-873f-3626a9a56e59\tDuration: 63.60 ms\tBilled Duration: 64 ms\tMemory Size: 512 MB\tMax Memory Used: 177 MB\t\n"
+        },
+        {
+          "timestamp": 1790219867208,
+          "message": "REPORT RequestId: 63f0fc48-5c62-4a38-a6c6-711d43ec182e\tDuration: 28.46 ms\tBilled Duration: 29 ms\tMemory Size: 512 MB\tMax Memory Used: 161 MB\t\n"
+        },
+        {
+          "timestamp": 1790219867259,
+          "message": "REPORT RequestId: 559c7b19-c8ae-4c4e-92b8-9978256d663c\tDuration: 87.38 ms\tBilled Duration: 88 ms\tMemory Size: 512 MB\tMax Memory Used: 179 MB\t\n"
+        },
+        {
+          "timestamp": 1790219867976,
+          "message": "REPORT RequestId: 5c953395-2b2a-42fe-b939-2788125d0a0f\tDuration: 15.92 ms\tBilled Duration: 16 ms\tMemory Size: 512 MB\tMax Memory Used: 179 MB\t\n"
+        },
+        {
+          "timestamp": 1790219867978,
+          "message": "REPORT RequestId: fc82af89-9814-4fc2-99a3-49eca393ea6f\tDuration: 7.61 ms\tBilled Duration: 8 ms\tMemory Size: 512 MB\tMax Memory Used: 161 MB\t\n"
+        },
+        {
+          "timestamp": 1790219868020,
+          "message": "REPORT RequestId: a41c218b-46bc-4ac8-b91d-6e3561a6d64f\tDuration: 829.04 ms\tBilled Duration: 2251 ms\tMemory Size: 512 MB\tMax Memory Used: 155 MB\tInit Duration: 1421.02 ms\t\n"
+        },
+        {
+          "timestamp": 1790219868140,
+          "message": "REPORT RequestId: 7bf3b57a-9776-4291-80f1-50c99ce72272\tDuration: 32.02 ms\tBilled Duration: 33 ms\tMemory Size: 512 MB\tMax Memory Used: 156 MB\t\n"
+        },
+        {
+          "timestamp": 1790219868822,
+          "message": "REPORT RequestId: eba02b0c-29f8-449e-ad74-f99da20cf351\tDuration: 41.46 ms\tBilled Duration: 42 ms\tMemory Size: 512 MB\tMax Memory Used: 161 MB\t\n"
+        },
+        {
+          "timestamp": 1790219868860,
+          "message": "REPORT RequestId: c2742c25-6c76-444c-a546-c835e7cfb0ea\tDuration: 612.61 ms\tBilled Duration: 613 ms\tMemory Size: 512 MB\tMax Memory Used: 165 MB\t\n"
+        },
+        {
+          "timestamp": 1790219869005,
+          "message": "REPORT RequestId: a941fabf-b703-4a8f-ac3c-2cff7b22aaa6\tDuration: 17.12 ms\tBilled Duration: 18 ms\tMemory Size: 512 MB\tMax Memory Used: 161 MB\t\n"
+        },
+        {
+          "timestamp": 1790219869240,
+          "message": "REPORT RequestId: 623ccbc9-d5d1-4f4b-b46d-27b539ae0822\tDuration: 254.75 ms\tBilled Duration: 255 ms\tMemory Size: 512 MB\tMax Memory Used: 167 MB\t\n"
+        },
+        {
+          "timestamp": 1790219869273,
+          "message": "REPORT RequestId: 87614b6f-81bf-4aaf-8b14-a5cfc7d2e0b1\tDuration: 66.64 ms\tBilled Duration: 67 ms\tMemory Size: 512 MB\tMax Memory Used: 161 MB\t\n"
+        },
+        {
+          "timestamp": 1790219869728,
+          "message": "REPORT RequestId: 68ab001e-e6b6-4881-bc89-ffc2f02ce6d7\tDuration: 17.39 ms\tBilled Duration: 18 ms\tMemory Size: 512 MB\tMax Memory Used: 161 MB\t\n"
+        },
+        {
+          "timestamp": 1790219870245,
+          "message": "REPORT RequestId: e95c845a-f7eb-467f-a257-fb383be8c09f\tDuration: 6.83 ms\tBilled Duration: 7 ms\tMemory Size: 512 MB\tMax Memory Used: 161 MB\t\n"
+        },
+        {
+          "timestamp": 1790219870267,
+          "message": "REPORT RequestId: 3d885e98-ef5d-43db-881c-798b6afce2f1\tDuration: 13.43 ms\tBilled Duration: 14 ms\tMemory Size: 512 MB\tMax Memory Used: 161 MB\t\n"
+        },
+        {
+          "timestamp": 1790219870325,
+          "message": "REPORT RequestId: 1a8ab356-6f7f-454e-9077-2b88a2b57ca1\tDuration: 13.14 ms\tBilled Duration: 14 ms\tMemory Size: 512 MB\tMax Memory Used: 161 MB\t\n"
+        },
+        {
+          "timestamp": 1790219870379,
+          "message": "REPORT RequestId: 1f506465-dc47-4fac-bd5a-edca2551c948\tDuration: 63.67 ms\tBilled Duration: 64 ms\tMemory Size: 512 MB\tMax Memory Used: 169 MB\t\n"
+        },
+        {
+          "timestamp": 1790219870524,
+          "message": "REPORT RequestId: 6019b910-bfb1-4a88-a4a5-16b1552ae2b0\tDuration: 8.18 ms\tBilled Duration: 9 ms\tMemory Size: 512 MB\tMax Memory Used: 161 MB\t\n"
+        },
+        {
+          "timestamp": 1790219870645,
+          "message": "REPORT RequestId: d714e806-1fc0-41bf-b60e-4b8f87c1085a\tDuration: 42.14 ms\tBilled Duration: 43 ms\tMemory Size: 512 MB\tMax Memory Used: 161 MB\t\n"
+        },
+        {
+          "timestamp": 1790219870700,
+          "message": "REPORT RequestId: b05ec798-b915-4200-aaf5-6946b2e73e12\tDuration: 236.68 ms\tBilled Duration: 237 ms\tMemory Size: 512 MB\tMax Memory Used: 176 MB\t\n"
+        },
+        {
+          "timestamp": 1790219870891,
+          "message": "REPORT RequestId: 97827b2f-b5f3-4a8f-9725-bd3057000396\tDuration: 164.15 ms\tBilled Duration: 165 ms\tMemory Size: 512 MB\tMax Memory Used: 176 MB\t\n"
+        },
+        {
+          "timestamp": 1790219870987,
+          "message": "REPORT RequestId: 6f62ba14-0c20-482c-95f7-da883e1b7dbd\tDuration: 8.04 ms\tBilled Duration: 9 ms\tMemory Size: 512 MB\tMax Memory Used: 176 MB\t\n"
+        },
+        {
+          "timestamp": 1790219871119,
+          "message": "REPORT RequestId: 0c87534e-3c45-4da3-b1bd-a8a77f8ef68a\tDuration: 38.59 ms\tBilled Duration: 39 ms\tMemory Size: 512 MB\tMax Memory Used: 176 MB\t\n"
+        },
+        {
+          "timestamp": 1790219871302,
+          "message": "REPORT RequestId: fb296558-6e37-4028-afbd-63d47d7c9a56\tDuration: 83.58 ms\tBilled Duration: 84 ms\tMemory Size: 512 MB\tMax Memory Used: 176 MB\t\n"
+        },
+        {
+          "timestamp": 1790219871419,
+          "message": "REPORT RequestId: 002eb9fb-3969-41a1-b366-01a27fbff8b0\tDuration: 9.42 ms\tBilled Duration: 10 ms\tMemory Size: 512 MB\tMax Memory Used: 176 MB\t\n"
+        },
+        {
+          "timestamp": 1790219871525,
+          "message": "REPORT RequestId: e8188ffb-734e-44ad-9db8-e3e818074f0f\tDuration: 19.57 ms\tBilled Duration: 20 ms\tMemory Size: 512 MB\tMax Memory Used: 176 MB\t\n"
+        },
+        {
+          "timestamp": 1790219871882,
+          "message": "REPORT RequestId: 76ea7e64-afb0-48b8-831b-db01bc06aa2b\tDuration: 8.13 ms\tBilled Duration: 9 ms\tMemory Size: 512 MB\tMax Memory Used: 176 MB\t\n"
+        },
+        {
+          "timestamp": 1790219871983,
+          "message": "REPORT RequestId: 0bde3607-6a44-4f40-b71d-35059d3a1e36\tDuration: 15.98 ms\tBilled Duration: 16 ms\tMemory Size: 512 MB\tMax Memory Used: 176 MB\t\n"
+        },
+        {
+          "timestamp": 1790219872143,
+          "message": "REPORT RequestId: 64bd5e00-c7ec-42e8-972c-0ba6a19be852\tDuration: 7.63 ms\tBilled Duration: 8 ms\tMemory Size: 512 MB\tMax Memory Used: 176 MB\t\n"
+        },
+        {
+          "timestamp": 1790219872241,
+          "message": "REPORT RequestId: d4d66051-172a-4a10-a70e-0c9073203336\tDuration: 18.08 ms\tBilled Duration: 19 ms\tMemory Size: 512 MB\tMax Memory Used: 176 MB\t\n"
+        },
+        {
+          "timestamp": 1790219872342,
+          "message": "REPORT RequestId: 0568e074-895f-4cf6-8acb-be3c954d9057\tDuration: 7.05 ms\tBilled Duration: 8 ms\tMemory Size: 512 MB\tMax Memory Used: 176 MB\t\n"
+        },
+        {
+          "timestamp": 1790219872543,
+          "message": "REPORT RequestId: 439f699d-5e97-4f4f-b867-996a03af704c\tDuration: 102.90 ms\tBilled Duration: 103 ms\tMemory Size: 512 MB\tMax Memory Used: 176 MB\t\n"
+        },
+        {
+          "timestamp": 1790219872645,
+          "message": "REPORT RequestId: 2fdee19a-1467-42e5-a21e-c88afae98052\tDuration: 20.95 ms\tBilled Duration: 21 ms\tMemory Size: 512 MB\tMax Memory Used: 176 MB\t\n"
+        },
+        {
+          "timestamp": 1790219872744,
+          "message": "REPORT RequestId: 3d3668c5-1e81-4fcd-84aa-53221dbe8b29\tDuration: 7.28 ms\tBilled Duration: 8 ms\tMemory Size: 512 MB\tMax Memory Used: 176 MB\t\n"
+        },
+        {
+          "timestamp": 1790219872859,
+          "message": "REPORT RequestId: e50077bf-449c-43dd-be87-ab8346a799c1\tDuration: 19.05 ms\tBilled Duration: 20 ms\tMemory Size: 512 MB\tMax Memory Used: 176 MB\t\n"
+        }
+      ],
+      "web": [
+        {
+          "timestamp": 1790219851039,
+          "message": "REPORT RequestId: b7ab2504-d5f3-477c-8dd2-fa16e0ad08e8\tDuration: 4266.82 ms\tBilled Duration: 4408 ms\tMemory Size: 128 MB\tMax Memory Used: 101 MB\tInit Duration: 140.65 ms\t\n"
+        },
+        {
+          "timestamp": 1790219851837,
+          "message": "REPORT RequestId: d225c2b8-6468-4de2-bc0e-4af5326894cc\tDuration: 686.96 ms\tBilled Duration: 687 ms\tMemory Size: 128 MB\tMax Memory Used: 101 MB\t\n"
+        },
+        {
+          "timestamp": 1790219855944,
+          "message": "REPORT RequestId: ef6f4a30-ff37-4c40-8954-caa7cafc0a13\tDuration: 4431.89 ms\tBilled Duration: 4577 ms\tMemory Size: 128 MB\tMax Memory Used: 99 MB\tInit Duration: 144.57 ms\t\n"
+        },
+        {
+          "timestamp": 1790219859284,
+          "message": "REPORT RequestId: 937d160d-7412-4e4d-86af-6c0c5fda0efd\tDuration: 120.20 ms\tBilled Duration: 121 ms\tMemory Size: 128 MB\tMax Memory Used: 99 MB\t\n"
+        },
+        {
+          "timestamp": 1790219859943,
+          "message": "REPORT RequestId: 58caa035-24fd-4860-889d-1353dde2c398\tDuration: 176.71 ms\tBilled Duration: 177 ms\tMemory Size: 128 MB\tMax Memory Used: 99 MB\t\n"
+        },
+        {
+          "timestamp": 1790219860784,
+          "message": "REPORT RequestId: 97b0186a-bde0-4584-b2b7-bb6405e36400\tDuration: 68.53 ms\tBilled Duration: 69 ms\tMemory Size: 128 MB\tMax Memory Used: 99 MB\t\n"
+        },
+        {
+          "timestamp": 1790219861097,
+          "message": "REPORT RequestId: 9c461862-f9cb-4208-9030-ca64883d6052\tDuration: 211.07 ms\tBilled Duration: 212 ms\tMemory Size: 128 MB\tMax Memory Used: 101 MB\t\n"
+        },
+        {
+          "timestamp": 1790219861223,
+          "message": "REPORT RequestId: 1159f399-6f90-483f-8504-54016b867d6b\tDuration: 339.29 ms\tBilled Duration: 340 ms\tMemory Size: 128 MB\tMax Memory Used: 99 MB\t\n"
+        },
+        {
+          "timestamp": 1790219861743,
+          "message": "REPORT RequestId: 2a56f664-7520-4ae3-a271-7ee75d771943\tDuration: 84.83 ms\tBilled Duration: 85 ms\tMemory Size: 128 MB\tMax Memory Used: 99 MB\t\n"
+        },
+        {
+          "timestamp": 1790219862163,
+          "message": "REPORT RequestId: ad2e9b71-a946-443f-8288-dafc413c8c3d\tDuration: 78.62 ms\tBilled Duration: 79 ms\tMemory Size: 128 MB\tMax Memory Used: 99 MB\t\n"
+        },
+        {
+          "timestamp": 1790219863084,
+          "message": "REPORT RequestId: 19b857da-87f5-45e2-b9e4-9f2f52a3aed6\tDuration: 47.58 ms\tBilled Duration: 48 ms\tMemory Size: 128 MB\tMax Memory Used: 99 MB\t\n"
+        },
+        {
+          "timestamp": 1790219863184,
+          "message": "REPORT RequestId: 18c027ba-d668-4f00-af3c-3fc1a0aed91c\tDuration: 10.87 ms\tBilled Duration: 11 ms\tMemory Size: 128 MB\tMax Memory Used: 99 MB\t\n"
+        },
+        {
+          "timestamp": 1790219863196,
+          "message": "REPORT RequestId: 0e46e181-fa80-4ab7-9d36-1835ead8bd10\tDuration: 2.00 ms\tBilled Duration: 3 ms\tMemory Size: 128 MB\tMax Memory Used: 101 MB\t\n"
+        },
+        {
+          "timestamp": 1790219863617,
+          "message": "REPORT RequestId: 2df919b6-8766-42d4-a106-7d7a158ca938\tDuration: 70.95 ms\tBilled Duration: 71 ms\tMemory Size: 128 MB\tMax Memory Used: 101 MB\t\n"
+        },
+        {
+          "timestamp": 1790219864079,
+          "message": "REPORT RequestId: c908e2b1-6973-4b50-9ea0-f0030f570846\tDuration: 82.91 ms\tBilled Duration: 83 ms\tMemory Size: 128 MB\tMax Memory Used: 101 MB\t\n"
+        },
+        {
+          "timestamp": 1790219864917,
+          "message": "REPORT RequestId: ba49cfb7-3a8d-4797-8f75-8bd56a3a3ead\tDuration: 63.56 ms\tBilled Duration: 64 ms\tMemory Size: 128 MB\tMax Memory Used: 101 MB\t\n"
+        },
+        {
+          "timestamp": 1790219864997,
+          "message": "REPORT RequestId: 156f85e2-f4c4-4e4b-a4cf-210fbabc1be4\tDuration: 12.04 ms\tBilled Duration: 13 ms\tMemory Size: 128 MB\tMax Memory Used: 101 MB\t\n"
+        },
+        {
+          "timestamp": 1790219865036,
+          "message": "REPORT RequestId: d9f732d7-c181-4069-b093-8d64cfd20c6a\tDuration: 2.43 ms\tBilled Duration: 3 ms\tMemory Size: 128 MB\tMax Memory Used: 101 MB\t\n"
+        },
+        {
+          "timestamp": 1790219865418,
+          "message": "REPORT RequestId: 50e092da-6891-47ea-95e8-65414f090c5b\tDuration: 84.38 ms\tBilled Duration: 85 ms\tMemory Size: 128 MB\tMax Memory Used: 101 MB\t\n"
+        },
+        {
+          "timestamp": 1790219865878,
+          "message": "REPORT RequestId: 885624b7-0680-4394-ac62-cebf0fd2fe43\tDuration: 78.29 ms\tBilled Duration: 79 ms\tMemory Size: 128 MB\tMax Memory Used: 101 MB\t\n"
+        },
+        {
+          "timestamp": 1790219866358,
+          "message": "REPORT RequestId: d9af9602-8b87-494f-918f-531915f9bdc7\tDuration: 229.70 ms\tBilled Duration: 230 ms\tMemory Size: 128 MB\tMax Memory Used: 101 MB\t\n"
+        },
+        {
+          "timestamp": 1790219866477,
+          "message": "REPORT RequestId: 422d3d1e-6268-441c-b0f1-0cb9e7e268a2\tDuration: 4.56 ms\tBilled Duration: 5 ms\tMemory Size: 128 MB\tMax Memory Used: 101 MB\t\n"
+        },
+        {
+          "timestamp": 1790219866482,
+          "message": "REPORT RequestId: 04808611-7a77-4143-92be-5e849563f8b0\tDuration: 2.44 ms\tBilled Duration: 3 ms\tMemory Size: 128 MB\tMax Memory Used: 99 MB\t\n"
+        },
+        {
+          "timestamp": 1790219866863,
+          "message": "REPORT RequestId: d7651b6f-e86a-4615-ac2c-bdf3e61092ea\tDuration: 215.62 ms\tBilled Duration: 216 ms\tMemory Size: 128 MB\tMax Memory Used: 99 MB\t\n"
+        },
+        {
+          "timestamp": 1790219866897,
+          "message": "REPORT RequestId: 6ee7c928-be44-4138-b51c-2136a9930343\tDuration: 59.59 ms\tBilled Duration: 60 ms\tMemory Size: 128 MB\tMax Memory Used: 101 MB\t\n"
+        },
+        {
+          "timestamp": 1790219866937,
+          "message": "REPORT RequestId: cbdc372e-fdc9-4e7d-932c-85e8ebd35d3f\tDuration: 8.13 ms\tBilled Duration: 9 ms\tMemory Size: 128 MB\tMax Memory Used: 101 MB\t\n"
+        },
+        {
+          "timestamp": 1790219866942,
+          "message": "REPORT RequestId: f4f9587c-ddeb-4857-924d-63a69aa707f9\tDuration: 1.75 ms\tBilled Duration: 2 ms\tMemory Size: 128 MB\tMax Memory Used: 99 MB\t\n"
+        },
+        {
+          "timestamp": 1790219867463,
+          "message": "REPORT RequestId: 959137aa-2d1c-436d-a375-30d73a6529c4\tDuration: 103.07 ms\tBilled Duration: 104 ms\tMemory Size: 128 MB\tMax Memory Used: 99 MB\t\n"
+        },
+        {
+          "timestamp": 1790219867864,
+          "message": "REPORT RequestId: f7c38a28-4e16-47e2-b089-7fb02a38b39a\tDuration: 44.43 ms\tBilled Duration: 45 ms\tMemory Size: 128 MB\tMax Memory Used: 99 MB\t\n"
+        },
+        {
+          "timestamp": 1790219868703,
+          "message": "REPORT RequestId: e83923bb-caec-4f77-a835-ba6b61dcd73c\tDuration: 68.84 ms\tBilled Duration: 69 ms\tMemory Size: 128 MB\tMax Memory Used: 99 MB\t\n"
+        },
+        {
+          "timestamp": 1790219868762,
+          "message": "REPORT RequestId: 4534d00e-db0f-45f4-837b-a7d548c4411c\tDuration: 2.14 ms\tBilled Duration: 3 ms\tMemory Size: 128 MB\tMax Memory Used: 99 MB\t\n"
+        },
+        {
+          "timestamp": 1790219868765,
+          "message": "REPORT RequestId: 3fe171a0-db45-46a8-bb99-7170954ae29b\tDuration: 1.66 ms\tBilled Duration: 2 ms\tMemory Size: 128 MB\tMax Memory Used: 101 MB\t\n"
+        },
+        {
+          "timestamp": 1790219869397,
+          "message": "REPORT RequestId: 44c30c28-80df-405b-b39e-2c28086ddbcf\tDuration: 59.49 ms\tBilled Duration: 60 ms\tMemory Size: 128 MB\tMax Memory Used: 101 MB\t\n"
+        },
+        {
+          "timestamp": 1790219870098,
+          "message": "REPORT RequestId: ea278db6-38d6-4205-82e5-a87fdec14558\tDuration: 48.06 ms\tBilled Duration: 49 ms\tMemory Size: 128 MB\tMax Memory Used: 101 MB\t\n"
+        },
+        {
+          "timestamp": 1790219870163,
+          "message": "REPORT RequestId: 55fbb649-2f24-4711-9c4e-f5a1f5572ccd\tDuration: 72.05 ms\tBilled Duration: 73 ms\tMemory Size: 128 MB\tMax Memory Used: 99 MB\t\n"
+        },
+        {
+          "timestamp": 1790219870202,
+          "message": "REPORT RequestId: 0dccb0a1-4bac-4e18-a3f4-285107a3817c\tDuration: 1.59 ms\tBilled Duration: 2 ms\tMemory Size: 128 MB\tMax Memory Used: 99 MB\t\n"
+        },
+        {
+          "timestamp": 1790219870216,
+          "message": "REPORT RequestId: eb943b1c-3b19-4bf5-b1d1-46826f9f45f9\tDuration: 2.39 ms\tBilled Duration: 3 ms\tMemory Size: 128 MB\tMax Memory Used: 101 MB\t\n"
+        },
+        {
+          "timestamp": 1790219870517,
+          "message": "REPORT RequestId: 50fba5f6-e1c6-4cc5-8c42-028678650bf4\tDuration: 56.69 ms\tBilled Duration: 57 ms\tMemory Size: 128 MB\tMax Memory Used: 101 MB\t\n"
+        },
+        {
+          "timestamp": 1790219870978,
+          "message": "REPORT RequestId: 988d0a77-5744-4def-bd1e-b7b94b5ea4bc\tDuration: 74.21 ms\tBilled Duration: 75 ms\tMemory Size: 128 MB\tMax Memory Used: 101 MB\t\n"
+        },
+        {
+          "timestamp": 1790219871098,
+          "message": "REPORT RequestId: 5674dfc9-c708-4977-9ea3-cf7e61b0c8d2\tDuration: 27.08 ms\tBilled Duration: 28 ms\tMemory Size: 128 MB\tMax Memory Used: 101 MB\t\n"
+        },
+        {
+          "timestamp": 1790219871456,
+          "message": "REPORT RequestId: de4ac28b-a0fa-4986-b31d-be3642230ecb\tDuration: 2.21 ms\tBilled Duration: 3 ms\tMemory Size: 128 MB\tMax Memory Used: 101 MB\t\n"
+        },
+        {
+          "timestamp": 1790219871558,
+          "message": "REPORT RequestId: 4abae93b-ce27-4c29-8073-c4f66c3d8af4\tDuration: 32.99 ms\tBilled Duration: 33 ms\tMemory Size: 128 MB\tMax Memory Used: 101 MB\t\n"
+        },
+        {
+          "timestamp": 1790219871656,
+          "message": "REPORT RequestId: 5b541921-16bf-4125-ac83-78eac0673acd\tDuration: 2.39 ms\tBilled Duration: 3 ms\tMemory Size: 128 MB\tMax Memory Used: 101 MB\t\n"
+        },
+        {
+          "timestamp": 1790219871877,
+          "message": "REPORT RequestId: 6668ddf7-c3bf-4f63-9834-93d7960979b8\tDuration: 18.06 ms\tBilled Duration: 19 ms\tMemory Size: 128 MB\tMax Memory Used: 101 MB\t\n"
+        },
+        {
+          "timestamp": 1790219871950,
+          "message": "REPORT RequestId: 9df062ed-83fa-4341-b9fb-86858d714c2f\tDuration: 1.56 ms\tBilled Duration: 2 ms\tMemory Size: 128 MB\tMax Memory Used: 101 MB\t\n"
+        },
+        {
+          "timestamp": 1790219872034,
+          "message": "REPORT RequestId: 635edeab-363e-45b5-8edc-64352f94ad14\tDuration: 1.53 ms\tBilled Duration: 2 ms\tMemory Size: 128 MB\tMax Memory Used: 101 MB\t\n"
+        },
+        {
+          "timestamp": 1790219872127,
+          "message": "REPORT RequestId: 1b570b45-0b86-42da-8f16-1d779b546b34\tDuration: 1.61 ms\tBilled Duration: 2 ms\tMemory Size: 128 MB\tMax Memory Used: 101 MB\t\n"
+        },
+        {
+          "timestamp": 1790219872205,
+          "message": "REPORT RequestId: 40642e4b-e95c-40e8-9ee2-a291225866b5\tDuration: 1.42 ms\tBilled Duration: 2 ms\tMemory Size: 128 MB\tMax Memory Used: 101 MB\t\n"
+        },
+        {
+          "timestamp": 1790219872415,
+          "message": "REPORT RequestId: 7f9ff6c5-1c5f-47f9-99d2-b499a2c44b58\tDuration: 1.45 ms\tBilled Duration: 2 ms\tMemory Size: 128 MB\tMax Memory Used: 101 MB\t\n"
+        }
+      ]
+    },
+    "scope": "Only Lambda platform REPORT lines in the first postdeployment probe interval; no application logs or payloads. Correlation does not isolate a single cause."
+  }
+}

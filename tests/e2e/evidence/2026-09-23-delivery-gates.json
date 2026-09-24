@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-24T03:06:05.661Z",
+  "revision": "a150336361ba20ea19d2e1c6b239f1d66d1c2312",
+  "execution": "independent-delivery-auditor",
+  "nodeVersion": "v24.14.0",
+  "command": "npm run test:coverage",
+  "exitCode": 0,
+  "applications": [
+    {
+      "application": "api",
+      "passingTests": 81,
+      "passingSuites": 7,
+      "coverage": {
+        "statements": 99,
+        "branches": 95.66,
+        "functions": 100,
+        "lines": 99
+      }
+    },
+    {
+      "application": "web",
+      "passingTests": 89,
+      "passingSuites": 7,
+      "coverage": {
+        "statements": 96.55,
+        "branches": 95.09,
+        "functions": 96.15,
+        "lines": 97.6
+      }
+    }
+  ],
+  "staticHandler": {
+    "command": "node --test infra/static-site/index.test.cjs",
+    "passingTests": 12,
+    "failedTests": 0,
+    "exitCode": 0
+  },
+  "typecheck": {
+    "command": "npm run typecheck",
+    "exitCode": 0
+  },
+  "productionBuild": {
+    "command": "npm run build",
+    "exitCode": 0,
+    "webAssets": [
+      "index-CjZzrNZL.js",
+      "index-Dg5qOyc5.css"
+    ]
+  }
+}
