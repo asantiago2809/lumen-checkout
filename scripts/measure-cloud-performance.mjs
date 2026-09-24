@@ -1,4 +1,5 @@
 import { get } from "node:https";
+import { connect } from "node:tls";
 import { createHash } from "node:crypto";
 import { gunzipSync } from "node:zlib";
 import { mkdir, writeFile } from "node:fs/promises";
@@ -58,6 +59,52 @@ function raw(path, encoding = "identity", method = "GET") {
       request.destroy(new Error("Asset request timeout")),
     );
     request.on("error", reject);
+  });
+}
+
+// Check the actual TLS bytes: ordinary HTTP clients suppress HEAD bodies while
+// parsing, which alone would not prove that the gateway sent no representation.
+function headWire(path) {
+  return new Promise((resolve, reject) => {
+    const host = new URL(origin).hostname;
+    const chunks = [];
+    let length = 0;
+    const socket = connect({ host, port: 443, servername: host }, () => {
+      socket.write(
+        `HEAD ${path} HTTP/1.1\r\nHost: ${host}\r\nAccept-Encoding: gzip\r\nConnection: close\r\n\r\n`,
+      );
+    });
+    socket.setTimeout(20000, () =>
+      socket.destroy(new Error("HEAD wire timeout")),
+    );
+    socket.on("data", (chunk) => {
+      length += chunk.length;
+      if (length > 5 * 1024 * 1024)
+        socket.destroy(new Error("HEAD wire limit"));
+      else chunks.push(chunk);
+    });
+    socket.on("error", reject);
+    socket.on("end", () => {
+      const bytes = Buffer.concat(chunks);
+      const split = bytes.indexOf("\r\n\r\n");
+      if (split < 0) return reject(new Error("HEAD headers missing"));
+      const lines = bytes.subarray(0, split).toString("ascii").split("\r\n");
+      const headers = Object.fromEntries(
+        lines.slice(1).map((line) => {
+          const colon = line.indexOf(":");
+          return [
+            line.slice(0, colon).toLowerCase(),
+            line.slice(colon + 1).trim(),
+          ];
+        }),
+      );
+      resolve({
+        status: Number(lines[0].split(" ")[1]),
+        bodyBytes: bytes.length - split - 4,
+        contentLength: headers["content-length"] ?? null,
+        contentEncoding: headers["content-encoding"] ?? "identity",
+      });
+    });
   });
 }
 
@@ -169,6 +216,7 @@ try {
     const negotiated = await raw(path, "gzip");
     const refused = await raw(path, "gzip;q=0, identity;q=1");
     const head = await raw(path, "gzip", "HEAD");
+    const wire = await headWire(path);
     const gzip = negotiated.headers["content-encoding"] === "gzip";
     const decoded = gzip ? gunzipSync(negotiated.bytes) : negotiated.bytes;
     report.assets.push({
@@ -200,6 +248,7 @@ try {
       headBodyBytes: head.bytes.length,
       headContentLength: head.headers["content-length"] ?? null,
       getContentLength: negotiated.headers["content-length"] ?? null,
+      headWire: wire,
       immutable:
         negotiated.headers["cache-control"]?.includes("immutable") ?? false,
       securityHeadersPreserved:
@@ -239,6 +288,9 @@ try {
         asset.decodedMatchesIdentity &&
         asset.qZeroHonored &&
         asset.headMatches &&
+        asset.headWire.status === 200 &&
+        asset.headWire.bodyBytes === 0 &&
+        asset.headWire.contentLength === asset.getContentLength &&
         asset.immutable &&
         asset.securityHeadersPreserved &&
         (label === "before" ||

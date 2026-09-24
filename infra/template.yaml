@@ -328,7 +328,7 @@ Resources:
       Runtime: nodejs22.x
       Handler: index.handler
       Architectures: [arm64]
-      MemorySize: 128
+      MemorySize: 512
       Timeout: 10
       Role: !GetAtt StaticRole.Arn
       Code:

@@ -6,6 +6,16 @@
 
 The earlier assessment was identified through its CloudFormation resources and its configuration was backed up privately. After the replacement passed genuine sandbox approval and decline, its identified EC2 instance was stopped and the stopped state verified. Data, address and stack remain available for recovery; storage/address charges may continue. Never delete resources by name guesses or bulk account cleanup.
 
+## Static delivery performance
+
+The static Lambda negotiates gzip for text, honors explicit encoding refusals, and includes `Vary: Accept-Encoding`. It keeps original and compressed content-hashed JS/CSS in a bounded warm-runtime LRU cache (8 MiB including both representations, at most 16 entries). Mutable names and `index.html` are fetched afresh; WebP is not recompressed. This optimizes transfer and repeated requests without promising a CDN or universal latency target.
+
+API Gateway calculates `Content-Length` from the Lambda proxy envelope. Its runtime adapter supplies the selected representation for HEAD so the gateway can suppress the body at the HTTP boundary while keeping its metadata consistent. Unit checks cover the envelope; public probes independently check the actual TLS wire response. [Node zlib](https://nodejs.org/docs/latest-v22.x/api/zlib.html) and [HTTP API proxy format](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html) describe the underlying interfaces.
+
+`node scripts/measure-cloud-performance.mjs before` / `after` records three browser-cold and repeat visits per viewport, raw compression integrity and HEAD metadata. Results are in ignored `performance-results/`, separate from Playwright's cleanup directory. Browser cache isolation does not imply a cold Lambda; network and cloud load are uncontrolled. Preserve the measured distribution and any outlier rather than extrapolating a field percentile.
+
+The static function uses 512 MiB after platform REPORT records showed initial executions above four seconds at 128 MiB. Lambda [allocates CPU with memory](https://docs.aws.amazon.com/lambda/latest/dg/configuration-memory.html). The deployed account rejects values above 512 MiB, so the API also remains at 512 MiB. No provisioned concurrency is configured. The measured first mobile visit improved but still took 4.976 seconds in the final sample; this is not a latency guarantee or a claim of production load testing.
+
 ## Deployment sequence
 
 1. Authenticate the AWS CLI with the intended account and verify its identity/region.
@@ -15,6 +25,8 @@ The earlier assessment was identified through its CloudFormation resources and i
 5. Read `SiteUrl` from stack outputs and update `AllowedOrigins` to that exact HTTPS origin, preserving other parameters. Upload the SPA build to `WebBucketName`; use long immutable cache control only for hashed assets, no-cache for `index.html`. Publish new hashed assets before replacing the index and retain old hashed assets during updates.
 6. When using the optional CDN, invalidate CloudFront as needed. Verify health, Swagger, secure cookies, security headers, real sandbox tokenization/payment, recovery, stock and responsive UX over HTTPS.
 7. Record the exact commit, stack and verified URLs in the release report and README. An HTTP 200 homepage alone is not acceptance.
+
+After every artifact upload, use S3 `head-object` to verify its exact key and byte size before starting the stack update; do not rely only on the upload process exit code. Verify deployed Lambda `CodeSha256` against the local zip. If CloudFormation rollback collides with an in-progress Lambda update, wait for that function's update to finish and continue rollback without skipping resources, then verify the stable stack before another deployment.
 
 `node scripts/smoke-cloud.mjs SITE_URL` exercises the public pre-payment API using fictional data and cancels its own unsubmitted reservation. `scripts/smoke-sandbox.mjs` requires the approved deployment URL and `--run-sandbox`; it makes two actual sandbox attempts with official fictional cards. The separate GitHub workflow runs only through manual dispatch or the explicit `verify-live-sandbox` PR label. Its safe JSON/screenshots exclude credentials and card fields, and a successful approval intentionally consumes one fictional inventory unit. Never rerun an uncertain financial submission blindly.
 
