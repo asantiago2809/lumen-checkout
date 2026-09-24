@@ -2,6 +2,13 @@
 
 Changes are recorded as implemented and verified. Git contains the incremental development record; an unreleased entry does not imply a public deployment or completed sandbox integration.
 
+## Independent rubric review — 2026-09-23
+
+- Preserved the initial 144/150 internal assessment and its blocking finding: another tab could make the checkout summary differ from the reserved order.
+- Store the normalized draft atomically with the reservation and reject later draft writes during PENDING, including after a CAS retry. Recovery now adopts the authoritative draft and transaction together and clears the previous quote, card and consents.
+- Added seven backend regressions and three browser scenarios across four projects. Independent verification on `ad641f4`: 75 API + 82 web Jest tests and 91 E2E executions passed; both applications exceed 95% in all four coverage metrics.
+- Recorded the failing original scenarios, corrected the stale consent checklist entry, and assigned performance, domain/HTTP separation, provider response typing and unsaved-edit feedback improvements. See the [rubric report](docs/quality/rubric-evaluation.md) for the current grade and deployed retest status; the earlier audit below remains historical evidence.
+
 ## Unreleased — 2026-09-23
 
 ### Added

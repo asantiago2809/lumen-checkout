@@ -1,0 +1,27 @@
+{
+  "observedAt": "2026-09-24T00:46:56.7680635Z",
+  "revision": "ad641f4b2e2327aebbf5ebbe7e726f324535e373",
+  "origin": "https://j67vc6cdn4.execute-api.us-east-1.amazonaws.com",
+  "apiArtifact": "api/api-ad641f4-20260923194156.zip",
+  "apiSha256": "F3F25AE9422E99DC426CC84CA27E26F3C399E234520546C769B2B7EC71CB153C",
+  "javascript": "index-DaPTUmLB.js",
+  "css": "index-CAoB3uCW.css",
+  "stackStatus": "UPDATE_COMPLETE",
+  "pendingRead": {
+    "beforeUpdate": {
+      "paginationComplete": true,
+      "scannedCount": 27,
+      "count": 0
+    },
+    "select": "COUNT",
+    "filter": "TX records with status PENDING",
+    "afterUpdate": {
+      "paginationComplete": true,
+      "scannedCount": 27,
+      "count": 0
+    },
+    "table": "base table",
+    "consistent": true
+  },
+  "migration": "No PENDING reservations existed at the checked cutover. The fix protects new reservations; it does not rewrite historical inconsistent drafts."
+}
