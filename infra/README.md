@@ -1,0 +1,25 @@
+# AWS infrastructure
+
+`template.yaml` describes a private versioned S3 bucket, an HTTPS HTTP API, NestJS Lambda, DynamoDB on-demand with point-in-time recovery, least-privilege runtime roles and 14-day logs. By default a separate, small Lambda serves allowlisted SPA assets from S3. The browser uses the same API Gateway HTTPS origin for static assets and `/api/*`; API responses and cookies are never cached. The static delivery function cannot read the database or payment secrets.
+
+`EnableCloudFront=true` optionally places CloudFront in front of S3 and the API, using Origin Access Control. The target account rejected its first CDN creation because AWS requires account verification, so the default HTTPS API Gateway delivery avoids that dependency. Both templates passed cfn-lint and the initial template passed AWS validation. Deployment verification is recorded separately in the release report; infrastructure creation alone is not acceptance.
+
+The earlier assessment was identified through its CloudFormation resources and its configuration was backed up privately. After the replacement passed genuine sandbox approval and decline, its identified EC2 instance was stopped and the stopped state verified. Data, address and stack remain available for recovery; storage/address charges may continue. Never delete resources by name guesses or bulk account cleanup.
+
+## Deployment sequence
+
+1. Authenticate the AWS CLI with the intended account and verify its identity/region.
+2. Run all local quality gates. Create `artifacts.yaml` as a separate stack. `scripts/package-api.ps1` compiles the API with TypeScript and packages the output with production dependencies, preserving Nest decorator metadata and Swagger static assets. Zip `static-site/index.cjs` at the archive root (Lambda handler `index.handler`). Upload both zips under immutable commit or content-hash keys to the private deployment bucket. Node.js 22 Lambda includes AWS SDK v3 for the static function; its factory tests do not require cloud access.
+3. Save runtime settings as one SSM SecureString JSON parameter at `/lumen-checkout/sandbox`. It contains `PAYMENT_API_URL`, `PAYMENT_PUBLIC_KEY`, `PAYMENT_PRIVATE_KEY`, `PAYMENT_INTEGRITY_SECRET`, `PAYMENT_EVENTS_SECRET` and `SESSION_SECRET`. The reviewed `scripts/configure-secrets.ps1 -Profile YOUR_PROFILE -ExpectedAccountId YOUR_ACCOUNT_ID` reads the ignored local environment file, verifies the account, generates the session secret and uses a temporary JSON request removed in `finally`. It refuses to overwrite an existing parameter. Never put secret values in command arguments, Git or reports. Lambda reads the parameter on cold start.
+4. Validate and deploy `template.yaml` with `CAPABILITY_IAM`, `ArtifactBucket`, `ApiArtifactKey`, `WebArtifactKey` and the parameter name. The initial origin `https://pending.invalid` deliberately prevents checkout writes until the domain is known.
+5. Read `SiteUrl` from stack outputs and update `AllowedOrigins` to that exact HTTPS origin, preserving other parameters. Upload the SPA build to `WebBucketName`; use long immutable cache control only for hashed assets, no-cache for `index.html`. Publish new hashed assets before replacing the index and retain old hashed assets during updates.
+6. When using the optional CDN, invalidate CloudFront as needed. Verify health, Swagger, secure cookies, security headers, real sandbox tokenization/payment, recovery, stock and responsive UX over HTTPS.
+7. Record the exact commit, stack and verified URLs in the release report and README. An HTTP 200 homepage alone is not acceptance.
+
+`node scripts/smoke-cloud.mjs SITE_URL` exercises the public pre-payment API using fictional data and cancels its own unsubmitted reservation. `scripts/smoke-sandbox.mjs` requires the approved deployment URL and `--run-sandbox`; it makes two actual sandbox attempts with official fictional cards. The separate GitHub workflow runs only through manual dispatch or the explicit `verify-live-sandbox` PR label. Its safe JSON/screenshots exclude credentials and card fields, and a successful approval intentionally consumes one fictional inventory unit. Never rerun an uncertain financial submission blindly.
+
+## Costs and rollback
+
+These services incur usage charges; this document does not claim zero cost or free-tier eligibility. API throttling is bounded; Lambda uses the account's unreserved concurrency quota (5 in the deployment account at provisioning). Direct static delivery uses Lambda/API Gateway requests and is appropriate for this small assessment, not a high-traffic CDN replacement. DynamoDB point-in-time recovery, stored data, S3 versions, logs and traffic can incur charges. Review account-specific estimates before creating resources.
+
+DynamoDB and the static bucket are retained if the stack is removed. Restore a previous immutable API artifact and the matching static build to roll back; do not roll back committed payment records. Retiring the prior assessment is a separate, documented operation after identifying shared resources and a recovery path.
