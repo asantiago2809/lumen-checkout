@@ -19,6 +19,8 @@ export type CheckoutState = {
   notice: string | null;
   idempotencyKey: string | null;
   saving: boolean;
+  pendingSaveCount: number;
+  savedDraft: Draft | null;
   saveError: string | null;
 };
 const initialState: CheckoutState = {
@@ -32,8 +34,38 @@ const initialState: CheckoutState = {
   notice: null,
   idempotencyKey: null,
   saving: false,
+  pendingSaveCount: 0,
+  savedDraft: null,
   saveError: null,
 };
+
+// Only delivery progress is compared: card inputs never enter Redux or storage.
+function draftContent(draft: Draft | null) {
+  return (
+    draft &&
+    JSON.stringify([
+      draft.productId,
+      draft.quantity,
+      draft.customer.fullName,
+      draft.customer.email,
+      draft.customer.phone,
+      draft.delivery.addressLine1,
+      draft.delivery.addressLine2 ?? "",
+      draft.delivery.city,
+      draft.delivery.region,
+      draft.delivery.country,
+      draft.delivery.postalCode ?? "",
+    ])
+  );
+}
+export function draftSaveStatus(state: CheckoutState) {
+  if (state.saving) return "saving";
+  if (state.saveError) return "error";
+  return state.draft &&
+    draftContent(state.draft) === draftContent(state.savedDraft)
+    ? "saved"
+    : "pending";
+}
 
 export const initialize = createAsyncThunk(
   "checkout/initialize",
@@ -127,6 +159,8 @@ const slice = createSlice({
       // and delivery must replace this tab's stale draft together with the ID.
       state.transaction = action.payload.transaction;
       state.draft = action.payload.draft;
+      state.savedDraft = action.payload.draft;
+      state.saveError = null;
       state.quote = null;
       state.step = "RESULT";
       state.error = null;
@@ -151,6 +185,8 @@ const slice = createSlice({
       state.loading = "ready";
       state.products = payload.products;
       state.draft = payload.session.draft;
+      state.savedDraft = payload.session.draft;
+      state.saveError = null;
       state.transaction = payload.transaction;
       state.idempotencyKey = payload.pointer?.idempotencyKey ?? null;
       if (payload.transaction) state.step = "RESULT";
@@ -176,14 +212,19 @@ const slice = createSlice({
       state.error = action.error.message ?? "No pudimos cargar el producto.";
     });
     builder.addCase(persistDraft.pending, (state) => {
+      state.pendingSaveCount += 1;
       state.saving = true;
       state.saveError = null;
     });
-    builder.addCase(persistDraft.fulfilled, (state) => {
-      state.saving = false;
+    builder.addCase(persistDraft.fulfilled, (state, action) => {
+      state.pendingSaveCount = Math.max(0, state.pendingSaveCount - 1);
+      state.saving = state.pendingSaveCount > 0;
+      state.savedDraft = action.meta.arg;
+      state.saveError = null;
     });
     builder.addCase(persistDraft.rejected, (state, action) => {
-      state.saving = false;
+      state.pendingSaveCount = Math.max(0, state.pendingSaveCount - 1);
+      state.saving = state.pendingSaveCount > 0;
       state.saveError = action.error.message ?? "No pudimos guardar tus datos.";
     });
     builder.addCase(returnToProduct.fulfilled, (state, action) => {

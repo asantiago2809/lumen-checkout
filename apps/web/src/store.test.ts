@@ -2,6 +2,7 @@ import { api } from "./api";
 import {
   actions,
   checkoutReducer,
+  draftSaveStatus,
   initialize,
   makeStore,
   persistDraft,
@@ -194,4 +195,93 @@ test("return clears server draft then refreshes stock, failure preserves the res
   expect(store.getState().checkout.products[0].stock).toBe(11);
   expect(store.getState().checkout.transaction).toBeNull();
   expect(store.getState().checkout.step).toBe("PRODUCT");
+});
+
+test("only the last confirmed delivery snapshot is saved while writes are queued", async () => {
+  const resolvers: Array<() => void> = [];
+  const save = jest.spyOn(api, "saveDraft").mockImplementation(
+    (value) =>
+      new Promise((resolve) => {
+        resolvers.push(() => resolve({ draft: value }));
+      }),
+  );
+  const store = makeStore(readyState({ draft, savedDraft: draft }));
+  expect(draftSaveStatus(store.getState().checkout)).toBe("saved");
+  store.dispatch(
+    actions.updateDraft({
+      group: "customer",
+      field: "fullName",
+      value: "First edit",
+    }),
+  );
+  expect(draftSaveStatus(store.getState().checkout)).toBe("pending");
+  const first = store.dispatch(persistDraft(store.getState().checkout.draft!));
+  await Promise.resolve();
+  await Promise.resolve();
+  store.dispatch(
+    actions.updateDraft({
+      group: "customer",
+      field: "fullName",
+      value: "Latest edit",
+    }),
+  );
+  const latest = store.dispatch(persistDraft(store.getState().checkout.draft!));
+  expect(store.getState().checkout.pendingSaveCount).toBe(2);
+  expect(save).toHaveBeenCalledTimes(1);
+  resolvers[0]();
+  await first;
+  expect(draftSaveStatus(store.getState().checkout)).toBe("saving");
+  expect(store.getState().checkout.pendingSaveCount).toBe(1);
+  expect(store.getState().checkout.savedDraft?.customer.fullName).toBe(
+    "First edit",
+  );
+  resolvers[1]();
+  await latest;
+  expect(draftSaveStatus(store.getState().checkout)).toBe("saved");
+  expect(store.getState().checkout.savedDraft?.customer.fullName).toBe(
+    "Latest edit",
+  );
+  expect(store.getState().checkout.pendingSaveCount).toBe(0);
+});
+
+test("a response to an older edit cannot mark newer debounced changes as saved", async () => {
+  let resolve!: () => void;
+  jest.spyOn(api, "saveDraft").mockImplementation(
+    (value) =>
+      new Promise((done) => {
+        resolve = () => done({ draft: value });
+      }),
+  );
+  const store = makeStore(readyState({ draft }));
+  const first = store.dispatch(persistDraft(draft));
+  await Promise.resolve();
+  await Promise.resolve();
+  store.dispatch(
+    actions.updateDraft({
+      group: "delivery",
+      field: "city",
+      value: "Medellín",
+    }),
+  );
+  resolve();
+  await first;
+  expect(draftSaveStatus(store.getState().checkout)).toBe("pending");
+  expect(store.getState().checkout.draft?.delivery.city).toBe("Medellín");
+  expect(store.getState().checkout.savedDraft?.delivery.city).toBe(
+    draft.delivery.city,
+  );
+});
+
+test("failed save retains its edits and a successful retry confirms them", async () => {
+  jest
+    .spyOn(api, "saveDraft")
+    .mockRejectedValueOnce(new Error("Offline"))
+    .mockImplementation(async (value) => ({ draft: value }));
+  const store = makeStore(readyState({ draft }));
+  await store.dispatch(persistDraft(draft));
+  expect(draftSaveStatus(store.getState().checkout)).toBe("error");
+  expect(store.getState().checkout.draft).toEqual(draft);
+  expect(store.getState().checkout.savedDraft).toBeNull();
+  await store.dispatch(persistDraft(draft));
+  expect(draftSaveStatus(store.getState().checkout)).toBe("saved");
 });

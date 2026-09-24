@@ -108,6 +108,8 @@ export const readyState = (
   notice: null,
   idempotencyKey: null,
   saving: false,
+  pendingSaveCount: 0,
+  savedDraft: null,
   saveError: null,
   ...overrides,
 });

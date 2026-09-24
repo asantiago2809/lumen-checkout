@@ -160,7 +160,9 @@ test("form uses an accessible modal, restores trigger focus and saves only deliv
     "demo@example.com",
   );
   fireEvent.keyDown(screen.getByRole("dialog"), { key: "Escape" });
-  expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  await waitFor(() =>
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument(),
+  );
   expect(
     screen.getByRole("button", { name: "Pagar con tarjeta" }),
   ).toHaveFocus();
@@ -470,4 +472,167 @@ test("late config response after closing cannot reopen checkout", async () => {
     resolve(config);
   });
   expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+});
+
+test("closing before the debounce flushes delivery and waits for confirmation", async () => {
+  jest.useFakeTimers();
+  try {
+    let confirm!: () => void;
+    jest.mocked(transport.api.saveDraft).mockImplementation(
+      (value) =>
+        new Promise((resolve) => {
+          confirm = () => resolve({ draft: value });
+        }),
+    );
+    const { store } = await openForm(
+      readyState({ draft, savedDraft: draft, step: "DETAILS" }),
+    );
+    fillCard();
+    fireEvent.change(screen.getByLabelText("Dirección", { exact: true }), {
+      target: { value: "Dirección recién editada" },
+    });
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "Cambios pendientes de guardar.",
+    );
+    expect(transport.api.saveDraft).not.toHaveBeenCalled();
+    fireEvent.keyDown(screen.getByRole("dialog"), { key: "Escape" });
+    await act(async () => {});
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "Guardando antes de salir…",
+    );
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    expect(screen.getByLabelText("Dirección", { exact: true })).toBeDisabled();
+    fireEvent.keyDown(screen.getByRole("dialog"), { key: "Escape" });
+    expect(transport.api.saveDraft).toHaveBeenCalledTimes(1);
+    await act(async () => confirm());
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(store.getState().checkout.savedDraft?.delivery.addressLine1).toBe(
+      "Dirección recién editada",
+    );
+    expect(JSON.stringify(store.getState())).not.toContain(card.number);
+    expect(
+      JSON.stringify(jest.mocked(transport.api.saveDraft).mock.calls),
+    ).not.toContain(card.cvc);
+    expect(
+      screen.getByRole("button", { name: "Pagar con tarjeta" }),
+    ).toHaveFocus();
+  } finally {
+    jest.useRealTimers();
+  }
+});
+
+test("failed close preserves editable progress and offers an explicit save retry", async () => {
+  jest.useFakeTimers();
+  try {
+    jest
+      .mocked(transport.api.saveDraft)
+      .mockRejectedValueOnce(new Error("Offline"));
+    await openForm(readyState({ draft, savedDraft: draft, step: "DETAILS" }));
+    fireEvent.change(screen.getByLabelText("Ciudad", { exact: true }), {
+      target: { value: "Medellín" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Volver al producto" }));
+    await act(async () => {});
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "No pudimos guardar el progreso.",
+    );
+    expect(screen.getByLabelText("Ciudad", { exact: true })).toHaveValue(
+      "Medellín",
+    );
+    expect(screen.getByLabelText("Ciudad", { exact: true })).toBeEnabled();
+    expect(screen.getByText(/Tus cambios siguen aquí/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Volver a guardar" }));
+    await act(async () => {});
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "Datos de entrega guardados.",
+    );
+    expect(transport.api.saveDraft).toHaveBeenCalledTimes(2);
+    fireEvent.click(
+      screen.getByRole("button", { name: "Cerrar formulario de pago" }),
+    );
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  } finally {
+    jest.useRealTimers();
+  }
+});
+
+test("delivery status never confirms an older save while a newer edit awaits debounce", async () => {
+  jest.useFakeTimers();
+  try {
+    const confirmations: Array<() => void> = [];
+    jest.mocked(transport.api.saveDraft).mockImplementation(
+      (value) =>
+        new Promise((resolve) => {
+          confirmations.push(() => resolve({ draft: value }));
+        }),
+    );
+    await openForm(readyState({ draft, savedDraft: draft, step: "DETAILS" }));
+    fireEvent.change(screen.getByLabelText("Ciudad", { exact: true }), {
+      target: { value: "Cali" },
+    });
+    const status = screen.getByRole("status");
+    expect(status).toHaveAttribute("aria-atomic", "true");
+    expect(status).toHaveTextContent("Cambios pendientes de guardar.");
+    await act(async () => {
+      jest.advanceTimersByTime(500);
+    });
+    expect(status).toHaveTextContent("Guardando datos de entrega…");
+    fireEvent.change(screen.getByLabelText("Ciudad", { exact: true }), {
+      target: { value: "Medellín" },
+    });
+    await act(async () => confirmations[0]());
+    expect(status).toHaveTextContent("Cambios pendientes de guardar.");
+    await act(async () => {
+      jest.advanceTimersByTime(500);
+    });
+    expect(status).toHaveTextContent("Guardando datos de entrega…");
+    await act(async () => confirmations[1]());
+    expect(status).toHaveTextContent("Datos de entrega guardados.");
+    expect(
+      jest
+        .mocked(transport.api.saveDraft)
+        .mock.calls.map(([value]) => value.delivery.city),
+    ).toEqual(["Cali", "Medellín"]);
+  } finally {
+    jest.useRealTimers();
+  }
+});
+
+test("continue waits for the latest delivery confirmation before showing a summary", async () => {
+  jest.useFakeTimers();
+  try {
+    let confirm!: () => void;
+    jest.mocked(transport.api.saveDraft).mockImplementation(
+      (value) =>
+        new Promise((resolve) => {
+          confirm = () => resolve({ draft: value });
+        }),
+    );
+    await openForm(readyState({ draft, savedDraft: draft, step: "DETAILS" }));
+    fillCard();
+    fireEvent.change(screen.getByLabelText("Dirección", { exact: true }), {
+      target: { value: "Dirección confirmada" },
+    });
+    fireEvent.click(
+      screen.getByRole("button", { name: "Continuar al resumen" }),
+    );
+    await act(async () => {});
+    expect(
+      screen.getByRole("heading", { name: "Completa tus datos." }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "Guardando datos de entrega…",
+    );
+    expect(transport.api.quote).not.toHaveBeenCalled();
+    await act(async () => confirm());
+    expect(
+      screen.getByRole("heading", { name: "Un último vistazo." }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Dirección confirmada", { exact: false }),
+    ).toBeInTheDocument();
+    expect(transport.api.pay).not.toHaveBeenCalled();
+  } finally {
+    jest.useRealTimers();
+  }
 });
