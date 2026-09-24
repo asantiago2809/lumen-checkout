@@ -385,3 +385,23 @@ test("errors are not cached and a later successful upload is served", async () =
   );
   assert.equal(calls, 2);
 });
+
+test("HTTP API proxy HEAD envelope includes the selected representation for gateway length calculation", async () => {
+  const bytes = Buffer.from("const name = 'Lumen';\n".repeat(200));
+  const handler = createHandler({
+    bucket: "web",
+    gatewayManagesHead: true,
+    getObject: async () => asset(bytes),
+  });
+  for (const encoding of ["identity", "gzip"]) {
+    const get = await handler(
+      withEncoding("/assets/app-AbCdEfGh.js", encoding),
+    );
+    const head = await handler(
+      withEncoding("/assets/app-AbCdEfGh.js", encoding, "HEAD"),
+    );
+    assert.deepEqual(head, get);
+    assert.equal(decoded(head).length, Number(head.headers["content-length"]));
+  }
+  // The deployed wire probe must separately verify no bytes reach HEAD clients.
+});

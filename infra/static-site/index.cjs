@@ -162,7 +162,7 @@ async function readBounded(body) {
 }
 
 /** Dependency injection keeps tests isolated from AWS and credentials. */
-function createHandler({ bucket, getObject }) {
+function createHandler({ bucket, getObject, gatewayManagesHead = false }) {
   if (typeof getObject !== "function") {
     throw new TypeError("getObject is required");
   }
@@ -236,7 +236,13 @@ function createHandler({ bucket, getObject }) {
           ...(useGzip ? { "content-encoding": "gzip" } : {}),
         },
         isBase64Encoded: true,
-        body: method === "HEAD" ? "" : body.toString("base64"),
+        // HTTP API calculates Content-Length from the proxy envelope and
+        // suppresses HEAD bytes on the wire. Supply the representation there;
+        // an ordinary HTTP adapter can instead use the empty-body default.
+        body:
+          method === "HEAD" && !gatewayManagesHead
+            ? ""
+            : body.toString("base64"),
       };
     } catch {
       // Do not expose bucket names, keys, SDK errors, stack traces or secrets.
@@ -252,6 +258,7 @@ exports.handler = async (event) => {
     const client = new S3Client({ maxAttempts: 2 });
     runtimeHandler = createHandler({
       bucket: process.env.WEB_BUCKET,
+      gatewayManagesHead: true,
       getObject: (input) => client.send(new GetObjectCommand(input)),
     });
   }
