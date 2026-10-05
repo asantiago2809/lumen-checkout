@@ -4,6 +4,8 @@ Changes are recorded as implemented and verified. Git contains the incremental d
 
 ## Interview preparation — 2026-10-05
 
+- Added Windows VS Code tasks, an F5 Node terminal launch, workspace TypeScript selection and a quick command guide. API typecheck passes with project TypeScript 5.9.3; reproduced the editor's node10 deprecation diagnostic under its bundled TypeScript 6.0.3 and documented selecting the workspace version.
+
 - Added a Spanish study guide with source locations, architecture/payment explanations, 34 interview questions, change exercises, API routes, run commands and a complete documentation index.
 - Rechecked public delivery with 17 passing read-only controls and confirmed local application/API/documentation availability. Existing sandbox payment and full-suite results retain their September dates; this documentation update does not claim a new payment or deploy application changes.
 
