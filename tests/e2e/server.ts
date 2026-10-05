@@ -42,7 +42,7 @@ function operationDrain() {
 export const qaOrigin = 'http://127.0.0.1:5174';
 export const apiOrigin = 'http://127.0.0.1:3002';
 export const qaProductId = 'product_lumen_one';
-export const amounts = { currency: 'COP', subtotalInCents: 18900000, baseFeeInCents: 250000, deliveryFeeInCents: 1200000, totalInCents: 20350000 };
+export const amounts = { currency: 'COP', subtotalInCents: 18900000, vatRatePercent: 19, vatInCents: 3591000, baseFeeInCents: 250000, deliveryFeeInCents: 1200000, totalInCents: 23941000 };
 export const customer = { fullName: 'Persona de Prueba', email: 'checkout@example.test', phone: '3000000000' };
 export const delivery = { addressLine1: 'Calle de prueba 10', city: 'Bogotá', region: 'Bogotá D.C.', country: 'CO' };
 export const purchase = { productId: qaProductId, quantity: 1, expectedTotalInCents: amounts.totalInCents, customer, delivery };

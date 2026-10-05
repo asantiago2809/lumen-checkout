@@ -42,9 +42,11 @@ export const quote: Quote = {
   amounts: {
     currency: "COP",
     subtotalInCents: 18900000,
+    vatRatePercent: 19,
+    vatInCents: 3591000,
     baseFeeInCents: 250000,
     deliveryFeeInCents: 1200000,
-    totalInCents: 20350000,
+    totalInCents: 23941000,
   },
 };
 export const session: Session = {

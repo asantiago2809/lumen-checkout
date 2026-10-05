@@ -17,7 +17,7 @@ const validTransaction = {
   id: "external",
   status: "PENDING",
   reference: "LUM-reference",
-  amount_in_cents: 20350000,
+  amount_in_cents: 23941000,
   currency: "COP",
 };
 const validPolicy = {
@@ -123,7 +123,7 @@ describe("genuine sandbox HTTP adapter contract", () => {
     ).toEqual({ brand: "VISA", lastFour: "4242" });
     const outbound = JSON.parse(http.mock.calls[0][1].body);
     expect(outbound).toMatchObject({
-      amount_in_cents: 20350000,
+      amount_in_cents: 23941000,
       currency: "COP",
       payment_method: {
         token: payment.cardToken,
@@ -134,7 +134,7 @@ describe("genuine sandbox HTTP adapter contract", () => {
     });
     expect(outbound.signature).toBe(
       createHash("sha256")
-        .update(`${tx.reference}20350000COP${env.integritySecret}`)
+        .update(`${tx.reference}23941000COP${env.integritySecret}`)
         .digest("hex"),
     );
     expect(outbound).not.toHaveProperty("pan");
@@ -236,7 +236,7 @@ describe("genuine sandbox HTTP adapter contract", () => {
       { reference: "\tref" },
       { reference: "r".repeat(257) },
       { amount_in_cents: null },
-      { amount_in_cents: "20350000" },
+      { amount_in_cents: "23941000" },
       { amount_in_cents: [] },
       { amount_in_cents: -1 },
       { amount_in_cents: 0 },
@@ -372,9 +372,9 @@ describe("genuine sandbox HTTP adapter contract", () => {
   });
   it("keeps malformed or mismatched approved responses uncertain with the reservation held", async () => {
     const changes: Record<string, unknown>[] = [
-      { amount_in_cents: "20350000" },
+      { amount_in_cents: "23941000" },
       { reference: "another-order" },
-      { amount_in_cents: 20350001 },
+      { amount_in_cents: 23941001 },
       { currency: "USD" },
     ];
     for (const fields of changes) {

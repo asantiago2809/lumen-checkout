@@ -90,3 +90,74 @@ test("product photography has responsive sources with a bounded SVG fallback", (
     "88px",
   );
 });
+
+test("price breakdown displays the supplied VAT rate, amount and authoritative total", () => {
+  const amounts = {
+    ...quote.amounts,
+    vatRatePercent: 19,
+    vatInCents: 3591000,
+    totalInCents: 23941000,
+  };
+  const view = render(<PriceBreakdown amounts={amounts} />);
+  expect(screen.getByText("IVA (19%)").nextElementSibling).toHaveTextContent(
+    "35.910",
+  );
+  expect(view.container.querySelector(".total dd")).toHaveTextContent(
+    "239.410",
+  );
+  expect(
+    [...view.container.querySelectorAll("dt")].map(
+      (label) => label.textContent,
+    ),
+  ).toEqual(["Producto", "Cargo base", "Envío", "IVA (19%)", "Total COP"]);
+  // The UI presents snapshots supplied by the server; it does not derive a tax
+  // from the subtotal or replace a supplied total with a client-side sum.
+  view.rerender(
+    <PriceBreakdown
+      amounts={{
+        ...amounts,
+        vatRatePercent: 5,
+        vatInCents: 123,
+        totalInCents: 456,
+      }}
+    />,
+  );
+  expect(screen.getByText("IVA (5%)").nextElementSibling).toHaveTextContent(
+    "1,23",
+  );
+  expect(view.container.querySelector(".total dd")).toHaveTextContent("4,56");
+});
+
+test.each([{}, { vatRatePercent: 19 }, { vatInCents: 3591000 }])(
+  "price breakdown omits VAT when the historical snapshot lacks either field: %s",
+  (vat) => {
+    const view = render(
+      <PriceBreakdown
+        amounts={{
+          currency: "COP",
+          subtotalInCents: 18900000,
+          baseFeeInCents: 250000,
+          deliveryFeeInCents: 1200000,
+          totalInCents: 20350000,
+          ...vat,
+        }}
+      />,
+    );
+    expect(screen.queryByText(/^IVA/)).not.toBeInTheDocument();
+    expect(view.container.querySelectorAll("dt")).toHaveLength(4);
+    expect(view.container.querySelector(".total dd")).toHaveTextContent(
+      "203.500",
+    );
+  },
+);
+
+test("price breakdown renders an explicitly supplied zero VAT instead of treating it as absent", () => {
+  render(
+    <PriceBreakdown
+      amounts={{ ...quote.amounts, vatRatePercent: 0, vatInCents: 0 }}
+    />,
+  );
+  expect(screen.getByText("IVA (0%)").nextElementSibling).toHaveTextContent(
+    "0",
+  );
+});

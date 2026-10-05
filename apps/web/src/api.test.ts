@@ -59,7 +59,7 @@ describe("HTTP transport and sandbox isolation", () => {
       "stable-id",
     );
     const body = JSON.parse(fetchMock.mock.calls[5][1].body);
-    expect(body.expectedTotalInCents).toBe(20350000);
+    expect(body.expectedTotalInCents).toBe(23941000);
     expect(body.customer.phone).toBe("3000000000");
     expect(body).not.toHaveProperty("amount");
     expect(JSON.parse(fetchMock.mock.calls[6][1].body)).toEqual({

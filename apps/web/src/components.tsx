@@ -112,6 +112,13 @@ export function PriceBreakdown({ amounts }: { amounts: Amounts }) {
         <dt>Envío</dt>
         <dd>{money(amounts.deliveryFeeInCents)}</dd>
       </div>
+      {amounts.vatInCents !== undefined &&
+        amounts.vatRatePercent !== undefined && (
+          <div>
+            <dt>IVA ({amounts.vatRatePercent}%)</dt>
+            <dd>{money(amounts.vatInCents)}</dd>
+          </div>
+        )}
       <div className="total">
         <dt>
           Total <span>COP</span>

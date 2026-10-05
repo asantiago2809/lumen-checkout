@@ -158,6 +158,33 @@ describe("HTTP contract and security boundary", () => {
       .send({ huge: "x".repeat(34000) })
       .expect(413);
   });
+  it("quotes product-only VAT and rejects the old total with HTTP 409 before reserving stock", async () => {
+    const quoted = await api
+      .post("/api/checkout/quote")
+      .set("Origin", ORIGIN)
+      .set("X-CSRF-Token", csrf)
+      .send({ productId: input.productId, quantity: 1 })
+      .expect(200);
+    expect(quoted.body.data.amounts).toEqual({
+      currency: "COP",
+      subtotalInCents: 18900000,
+      vatInCents: 3591000,
+      vatRatePercent: 19,
+      baseFeeInCents: 250000,
+      deliveryFeeInCents: 1200000,
+      totalInCents: 23941000,
+    });
+    const rejected = await api
+      .post("/api/transactions")
+      .set("Origin", ORIGIN)
+      .set("X-CSRF-Token", csrf)
+      .set("Idempotency-Key", randomUUID())
+      .send({ ...input, expectedTotalInCents: 20350000 })
+      .expect(409);
+    expect(rejected.body.error.code).toBe("PRICE_CHANGED");
+    expect((await api.get("/api/products")).body.data[0].stock).toBe(12);
+    expect(setupResult.gateway.create).not.toHaveBeenCalled();
+  });
   it("creates PENDING before sending payment, protects IDs and returns terminal result without another charge", async () => {
     await api
       .post("/api/transactions")
@@ -177,6 +204,11 @@ describe("HTTP contract and security boundary", () => {
       })
       .expect(201);
     expect(first.body.data).toMatchObject({ status: "PENDING", canPay: true });
+    expect(first.body.data.amounts).toMatchObject({
+      vatInCents: 3591000,
+      vatRatePercent: 19,
+      totalInCents: 23941000,
+    });
     expect(first.headers.location).toContain(first.body.data.id);
     expect(setupResult.gateway.create).not.toHaveBeenCalled();
     const replay = await api

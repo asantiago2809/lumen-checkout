@@ -41,6 +41,8 @@ type DeliveryInput = {
 type Amounts = {
   currency: 'COP';
   subtotalInCents: number;
+  vatRatePercent?: number;
+  vatInCents?: number;
   baseFeeInCents: number;
   deliveryFeeInCents: number;
   totalInCents: number;
@@ -133,7 +135,9 @@ La interfaz distingue cambios pendientes, guardado en curso, datos confirmados y
 { "productId": "product_example", "quantity": 1 }
 ```
 
-Respuesta `200 { "data": { "productId": "product_example", "quantity": 1, "amounts": { "currency": "COP", "subtotalInCents": 18900000, "baseFeeInCents": 250000, "deliveryFeeInCents": 1200000, "totalInCents": 20350000 } } }`.
+Respuesta `200 { "data": { "productId": "product_example", "quantity": 1, "amounts": { "currency": "COP", "subtotalInCents": 18900000, "vatRatePercent": 19, "vatInCents": 3591000, "baseFeeInCents": 250000, "deliveryFeeInCents": 1200000, "totalInCents": 23941000 } } }`.
+
+Ejercicio local del 5 de octubre: IVA 19% únicamente sobre el subtotal del producto, redondeado al centavo más cercano (mitad hacia arriba). Cargo base y envío no forman parte de la base de IVA de este ejercicio. Las transacciones históricas conservan su snapshot: los campos de IVA pueden estar ausentes. Esta ampliación todavía no se ha desplegado en AWS.
 
 Servidor consulta precio y disponibilidad. `409 OUT_OF_STOCK` si no hay unidades. La cotización es informativa y no reserva inventario. Al crear transacción se recalcula; si el total cambió desde la revisión del cliente, se requiere nuevo resumen mediante `409 PRICE_CHANGED`. El campo de comparación se llama `expectedTotalInCents` y nunca se usa para cobrar.
 
@@ -145,7 +149,7 @@ Servidor consulta precio y disponibilidad. `409 OUT_OF_STOCK` si no hay unidades
 {
   "productId": "product_example",
   "quantity": 1,
-  "expectedTotalInCents": 20350000,
+  "expectedTotalInCents": 23941000,
   "customer": { "fullName": "Cliente Demo", "email": "demo@example.com", "phone": "3000000000" },
   "delivery": { "addressLine1": "Calle de ejemplo 10", "city": "Bogotá", "region": "Bogotá D.C.", "country": "CO" }
 }

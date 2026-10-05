@@ -169,6 +169,8 @@ Rutas relativas a la raíz. Los enlaces abren el archivo y su línea en GitHub; 
 
 El precio inicial es COP 189.000; cargo base COP 2.500; entrega COP 12.000. Total COP 203.500. El cálculo usa **18.900.000 + 250.000 + 1.200.000 = 20.350.000 centavos**, enteros seguros. Cada pedido contiene una unidad.
 
+**Cambio local de entrevista, 5 de octubre:** se agrega IVA del 19% exclusivamente sobre producto: COP 35.910. Nuevas cotizaciones y pedidos locales suman **COP 239.410** (23.941.000 centavos) e incluyen `vatRatePercent` y `vatInCents`. Los pedidos anteriores conservan sus importes. El despliegue entregado en AWS sigue con la versión anterior hasta publicar este cambio.
+
 | Entidad | Función | Relación principal |
 | --- | --- | --- |
 | Product | Precio, imagen y contadores de inventario | Referenciado por transacción y entrega |

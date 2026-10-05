@@ -23,7 +23,7 @@ npm.cmd run dev
 
 ## 2. Demostrar la compra
 
-**Producto → Pagar con tarjeta → llenar datos → dos consentimientos → resumen → pagar → resultado → volver al producto.** Explica total COP 203.500 y que únicamente aprobar consume stock físico. Comprueba stock antes/después. Si aparece pendiente, consultar ese intento; no cobrar otra vez.
+**Producto → Pagar con tarjeta → llenar datos → dos consentimientos → resumen → pagar → resultado → volver al producto.** En el ejercicio local con IVA: producto COP 189.000 + IVA 19% sobre producto COP 35.910 + cargo base COP 2.500 + envío COP 12.000 = **COP 239.410**. AWS conserva la versión entregada sin este cambio hasta desplegarlo. Únicamente aprobar consume stock físico. Comprueba stock antes/después. Si aparece pendiente, consultar ese intento; no cobrar otra vez.
 
 | Campo | Dato ficticio para sandbox |
 | --- | --- |
