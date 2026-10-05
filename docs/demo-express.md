@@ -81,6 +81,8 @@ npm.cmd run test -w apps/api -- --runTestsByPath test/http.spec.ts
 
 Añadir un test HTTP para stock existente y producto inexistente antes de considerarla terminada. Si usas las escrituras existentes en Swagger: ejecutar `POST /checkout/session` con `{}`, copiar su `csrfToken` a **Authorize → csrf** y usar `Idempotency-Key` UUID al crear transacción. `GET /health` y `/products` no necesitan ese paso.
 
+[Datos exactos de autorización y JSON para copiar en Swagger](swagger-demo.md). El campo cookie se deja vacío; el navegador la envía automáticamente.
+
 ## 5. Ver cambios y publicar
 
 **Local:** Ctrl+S → esperar compilación → recargar Swagger o probar la UI. Cambiar `.env` requiere reiniciar API. **AWS no cambia al guardar ni al hacer push.**
@@ -102,7 +104,7 @@ aws login --profile trama-login --region us-east-1 --remote
 aws sts get-caller-identity --profile trama --region us-east-1
 ```
 
-**El acceso AWS sigue pendiente de renovación.** No afirmar que se puede desplegar hasta que la última comprobación funcione. La app pública sigue disponible.
+**AWS verificado el 5 de octubre:** el perfil `trama` autentica en la cuenta esperada y el stack está `UPDATE_COMPLETE`. Renovar solo si la sesión vuelve a vencer. Esta comprobación no publicó cambios.
 
 ## 6. Quitar la diferencia de TypeScript del editor
 
