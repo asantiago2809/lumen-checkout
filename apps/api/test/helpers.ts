@@ -102,7 +102,7 @@ export class FakeGateway implements PaymentGateway {
 export const input: CreateInput = {
   productId: "product_lumen_one",
   quantity: 1,
-  expectedTotalInCents: 20350000,
+  expectedTotalInCents: 23941000,
   customer: {
     fullName: "Cliente Demo",
     email: "demo@example.com",

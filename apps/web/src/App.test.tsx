@@ -214,7 +214,7 @@ test("completed checkout creates before tokenization and pay, prevents duplicate
   expect(screen.getByText("Cargo base")).toBeInTheDocument();
   expect(screen.getByText("Envío")).toBeInTheDocument();
   expect(screen.getByText("Apto 20", { exact: false })).toBeInTheDocument();
-  const confirm = screen.getByRole("button", { name: /Pagar.*203/ });
+  const confirm = screen.getByRole("button", { name: /Pagar.*239/ });
   fireEvent.click(confirm);
   fireEvent.click(confirm);
   expect(
@@ -306,17 +306,18 @@ test("price change requires an explicit new confirmation", async () => {
     amounts: {
       ...quote.amounts,
       subtotalInCents: 19000000,
-      totalInCents: 20450000,
+      vatInCents: 3610000,
+      totalInCents: 24060000,
     },
   });
-  fireEvent.click(screen.getByRole("button", { name: /Pagar.*203/ }));
+  fireEvent.click(screen.getByRole("button", { name: /Pagar.*239/ }));
   expect(
     await screen.findByText(
       "El precio cambió. Revisa el nuevo total antes de confirmar.",
     ),
   ).toBeInTheDocument();
   expect(transport.api.pay).not.toHaveBeenCalled();
-  expect(screen.getByRole("button", { name: /Pagar.*204/ })).toBeEnabled();
+  expect(screen.getByRole("button", { name: /Pagar.*240/ })).toBeEnabled();
 });
 test("failed creation keeps idempotency key for explicit retry", async () => {
   const { store } = await openSummary();
@@ -325,10 +326,10 @@ test("failed creation keeps idempotency key for explicit retry", async () => {
     .mockRejectedValueOnce(
       new transport.ApiError("NETWORK_ERROR", "Sin conexión"),
     );
-  fireEvent.click(screen.getByRole("button", { name: /Pagar.*203/ }));
+  fireEvent.click(screen.getByRole("button", { name: /Pagar.*239/ }));
   await screen.findByText("Sin conexión");
   const key = store.getState().checkout.idempotencyKey;
-  fireEvent.click(screen.getByRole("button", { name: /Pagar.*203/ }));
+  fireEvent.click(screen.getByRole("button", { name: /Pagar.*239/ }));
   await screen.findByText("Tu luz está en camino.");
   expect(
     jest.mocked(transport.api.create).mock.calls.map((call) => call[2]),
@@ -349,7 +350,7 @@ test("lost creation response recovers the existing transaction without auto char
     draft: reservedDraft,
     activeTransactionId: transaction.id,
   });
-  fireEvent.click(screen.getByRole("button", { name: /Pagar.*203/ }));
+  fireEvent.click(screen.getByRole("button", { name: /Pagar.*239/ }));
   await screen.findByText("Tu pedido está reservado.");
   expect(transport.api.pay).not.toHaveBeenCalled();
   fireEvent.click(screen.getByRole("button", { name: "Completar pago" }));
@@ -367,7 +368,7 @@ test("lost creation response recovers the existing transaction without auto char
   expect(
     screen.getByText(reservedDraft.delivery.addressLine1, { exact: false }),
   ).toBeInTheDocument();
-  fireEvent.click(screen.getByRole("button", { name: /Pagar.*203/ }));
+  fireEvent.click(screen.getByRole("button", { name: /Pagar.*239/ }));
   await screen.findByText("Tu luz está en camino.");
   expect(transport.api.create).toHaveBeenCalledTimes(1);
 });
@@ -376,7 +377,7 @@ test("tokenization failure does not send payment and leaves reserved order resum
   jest
     .mocked(transport.tokenize)
     .mockRejectedValueOnce(new Error("Tarjeta no válida"));
-  fireEvent.click(screen.getByRole("button", { name: /Pagar.*203/ }));
+  fireEvent.click(screen.getByRole("button", { name: /Pagar.*239/ }));
   expect(await screen.findByText("Tarjeta no válida")).toBeInTheDocument();
   expect(transport.api.pay).not.toHaveBeenCalled();
   fireEvent.click(screen.getByRole("button", { name: "Completar pago" }));
@@ -396,7 +397,7 @@ test("ambiguous payment transport failure keeps pending and prevents an automati
     canPay: false,
     submissionStatus: "UNKNOWN",
   });
-  fireEvent.click(screen.getByRole("button", { name: /Pagar.*203/ }));
+  fireEvent.click(screen.getByRole("button", { name: /Pagar.*239/ }));
   await waitFor(() => expect(transport.api.transaction).toHaveBeenCalled());
   expect(
     screen.getByRole("heading", { name: "Estamos confirmando tu pago." }),

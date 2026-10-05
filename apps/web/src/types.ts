@@ -30,6 +30,8 @@ export type Amounts = {
   subtotalInCents: number;
   baseFeeInCents: number;
   deliveryFeeInCents: number;
+  vatInCents?: number;
+  vatRatePercent?: number;
   totalInCents: number;
 };
 export type Quote = { productId: string; quantity: 1; amounts: Amounts };

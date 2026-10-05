@@ -47,6 +47,9 @@ export interface Session {
 export interface Amounts {
   currency: "COP";
   subtotalInCents: number;
+  // Absent on immutable transaction snapshots created before VAT was added.
+  vatInCents?: number;
+  vatRatePercent?: number;
   baseFeeInCents: number;
   deliveryFeeInCents: number;
   totalInCents: number;
@@ -107,6 +110,7 @@ export interface ProviderTransaction {
 }
 export const BASE_FEE = 250000;
 export const DELIVERY_FEE = 1200000;
+export const VAT_RATE_PERCENT = 19;
 export const keys = {
   product: (id: string) => `PRODUCT#${id}`,
   customer: (id: string) => `CUSTOMER#${id}`,

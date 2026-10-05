@@ -4,6 +4,7 @@ import {
   DELIVERY_FEE,
   Product,
   Transaction,
+  VAT_RATE_PERCENT,
 } from "./models";
 import { andThen, fail, ok, Result } from "./result";
 
@@ -21,15 +22,27 @@ export function quote(
         (valid) => {
           if (valid.stockAvailable < quantity)
             return fail("OUT_OF_STOCK", "Este producto está agotado.");
-          const total = valid.priceInCents + BASE_FEE + DELIVERY_FEE;
-          if (!Number.isSafeInteger(total) || valid.priceInCents < 1)
+          if (
+            !Number.isSafeInteger(valid.priceInCents) ||
+            valid.priceInCents < 1
+          )
+            return fail("INVALID_PRICE", "El precio no está disponible.");
+          // Tax only the product subtotal. Integer arithmetic rounds half a
+          // cent upward without floating-point multiplication drift.
+          const subtotal = BigInt(valid.priceInCents);
+          const vat = (subtotal * BigInt(VAT_RATE_PERCENT) + 50n) / 100n;
+          const total =
+            subtotal + vat + BigInt(BASE_FEE) + BigInt(DELIVERY_FEE);
+          if (total > BigInt(Number.MAX_SAFE_INTEGER))
             return fail("INVALID_PRICE", "El precio no está disponible.");
           return ok({
             currency: "COP",
             subtotalInCents: valid.priceInCents,
+            vatInCents: Number(vat),
+            vatRatePercent: VAT_RATE_PERCENT,
             baseFeeInCents: BASE_FEE,
             deliveryFeeInCents: DELIVERY_FEE,
-            totalInCents: total,
+            totalInCents: Number(total),
           });
         },
       ),

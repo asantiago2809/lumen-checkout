@@ -30,7 +30,7 @@ No introducir llaves de Wompi, credenciales AWS ni un token obtenido por otra he
 }
 ```
 
-El total actual es `20350000` centavos, COP 203.500. Esta operación no reserva inventario.
+El total del ejercicio local con IVA es `23941000` centavos, COP 239.410: el producto aporta COP 189.000 y su IVA del 19% COP 35.910, más cargo base y envío. AWS conserva los importes de la entrega anterior hasta desplegar este cambio. Usar siempre el total devuelto por la cotización del entorno correspondiente. Esta operación no reserva inventario.
 
 ## Guardar borrador
 
@@ -69,7 +69,7 @@ En el campo **Idempotency-Key** colocar un UUID nuevo. Generarlo en PowerShell c
 {
   "productId": "product_lumen_one",
   "quantity": 1,
-  "expectedTotalInCents": 20350000,
+  "expectedTotalInCents": 23941000,
   "customer": {
     "fullName": "Cliente Sandbox",
     "email": "email@example.test",

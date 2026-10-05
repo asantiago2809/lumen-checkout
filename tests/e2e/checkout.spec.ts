@@ -246,6 +246,10 @@ test('QA-F08/F12/R06/S01: approved checkout, double click, refresh and stock exa
   await review(page);
   await expect(page.getByText('Cargo base', { exact: true })).toBeVisible();
   await expect(page.getByText('Envío', { exact: true })).toBeVisible();
+  await expect(page.getByText('IVA (19%)', { exact: true })).toBeVisible();
+  await expect(page.locator('.price-breakdown').getByText(/35\.910/)).toBeVisible();
+  await expect(page.locator('.price-breakdown .total')).toContainText('239.410');
+  await expect(page.getByRole('button', { name: /^Pagar \$/ })).toContainText('239.410');
   expect(await page.locator('[role="dialog"]').innerText().then(text => text.replace(/\s/g, '').includes(card))).toBe(false);
   const storage = await page.evaluate(() => JSON.stringify({ local: { ...localStorage }, session: { ...sessionStorage } }));
   expect([card, customer.fullName, customer.email, delivery.addressLine1].some(value => storage.includes(value))).toBe(false);

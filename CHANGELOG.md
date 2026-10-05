@@ -2,6 +2,11 @@
 
 Changes are recorded as implemented and verified. Git contains the incremental development record; an unreleased entry does not imply a public deployment or completed sandbox integration.
 
+## Unreleased — product VAT — 2026-10-05
+
+- Added 19% VAT on the product subtotal only, rounded to the nearest centavo by the server. Base and delivery fees are outside the tax base for this requested demonstration. New quotes and orders include the VAT amount and rate; the payment uses the resulting server total.
+- Show the VAT line in the checkout breakdown. Stored transactions retain their original amounts, including orders created before VAT was added. This change is local and does not imply an AWS deployment or a new real sandbox payment.
+
 ## Interview preparation — 2026-10-05
 
 - Added Windows VS Code tasks, an F5 Node terminal launch, workspace TypeScript selection and a quick command guide. API typecheck passes with project TypeScript 5.9.3; reproduced the editor's node10 deprecation diagnostic under its bundled TypeScript 6.0.3 and documented selecting the workspace version.

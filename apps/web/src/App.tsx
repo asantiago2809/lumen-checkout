@@ -154,8 +154,8 @@ export function App() {
                     <div>
                       <strong>Cada detalle, antes de pagar.</strong>
                       <p>
-                        Revisa tu producto, el cargo base y el envío en el
-                        resumen de compra.
+                        Revisa tu producto, el IVA, el cargo base y el envío en
+                        el resumen de compra.
                       </p>
                     </div>
                   </div>

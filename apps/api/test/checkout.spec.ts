@@ -11,7 +11,7 @@ describe("checkout business invariants", () => {
     const { service, store } = await setup();
     expect(
       value(await service.quote(input.productId, 1)).amounts.totalInCents,
-    ).toBe(20350000);
+    ).toBe(23941000);
     expect(await service.quote("absent", 1)).toMatchObject({
       ok: false,
       error: { code: "NOT_FOUND" },
