@@ -2,6 +2,11 @@
 
 Changes are recorded as implemented and verified. Git contains the incremental development record; an unreleased entry does not imply a public deployment or completed sandbox integration.
 
+## Interview preparation — 2026-10-05
+
+- Added a Spanish study guide with source locations, architecture/payment explanations, 34 interview questions, change exercises, API routes, run commands and a complete documentation index.
+- Rechecked public delivery with 17 passing read-only controls and confirmed local application/API/documentation availability. Existing sandbox payment and full-suite results retain their September dates; this documentation update does not claim a new payment or deploy application changes.
+
 ## Final delivery improvements — 2026-09-23
 
 - Added negotiated gzip, correct encoding refusal/HEAD handling and a bounded warm cache for immutable static files. Public verification confirms JS/CSS transfer reductions of 67.93%/75.68%, including byte integrity and actual HEAD wire behavior. Browser-cold and repeat-visit measurements preserve the baseline and outliers.
