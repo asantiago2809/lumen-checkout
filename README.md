@@ -20,6 +20,8 @@ An original mobile-first checkout built with React, Redux Toolkit and a NestJS A
 
 ## Run from a fresh checkout
 
+For a Spanish walkthrough, exact source locations, likely interview questions and live-change exercises, see the [interview guide](docs/interview-guide.md). It also indexes all existing documentation and distinguishes historical test evidence from the availability checks on 5 October 2026.
+
 Requirements: **Node.js 22.12 or newer**, npm and Git. No Docker or AWS account is needed for local development and deterministic tests. Keep ports 5173 and 3001 available.
 
 ```sh
